@@ -12,7 +12,7 @@ const Section: React.FC<SectionProps> = ({ title, children, link }) => {
   return (
     <>
       <div className="w-full flex justify-between items-center">
-        <h3 className="text-5xl text-black font-bold capitalize">
+        <h3 className="text-3xl md:text-5xl text-black font-bold capitalize">
           {title}
         </h3>
         <Link to = {link}>

@@ -10,6 +10,10 @@ import { Link } from "react-router-dom";
 import { ArrowRightIcon, Truck, Banknote, LockKeyhole,Phone } from "lucide-react";
 import ProductCard from "../components/ProductCard";
 import Promo from "../components/Promo";
+import TestimonialCard from "../components/TestimonialCard";
+import testimonyOne from "../assets/images/testimonial/testimonial1.webp";
+import testimonyTwo from "../assets/images/testimonial/testimonial2.webp";
+import testimonyThree from "../assets/images/testimonial/testimonial3.webp";
 // import ProductSlider from "../components/ProductSlider";
 // import { useRef } from 'react';
 
@@ -19,7 +23,7 @@ function Home() {
   // const rightArrowEl = useRef<HTMLDivElement>(null);
 
   return (
-    <main className="border-2 border-black w-full">
+    <main className="w-full h-full">
       {/* Hero section */}
       <header className="h-screen lg:h-[--hero-height]">
         <Carrousel
@@ -85,7 +89,7 @@ function Home() {
       </header>
 
       {/* Content section */}
-      <section className="mx-4 mt-10 lg:mx-14 border-2 border-black">
+      <section className="mx-4 mt-10 lg:mx-14 min-h-screen">
         {/* Highlighted categories */}
         {/* <div className="w-full h-[20rem] border-2 border-black flex overflow-hidden">
           <div className="w-[30rem] h-full border-2 border-black"></div>
@@ -220,6 +224,42 @@ function Home() {
                   </p>
                 </div>
               </div>
+            </div>
+          </section>
+
+          {/* Testimonials */}
+          <section className="mt-14 h-fit">
+            <h3 className="text-3xl md:text-5xl text-black font-bold capitalize mb-10">
+              Testimonials
+            </h3>
+            <div className="flex flex-wrap gap-4">
+                {
+                  [{
+                    id: 1,
+                    img: testimonyOne,
+                    name: "John Doe",
+                    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
+                  }, 
+                  {
+                    id: 2,
+                    img: testimonyTwo,
+                    name: "Alex Howard",
+                    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
+                  },
+                  {
+                    id: 3,
+                    img: testimonyThree,
+                    name: "Theresa Hue",
+                    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
+                  }
+                  ].map((testimonial) =>(
+                    <div className="flex-[1_1_25vw] min-h-40 " key={testimonial.id}>
+                      <TestimonialCard img = {testimonial.img} name = {testimonial.name}>
+                        <p className="text-size-500 font-medium text-text-black">{testimonial.content}</p>
+                      </TestimonialCard>
+                    </div>
+                  ))
+                }
             </div>
           </section>
         </div>

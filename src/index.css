@@ -183,3 +183,12 @@ table {
 .redirect-link:hover::after{
   width: 100%;
 }
+
+.wishlist-icon{
+  opacity:0;
+}
+
+.product-img:hover .wishlist-icon{
+  opacity: 1;
+  transition: opacity ease-in .3s;
+}

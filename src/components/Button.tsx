@@ -11,7 +11,6 @@ interface Props{
 
 const Button:React.FC<Props> = ({children, type = "black", size = "medium", className, btnLink = "/" }) => {
 
-  console.log(className, size,)
 
   const sizeClassNames = {
       small: "px-4 py-2",

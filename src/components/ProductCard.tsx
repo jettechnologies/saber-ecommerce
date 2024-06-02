@@ -1,5 +1,6 @@
 import headphoneImg from "../assets/images/headsets.png";
 import { StarIcon } from "../icons/svg";
+import { Heart } from "lucide-react";
 
 interface Props{
     tag: string;
@@ -8,9 +9,14 @@ interface Props{
 const ProductCard:React.FC<Props> = ({tag}) => {
   return (
     <div className="w-full h-full flex flex-col relative">
-        <div className="w-full flex justify-center items-center h-[75%] rounded-md bg-gray">
-            <div className="py-2 px-3 rounded-sm text-base uppercase absolute top-3 left-3 font-semibold bg-white">
-                <p>{tag}</p>
+        <div className="w-full flex justify-center items-center h-[75%] rounded-md bg-gray product-img">
+            <div className="flex justify-between w-full pt-3 px-3 absolute top-0 left-0">
+                <div className="p-2 rounded-sm text-base uppercase font-semibold bg-white">
+                    <p>{tag}</p>
+                </div>
+                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm wishlist-icon cursor-pointer">
+                    <Heart size = {20}/>
+                </div>
             </div>
             <img src={headphoneImg} alt="product image" className="w-[80%] aspect-square object-cover"/>
         </div>

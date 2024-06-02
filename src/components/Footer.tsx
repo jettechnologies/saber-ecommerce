@@ -6,9 +6,9 @@ export default function Footer() {
       <div className="space-y-2 text-center w-full">
         <h3 className="text-white font-bold">Follow us!</h3>
         <div className="space-x-2">
-          <Twitter />
-          <Instagram />
-          <Facebook />
+          <Twitter fill = "#fff"/>
+          <Instagram fill = "#fff"/>
+          <Facebook fill = "#fff"/>
         </div>
       </div>
       <div className="text-white justify-center flex items-center w-full">

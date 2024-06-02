@@ -27,7 +27,7 @@ const Carrousel: React.FC<CarrouselProps> = ({ content, hasDots = false }) => {
   
 
   return (
-    <div className="relative h-full border-2 border-red-500">
+    <div className="relative h-full">
       {content?.map((slide, index) => (
         <div
           key={index}
