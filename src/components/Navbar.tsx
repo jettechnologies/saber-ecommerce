@@ -50,7 +50,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex gap-3">
-          <div className="items-center gap-x-4 flex">
+          <div className="items-center gap-x-4 hidden md:flex">
             {!searchVisible && <div className="w-fit h-fit" onClick={() => setSearchVisible(!searchVisible)}>
               <SearchIcon className="w-5 h-5"/>
             </div>}
@@ -83,7 +83,6 @@ export default function Navbar() {
       <Modal 
         open={isMenuOpen} 
         onClose={handleClick} 
-        className="-left-[200%]"
         position="left"
       >
         <div className="flex flex-col gap-4">

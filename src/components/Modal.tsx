@@ -24,9 +24,15 @@ export default function Modal({
     if(open && position === "left"){
       positionRes = "left-0";
     }
+    else if(!open && position === "left"){
+      positionRes = "-left-[200%]";
+    }
     else if(open && position === "right")
     {
       positionRes = "right-0";
+    }
+    else if(!open && position === "right"){
+      positionRes = "-right-[200%]";
     }
 
     return positionRes;
@@ -43,7 +49,7 @@ export default function Modal({
 
       {/* Modal */}
       <div
-        className={twMerge(`transition-all duration-200 inset-0 fixed ${modalPosition} bg-white max-w-screen-sm`, className)}
+        className={twMerge(`transition-all duration-200 inset-0 fixed ${modalPosition()} bg-white max-w-screen-sm`, className)}
       >
         <div className="grid grid-cols-[16%_68%_16%] py-7 px-2 justify-center place-items-center border-b-[1px]">
           <div className="w-full" />
