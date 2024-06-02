@@ -4,9 +4,10 @@ import arrowRight from "../assets/icons/arrowRight.svg";
 
 type CarrouselProps = {
   content?: React.ReactNode[];
+  hasDots?: boolean
 };
 
-const Carrousel: React.FC<CarrouselProps> = ({ content }) => {
+const Carrousel: React.FC<CarrouselProps> = ({ content, hasDots = false }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   if (!content) {
@@ -38,7 +39,7 @@ const Carrousel: React.FC<CarrouselProps> = ({ content }) => {
         </div>
       ))}
 
-      <div className="relative h-full inset-0 z-[-1]">{content[currentSlide]}</div>
+      <div className="relative h-full inset-0 z-[-1] border-2 border-green-800">{content[currentSlide]}</div>
 
       <div className="absolute left-0 bottom-0 top-0 flex items-center justify-start">
         <button className="overflow-hidden" onClick={previousSlide}>
@@ -60,7 +61,7 @@ const Carrousel: React.FC<CarrouselProps> = ({ content }) => {
         </button>
       </div>
 
-      <div className="absolute bottom-4 flex justify-center items-center w-full rounded-full">
+      {hasDots &&<div className="absolute bottom-4 flex justify-center items-center w-full rounded-full">
         <div className="h-2 flex rounded-full bg-gray-400 overflow-hidden">
           {content?.map((_, index) => (
             <button
@@ -74,7 +75,7 @@ const Carrousel: React.FC<CarrouselProps> = ({ content }) => {
             ></button>
           ))}
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

@@ -1,12 +1,16 @@
 import headphoneImg from "../assets/images/headsets.png";
 import { StarIcon } from "../icons/svg";
 
-const ProductCard = () => {
+interface Props{
+    tag: string;
+}
+
+const ProductCard:React.FC<Props> = ({tag}) => {
   return (
-    <div className="w-full h-full border-2 border-black flex flex-col relative">
+    <div className="w-full h-full flex flex-col relative">
         <div className="w-full flex justify-center items-center h-[75%] rounded-md bg-gray">
             <div className="py-2 px-3 rounded-sm text-base uppercase absolute top-3 left-3 font-semibold bg-white">
-                <p>new</p>
+                <p>{tag}</p>
             </div>
             <img src={headphoneImg} alt="product image" className="w-[80%] aspect-square object-cover"/>
         </div>

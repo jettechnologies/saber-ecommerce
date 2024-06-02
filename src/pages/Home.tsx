@@ -1,26 +1,29 @@
 import Hero from "../components/Hero";
-import Card from "../components/Card";
 import Section from "../components/Section";
 import Carrousel from "../components/Carrousel";
-import banner1 from "../assets/images/banners/banner1.webp";
-import banner2 from "../assets/images/banners/banner2.webp";
-import banner3 from "../assets/images/banners/banner3.webp";
-import banner4 from "../assets/images/banners/banner4.webp";
-import banner5 from "../assets/images/banners/banner5.webp";
-import banner6 from "../assets/images/banners/banner6.webp";
 import heroImg from "../assets/images/hero.png";
 import headphoneImg from "../assets/images/headsets.png";
 import earpodImg from "../assets/images/earpods.webp";
 import Button from "../components/Button";
+import { Link } from "react-router-dom";
+// import { ArrowRightIcon } from "../icons/svg";
+import { ArrowRightIcon, Truck, Banknote, LockKeyhole,Phone } from "lucide-react";
 import ProductCard from "../components/ProductCard";
-
+import Promo from "../components/Promo";
+// import ProductSlider from "../components/ProductSlider";
+// import { useRef } from 'react';
 
 function Home() {
+
+  // const leftArrowEl = useRef<HTMLDivElement>(null);
+  // const rightArrowEl = useRef<HTMLDivElement>(null);
+
   return (
     <main className="border-2 border-black w-full">
       {/* Hero section */}
       <header className="h-screen lg:h-[--hero-height]">
         <Carrousel
+          hasDots = {true}
           content={[
             <Hero className=" bg-[#ffc95c] px-12">
               <div className="flex-1 lg:w-[50%] h-[50%] lg:h-full order-2 lg:order-1">
@@ -82,104 +85,143 @@ function Home() {
       </header>
 
       {/* Content section */}
-      <section className="mx-4 mt-10 lg:mx-14">
+      <section className="mx-4 mt-10 lg:mx-14 border-2 border-black">
         {/* Highlighted categories */}
-        <div className="flex gap-2 justify-center md:gap-6 border-2 border-black">
-          {/* <div className="h-[16rem] lg:h-[22rem] w-full">
-            <Card
-              title="High Coziness"
-              subtitle="Category placehldr"
-              textLocation="left"
-              imgLink={banner3}
-              btnLink="/store"
-              btnText="Shop Now"
-              btnTransparent
-            />
-          </div>
+        {/* <div className="w-full h-[20rem] border-2 border-black flex overflow-hidden">
+          <div className="w-[30rem] h-full border-2 border-black"></div>
+          <div className="w-[30rem] h-full border-2 border-black"></div>
+          <div className="w-[30rem] h-full border-2 border-black"></div>
+          <div className="w-[30rem] h-full border-2 border-black"></div>
+          <div className="w-[30rem] h-full border-2 border-black"></div>
+          <div className="w-[30rem] h-full border-2 border-black"></div>
+          <div className="w-[30rem] h-full border-2 border-black"></div>
+        </div> */}
 
-          <div className="h-[16rem] lg:h-[22rem] w-full">
-            <Card
-              title="Summer Style"
-              subtitle="Category placehldr"
-              textLocation="left"
-              imgLink={banner2}
-              btnLink="/store"
-              btnText="Shop Now"
-              btnTransparent
-            />
-          </div> */}
-          <div className="w-[228px] h-[24.25rem]">
-            <ProductCard />
-          </div>
-          <div className="w-[228px] h-[24.25rem]">
-            <ProductCard />
-          </div>
-          <div className="w-[228px] h-[24.25rem]">
-            <ProductCard />
-          </div>
-          <div className="w-[228px] h-[24.25rem]">
-            <ProductCard />
-          </div>  
-        </div>
-
-        {/* Big saving zone */}
-        <div className="mt-16">
-          <Section title="Big Saving Zone">
-            <div className="grid  gap-4">
-              <div className="grid md:grid-cols-3 mt-8 gap-4 h-[42rem] w-full md:h-[22rem]">
-                <Card
-                  title="Hawaiian Shirts"
-                  subtitle="Category placehldr"
-                  textLocation="left"
-                  imgLink={banner1}
-                  btnLink="/store"
-                  btnText="Shop Now"
-                  btnTransparent
-                />
-
-                <Card
-                  title="Printed T-Shirt"
-                  subtitle="Category placehldr"
-                  textLocation="right"
-                  imgLink={banner4}
-                  btnLink="/store"
-                  btnText="Shop Now"
-                  btnTransparent
-                />
-
-                <Card
-                  title="Cargo Joggers"
-                  subtitle="Category placehldr"
-                  textLocation="right"
-                  imgLink={banner5}
-                  btnLink="/store"
-                  btnText="Shop Now"
-                  btnTransparent
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4 h-[16rem] w-full md:h[22rem]">
-                <Card
-                  title="Urban Shirts"
-                  subtitle="Category placehldr"
-                  textLocation="right"
-                  imgLink={banner5}
-                  btnLink="/store"
-                  btnText="Shop Now"
-                  btnTransparent
-                />
-
-                <Card
-                  title="Oversized"
-                  subtitle="Category placehldr"
-                  textLocation="right"
-                  imgLink={banner6}
-                  btnLink="/store"
-                  btnText="Shop Now"
-                  btnTransparent
-                />
+        {/* Shop catergories */}
+        <div className="mt-14">
+          <Section title="shop catergories" link="store">
+            <div className="grid gap-4">
+              <div className="grid grid-rows-4 md:grid-rows-[30vh_30vh] md:grid-cols-2 mt-8 gap-4 min-h-[42rem] w-full md:min-h-[22rem]">
+                  <div className="w-full h-full py-4 px-6 bg-gray row-start-1 row-span-2 md:row-start-1 md:row-end-3 md:col-start-1 md:col-span-1">
+                    <div className="w-full h-full flex flex-col gap-y-5">
+                      <div className="w-full h-[70%] flex items-center justify-center">
+                        <img src={headphoneImg} alt="headphone image" className="w-full h-full object-contain"/>
+                      </div>
+                      <div className="w-full h-fit">
+                        <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
+                          Headband
+                        </h4>
+                        <Link to = "store">
+                          <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
+                            <p className="text-size-500 font-medium text-black capitalize">shop</p>
+                            <ArrowRightIcon size = {24}/>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full h-full py-4 px-6 bg-gray row-start-3 row-span-1 md:row-span-1 md:col-start-2 md:col-span-1">
+                    <div className="w-full h-full gap-y-5 flex">
+                      <div className="w-[70%] order-2 h-full flex items-center justify-center">
+                        <img src={headphoneImg} alt="headphone image" className="w-full h-full object-contain"/>
+                      </div>
+                      <div className="w-[30%] h-fit order-1 self-center">
+                        <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
+                          Headband
+                        </h4>
+                        <Link to = "store">
+                          <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
+                            <p className="text-size-500 font-medium text-black capitalize">shop</p>
+                            <ArrowRightIcon size = {24}/>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full h-full py-4 px-6 bg-gray row-start-4 row-span-1 md:row-span-1 md:col-start-2 md:col-span-1">
+                  <div className="w-full h-full gap-y-5 flex">
+                      <div className="w-[70%] order-2 h-full flex items-center justify-center">
+                        <img src={earpodImg} alt="earpod image" className="w-full h-full object-contain"/>
+                      </div>
+                      <div className="w-[30%] h-fit order-1 self-center">
+                        <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
+                          earpods
+                        </h4>
+                        <Link to = "store">
+                          <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
+                            <p className="text-size-500 font-medium text-black capitalize">shop</p>
+                            <ArrowRightIcon size = {24}/>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
           </Section>
+
+          {/* Best sellers */}
+          <div className="mt-14">
+            <Section title="best sellers" link="store">
+                <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8">
+                    {
+                      [1,2,3,4,5,6,7,8].map((index) =>(
+                        <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[25rem]" key = {index}>
+                          <ProductCard tag = "hot"/>
+                        </div>
+                      ))
+                    }
+                </div>
+            </Section>
+          </div>
+
+          {/* Discont sales or Newletter */}
+          <section className="mt-14">
+            {/* remember to add a state in the global store that would enable the store owner to either turn a promo or a newletter on */}
+            <Promo />
+          </section>
+
+          {/* Store Benefits */}
+          <section className="mt-14">
+            <div className="w-full h-full flex gap-4 flex-wrap">
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-8 flex-[1_1_18vw]">
+                <Truck size = {50}/>
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">free shipping</h5>
+                  <p className = "text-size-400 text-[#121212] font-medium">
+                    Order above $200
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-8 flex-[1_1_18vw]">
+                <Banknote size = {50}/>
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">money-back</h5>
+                  <p className = "text-size-400 text-[#121212] font-medium">
+                    30 days guarantee
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-8 flex-[1_1_18vw]">
+                <LockKeyhole size = {50}/>
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">secure payments</h5>
+                  <p className = "text-size-400 text-[#121212] font-medium">
+                    Secured by Striped
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-8 flex-[1_1_18vw]">
+                <Phone size = {50}/>
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">24/7 support</h5>
+                  <p className = "text-size-400 text-[#121212] font-medium">
+                    Phone and Email support
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </section>
     </main>

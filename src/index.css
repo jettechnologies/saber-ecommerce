@@ -167,3 +167,19 @@ table {
     @apply outline-1 outline-blue;
   } */
 }
+
+.redirect-link::after{
+  content: "";
+  position: absolute;
+  top:1.5rem;
+  left:0;
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #121212;
+  transition: width .3s;
+}
+
+.redirect-link:hover::after{
+  width: 100%;
+}

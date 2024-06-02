@@ -1,59 +1,58 @@
 import Glider from 'react-glider';
 import 'glider-js/glider.min.css';
 import { twMerge } from 'tailwind-merge';
-import { useRef } from 'react';
 import { ArrowLeftIcon, ArrowRightIcon } from '../icons/svg';
 
-interface Props{
-    className?: string;
-    children: React.ReactNode;
+interface Props {
+  className?: string;
+  children: React.ReactNode;
+  leftArrowEl: React.RefObject<HTMLDivElement>;
+  rightArrowEl: React.RefObject<HTMLDivElement>;
 }
 
-const ProductSlider:React.FC<Props> = ({
-    className,
-    children
+const ProductSlider: React.FC<Props> = ({
+  className,
+  children,
+  leftArrowEl,
+  rightArrowEl,
 }) => {
-
-    const leftArrowEl = useRef(null);
-    const rightArrowEl = useRef(null);
-
   return (
-    <Glider
-    className="glider-container"
-    draggable
-    hasArrows
-    slidesToShow={2}
-    scrollLock
-    responsive={[
-        {
+    <div className={twMerge('relative w-full', className)}>
+      <div className="absolute top-1/2 transform -translate-y-1/2 left-0" ref={leftArrowEl}>
+        <ArrowLeftIcon />
+      </div>
+      <Glider
+        className="glider-container"
+        draggable
+        hasArrows
+        slidesToShow={2}
+        scrollLock
+        responsive={[
+          {
             breakpoint: 1024,
             settings: {
-                slidesToShow: 4,
+              slidesToShow: 4,
             },
-        },
-        {
+          },
+          {
             breakpoint: 768,
             settings: {
-                slidesToShow: 3,
+              slidesToShow: 3,
             },
-        }
-    ]}
-    arrows = {{
-        prev: leftArrowEl.current,
-        next: rightArrowEl.current
-      }} 
-    >
-    <div className={twMerge("", className)}>
-        <div className='w-24 h-24 rounded-full absolute top-1/2 left-1/2'>
-            <ArrowLeftIcon />
-        </div>
+          },
+        ]}
+        arrows={{
+          prev: leftArrowEl.current,
+          next: rightArrowEl.current,
+        }}
+      >
         {children}
-        <div className='w-24 h-24 rounded-full absolute top-1/2 right-1/2'>
-            <ArrowLeftIcon />
-        </div>
+      </Glider>
+      <div className="absolute top-1/2 transform -translate-y-1/2 right-0" ref={rightArrowEl}>
+        <ArrowRightIcon />
+      </div>
     </div>
-</Glider>
-  )
-}
+  );
+};
 
-export default ProductSlider
+export default ProductSlider;
