@@ -18,7 +18,7 @@ export default function Modal({
   className
 }: ModalProps) {
   const overlayOpacity = open ? "opacity-50" : "opacity-0 pointer-events-none";
-  const modalPosition = (open:boolean, position:string) =>{
+  const modalPosition = () =>{
     let positionRes = ""
     
     if(open && position === "left"){

@@ -75,7 +75,7 @@ function Detail() {
 
               {/* Description */}
 
-              <Section title="Description">
+              <Section title="Description" >
                 <div className="mt-4">
                   <p>{product.description}</p>
                 </div>
