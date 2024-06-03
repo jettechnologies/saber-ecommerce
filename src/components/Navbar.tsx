@@ -25,7 +25,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="max-h-[--header-height] px-8 flex py-4 justify-between place-items-center border-b-[1px] md:px-24 bg-white">
+      <header className="max-h-[--header-height] px-8 flex py-4 justify-between place-items-center border-b-[1px] md:px-24 bg-white sticky top-0 left-0">
         <div className=" flex justify-start lg:hidden">
           <button onClick={handleClick}>
             <img src={menuHamburger} alt="open menu" />
@@ -77,6 +77,32 @@ export default function Navbar() {
           >
             <UserIcon className="w-5 h-5 "/>
           </Link>
+
+          {/* user subNav */}
+          <div className="border-2 border-black py-4 absolute top-10 right-4 z-[9999px]">
+            <ul className="flex flex-col px-4 py-2">
+              <Link to = "/auth/signin" className="w-full py-3">
+                <li className="text-text-black hover:text-blue font-medium text-size-500 capitalize w-[10rem]">
+                  signin
+                </li>
+              </Link>
+              <Link to = "/auth/signin" className="w-full py-3">
+                <li className="text-text-black hover:text-blue font-medium text-size-500 capitalize w-[10rem]">
+                  signin
+                </li>
+              </Link>
+              <Link to = "/auth/signin" className="w-full py-3">
+                <li className="text-text-black hover:text-blue font-medium text-size-500 capitalize w-[10rem]">
+                  signin
+                </li>
+              </Link>
+              <Link to = "/auth/signin" className="w-full py-3">
+                <li className="text-text-black hover:text-blue font-medium text-size-500 capitalize w-[10rem]">
+                  signin
+                </li>
+              </Link>
+            </ul>
+          </div>
         </div>
       </header>
 

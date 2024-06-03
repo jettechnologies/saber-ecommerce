@@ -17,10 +17,38 @@ import testimonyThree from "../assets/images/testimonial/testimonial3.webp";
 // import ProductSlider from "../components/ProductSlider";
 // import { useRef } from 'react';
 
+interface Testimonies{
+  id:number;
+  img: string;
+  name: string;
+  content: string;
+}
+
 function Home() {
 
   // const leftArrowEl = useRef<HTMLDivElement>(null);
   // const rightArrowEl = useRef<HTMLDivElement>(null);
+
+
+  const testimonies:Testimonies[] = [{
+    id: 1,
+    img: testimonyOne,
+    name: "John Doe",
+    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
+  }, 
+  {
+    id: 2,
+    img: testimonyTwo,
+    name: "Alex Howard",
+    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
+  },
+  {
+    id: 3,
+    img: testimonyThree,
+    name: "Theresa Hue",
+    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
+  }
+  ]
 
   return (
     <main className="w-full h-full">
@@ -28,6 +56,7 @@ function Home() {
       <header className="h-screen lg:h-[--hero-height]">
         <Carrousel
           hasDots = {true}
+          hasArrows = {true}
           content={[
             <Hero className=" bg-[#ffc95c] px-12">
               <div className="flex-1 lg:w-[50%] h-[50%] lg:h-full order-2 lg:order-1">
@@ -167,10 +196,10 @@ function Home() {
           {/* Best sellers */}
           <div className="mt-14">
             <Section title="best sellers" link="store">
-                <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8">
+                <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 border-black border-2 z-10">
                     {
                       [1,2,3,4,5,6,7,8].map((index) =>(
-                        <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[25rem]" key = {index}>
+                        <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[25rem] border-2 border-black" key = {index}>
                           <ProductCard tag = "hot"/>
                         </div>
                       ))
@@ -233,33 +262,15 @@ function Home() {
               Testimonials
             </h3>
             <div className="flex flex-wrap gap-4">
-                {
-                  [{
-                    id: 1,
-                    img: testimonyOne,
-                    name: "John Doe",
-                    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
-                  }, 
-                  {
-                    id: 2,
-                    img: testimonyTwo,
-                    name: "Alex Howard",
-                    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
-                  },
-                  {
-                    id: 3,
-                    img: testimonyThree,
-                    name: "Theresa Hue",
-                    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
-                  }
-                  ].map((testimonial) =>(
-                    <div className="flex-[1_1_25vw] min-h-40 " key={testimonial.id}>
-                      <TestimonialCard img = {testimonial.img} name = {testimonial.name}>
-                        <p className="text-size-500 font-medium text-text-black">{testimonial.content}</p>
-                      </TestimonialCard>
-                    </div>
-                  ))
-                }
+              {
+                testimonies.map((testimonial) =>(
+                  <div className="flex-[1_1_25vw] min-h-40 " key={testimonial.id}>
+                    <TestimonialCard img = {testimonial.img} name = {testimonial.name}>
+                      <p className="text-size-500 font-medium text-text-black">{testimonial.content}</p>
+                    </TestimonialCard>
+                  </div>
+                ))
+              }
             </div>
           </section>
         </div>

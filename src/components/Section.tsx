@@ -16,7 +16,7 @@ const Section: React.FC<SectionProps> = ({ title, children, link }) => {
           {title}
         </h3>
         {link && <Link to = {link}>
-            <div className = "w-fit h-fit relative flex gap-1 items-center">
+            <div className = "w-fit h-fit flex gap-1 items-center">
               <p className="text-size-500 font-medium text-black capitalize">View all</p>
               <ArrowRightCircleIcon size = {24}/>
             </div>

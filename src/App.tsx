@@ -8,19 +8,23 @@ import Store from "./pages/Store";
 import Detail from "./pages/Detail";
 import Cart from "./pages/Cart";
 import Success from "./pages/Success";
+import Signin from "./pages/auth/Signin";
+import Signup from "./pages/auth/Signup";
 
 //max-w-sm mx-auto md:max-w-screen-lg
 
 function App() {
   return (
     <>
-      <div className="grid grid-rows-[auto_1fr_auto] max-container min-h-screen font-roboto">
+      <div className="max-container min-h-screen font-roboto">
         <Navbar />
 
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path={routes.ABOUT} element={<About />} />
           <Route path="/store/:category?/:search?" element={<Store />} />
+          <Route path="/auth/login" element = {<Signin />}></Route>
+          <Route path="/auth/signup" element = {<Signup />}></Route>
           <Route path="/product/:id" element={<Detail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/success" element={<Success />} />

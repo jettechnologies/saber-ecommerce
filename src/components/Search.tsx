@@ -38,7 +38,7 @@ const Search:React.FC<Props> = ({setSearchVisible}) => {
           <input
             type="text"
             placeholder="Search"
-            className="p-2 rounded-lg pl-10 bg-gray-200 w-full"
+            className="p-2 rounded-lg pl-10 bg-gray border border-black w-full"
             {...register("search", {
               required: "Can't search for an empty product",
               minLength: {
