@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Carrousel from "./Carrousel";
+// import Carrousel from "./Carrousel";
 
 type ImageCarouselProps = {
   images: string[] | undefined;
@@ -14,9 +14,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
     setSelectedImage(image);
   };
 
-  const carousellContent = images?.map((image, index) => (
-    <img key={index} src={image} alt={`Slide ${index}`} className="w-full" />
-  ));
+  // const carousellContent = images?.map((image, index) => (
+  //   <img key={index} src={image} alt={`Slide ${index}`} className="w-full" />
+  // ));
 
   return (
     <>
@@ -48,7 +48,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       </div>
 
       <div className="lg:hidden  w-full">
-        <Carrousel content={carousellContent} />
+        {/* <Carrousel content={carousellContent} /> */}
       </div>
     </>
   );

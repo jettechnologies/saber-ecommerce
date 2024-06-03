@@ -1,4 +1,4 @@
-import ProductList from "../components/ProductList";
+// import ProductList from "../components/ProductList";
 import Filters from "../components/Filters";
 import Modal from "../components/Modal";
 // import { useParams } from "react-router";
