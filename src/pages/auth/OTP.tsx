@@ -1,7 +1,41 @@
+import React,{ useState, useRef, useEffect } from "react";
 import FormContainer from "../../components/FormContainer";
 import { MailOpen } from "lucide-react";
 
-const OTP = () => {
+
+const Otp = () => {
+    let currentOTPIndex = 0;
+
+    const [otp, setOtp] = useState(new Array(6).fill(""));
+    const [activeOTPIndex, setActiveOTPIndex] = useState(0);
+  
+    const inputRef = useRef<HTMLInputElement>(null);
+  
+    const handleOnChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = target;
+      const newOTP: string[] = [...otp];
+      newOTP[currentOTPIndex] = value.substring(value.length - 1);
+  
+      if (!value) setActiveOTPIndex(currentOTPIndex - 1);
+      else setActiveOTPIndex(currentOTPIndex + 1);
+  
+      setOtp(newOTP);
+    };
+  
+    const handleOnKeyDown = (
+      e: React.KeyboardEvent<HTMLInputElement>,
+      index: number
+    ) => {
+      currentOTPIndex = index;
+      if (e.key === "Backspace") setActiveOTPIndex(currentOTPIndex - 1);
+    };
+  
+    useEffect(() => {
+      inputRef.current?.focus();
+    }, [activeOTPIndex]);
+
+    console.log(activeOTPIndex);
+
   return (
     <>
         <FormContainer>
@@ -14,13 +48,23 @@ const OTP = () => {
                         Please verify your account by entering the 6 digit code sent to your email
                     </p>
                 </div>
-                <div className="flex gap-1 md:gap-3  justify-center lg:justify-between mb-8 py-2">
-                    <input type="text" className="border p-3 w-[3rem] rounded-md bg-white text-black font-roboto font-normal"/>
-                    <input type="text" className="border p-3 w-[3rem] rounded-md bg-white text-black font-roboto font-normal"/>
-                    <input type="text" className="border p-3 w-[3rem] rounded-md bg-white text-black font-roboto font-normal"/>
-                    <input type="text" className="border p-3 w-[3rem] rounded-md bg-white text-black font-roboto font-normal"/>
-                    <input type="text" className="border p-3 w-[3rem] rounded-md bg-white text-black font-roboto font-normal"/>
-                    <input type="text" className="border p-3 w-[3rem] rounded-md bg-white text-black font-roboto font-normal"/>
+                <div className="flex gap-1 md:gap-3 xl:gap-5 justify-center mb-8 py-2">
+                    {otp.map((_, index) => {
+                    return (
+                    <React.Fragment key={index}>
+                        <input
+                        ref={activeOTPIndex === index ? inputRef : null}
+                        type="number"
+                        className={
+                            "w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-gray-400 focus:border-gray-700 focus:text-gray-700 text-gray-400 transition"
+                        }
+                        onChange={handleOnChange}
+                        onKeyDown={(e) => handleOnKeyDown(e, index)}
+                        value={otp[index]}
+                        />
+                    </React.Fragment>
+                    );
+                })}
                 </div>
                 <div className="w-full">
                     <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white hover:text-text-black hover:bg-white hover:border-2 hover:border-black ">
@@ -33,4 +77,4 @@ const OTP = () => {
   )
 }
 
-export default OTP;
+export default Otp;
