@@ -68,7 +68,7 @@ export default function Navbar() {
             <CartIcon className="w-5 h-5 text-white"/>
           </Link>
           <Link
-            to={"/"}
+            to={"/auth/signup"}
             className={` ${
               currentUrl.includes("cart")
                 ? "text-white"
