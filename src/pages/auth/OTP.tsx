@@ -56,7 +56,7 @@ const Otp = () => {
                         ref={activeOTPIndex === index ? inputRef : null}
                         type="number"
                         className={
-                            "w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-black text-gray-400 transition"
+                            "w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-[#d0d0d0] text-gray-400 transition"
                         }
                         onChange={handleOnChange}
                         onKeyDown={(e) => handleOnKeyDown(e, index)}
@@ -67,7 +67,7 @@ const Otp = () => {
                 })}
                 </div>
                 <div className="w-full">
-                    <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white hover:text-text-black hover:bg-white hover:border-2 hover:border-black ">
+                    <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
                         Verify account
                     </button>
                 </div>

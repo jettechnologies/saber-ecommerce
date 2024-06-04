@@ -72,7 +72,7 @@ const Carrousel: React.FC<CarrouselProps> =
       {content?.map((slide, index) => (
         <div
           key={index}
-          className={`absolute h-full w-full transition-opacity duration-300 ${
+          className={`absolute h-full w-full transition-opacity duration-300 z-0 bg-black ${
             index === currentSlide ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -80,7 +80,7 @@ const Carrousel: React.FC<CarrouselProps> =
         </div>
       ))}
 
-      <div className="relative h-full inset-0 z-[-1] border-2 border-green-800">{content[currentSlide]}</div>
+      <div className="relative h-full inset-0 bg-green-800 z-20">{content[currentSlide]}</div>
 
       {hasArrows && <div className="w-full absolute left-0 bottom-0 top-0 flex justify-between">
         <div className="flex items-center justify-start">

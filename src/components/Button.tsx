@@ -1,15 +1,13 @@
-import { Link } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 
 interface Props{
   children: React.ReactNode;
   size?: "small" | "medium" | "large";
   type?: "black" | "white";
-  btnLink: string;
   className?: string;
 }
 
-const Button:React.FC<Props> = ({children, type = "black", size = "medium", className, btnLink = "/" }) => {
+const Button:React.FC<Props> = ({children, type = "black", size = "medium", className }) => {
 
 
   const sizeClassNames = {
@@ -24,11 +22,9 @@ const Button:React.FC<Props> = ({children, type = "black", size = "medium", clas
   }
 
 return (
-  <Link to = {btnLink}>
-    <button className={twMerge("rounded-md font-semibold font-roboto cursor-pointer", sizeClassNames[size], typeClassNames[type], className)}>
-      {children}
-    </button>
-  </Link>
+  <button className={twMerge("rounded-md font-semibold font-roboto cursor-pointer", sizeClassNames[size], typeClassNames[type], className)}>
+    {children}
+  </button>
 )
 }
 

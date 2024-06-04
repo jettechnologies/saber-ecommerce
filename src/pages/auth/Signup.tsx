@@ -16,6 +16,11 @@ interface User{
  confirmPassword: {str:string};
 }
 
+interface Error{
+    status: boolean;
+    msg: string;
+}
+
 const Signup = () => {
 
     const navigate = useNavigate()
@@ -26,7 +31,10 @@ const Signup = () => {
         password: {str: "", error: false},
         confirmPassword: {str: ""}
     });
-    const [error, setError] = useState<boolean>(false);
+    const [error, setError] = useState<Error>({
+        status: false,
+        msg : ""
+    });
 
       // setting the values of the input fields
   function handleInputChange(e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
@@ -45,6 +53,11 @@ const formSubmit = (e:React.FormEvent<HTMLFormElement>) => {
 
     const {name, password, confirmPassword, email} = user;
 
+    if(name.str === "" || email.str === "" || password.str === "" || confirmPassword.str === "" ){
+        setError({status: true, msg: "All fields are required!"});
+        return
+    }
+
     if(!nameRegex.test(name.str)){
         setUser({ ...user, name: { ...name, error: true } });
         return;
@@ -54,7 +67,7 @@ const formSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         return;
     }
     else if(confirmPassword.str !== password.str){
-        setError(true);
+        setError({status: true, msg: "Passwords do not match!"});
         return
     }
     else if(!emailRegex.test(email.str)){
@@ -78,7 +91,7 @@ useEffect(() =>{
 
     if(error){
        errorRemoval =  setTimeout(() =>{
-            setError(!error);
+            setError({status: false, msg: ""});
         }, 2000)
     }
 
@@ -93,8 +106,8 @@ console.log(user)
             <form className="bg-white rounded-md shadow-2xl p-5" onSubmit={formSubmit}>
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Sign up</h1>
                 <p className="text-md font-normal text-blue mb-8">Create a new account</p>
-                {error && <Notification message = "Passwords dont't match" type = "danger"/>}
-                <div className="flex items-center border-2 mb-8 py-2 px-3 rounded-2xl">
+                {error.status && <Notification message = {error.msg} type = "danger"/>}
+                <div className="flex items-center border-2 mb-8 p-3 rounded-md">
                     <User size = {20}/>
                     <input 
                         id="name" className=" pl-2 w-full outline-none border-none" 
@@ -105,7 +118,7 @@ console.log(user)
                     />
                     {user.name.error && <p className="text-red-500 text-size-400 font-normal">Full name shouldn't be empty and should be a aplhabet</p>}
                 </div>
-                <div className="flex items-center border-2 mb-8 py-2 px-3 rounded-2xl">
+                <div className="flex items-center border-2 mb-8 p-3 rounded-md">
                     <Mail size = {20}/>
                     <input 
                         id="email" 
@@ -117,7 +130,7 @@ console.log(user)
                     />
                     {user.email.error && <p className="text-red-500 text-size-400 font-normal">Email shouldn't be empty and should be a aplhabet</p>}
                 </div>
-                <div className="flex items-center border-2 mb-8 py-2 px-3 rounded-2xl ">
+                <div className="flex items-center border-2 mb-8 p-3 rounded-md">
                     <LockKeyhole size = {20}/>
                     <input 
                         className="pl-2 w-full outline-none border-none" 
@@ -129,7 +142,7 @@ console.log(user)
                     />
                     {user.password.error && <p className="text-red-500 text-size-400 font-normal">Password shouldn't be empty and should be within 8 to 15 characters</p>}
                 </div>
-                <div className="flex items-center border-2 mb-8 py-2 px-3 rounded-2xl ">
+                <div className="flex items-center border-2 mb-8 p-3 rounded-md">
                     <LockKeyhole size = {20}/>
                     <input 
                         className="pl-2 w-full outline-none border-none" 
@@ -141,15 +154,10 @@ console.log(user)
                     />
                 </div>
                 <div className="w-full">
-                    <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white hover:text-text-black hover:bg-white hover:border-2 hover:border-black ">
+                    <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
                         Create account
                     </button>
                 </div>
-                {/* <div className="flex justify-between mt-4">
-                    <Link to = "/reset" className="text-sm ml-2 hover:text-blue cursor-pointer hover:-translate-y-1 duration-500 transition-all">Forgot Password ?</Link>
-
-                    <Link to = "/auth/signup" className="text-sm ml-2 hover:text-blue cursor-pointer hover:-translate-y-1 duration-500 transition-all">Don't have an account yet?</Link>
-                </div> */}
                 
             </form>
         </FormContainer>
