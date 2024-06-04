@@ -25,7 +25,7 @@ const Button:React.FC<Props> = ({children, type = "black", size = "medium", clas
 
 return (
   <Link to = {btnLink}>
-    <button className={twMerge("rounded-md font-semibold font-roboto", sizeClassNames[size], typeClassNames[type], className)}>
+    <button className={twMerge("rounded-md font-semibold font-roboto cursor-pointer", sizeClassNames[size], typeClassNames[type], className)}>
       {children}
     </button>
   </Link>

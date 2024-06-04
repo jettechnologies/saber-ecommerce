@@ -8,8 +8,8 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { DropdownIcon } from "../icons/svg";
 import Select from "../components/Select";
-import SideNavBar from "../components/SideNavBar";
-import { CircleX, DollarSign, SlidersHorizontal } from "lucide-react";
+// import SideNavBar from "../components/SideNavBar";
+import { DollarSign, SlidersHorizontal } from "lucide-react";
 import ReactSlider from "react-slider";
 import ProductCard from "../components/ProductCard";
 
@@ -94,7 +94,7 @@ function Store() {
 
             {/* exte */}
 
-            <div className="flex border-2 border-black relative">
+            <div className="w-full">
               <div className="flex flex-wrap justify-between gap-4">
                       {
                         [1,2,3,4,5,6,7,8].map(index => (
