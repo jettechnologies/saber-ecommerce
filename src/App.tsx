@@ -10,7 +10,7 @@ import Cart from "./pages/Cart";
 import Success from "./pages/Success";
 import Signin from "./pages/auth/Signin";
 import Signup from "./pages/auth/Signup";
-import OTP from "./pages/auth/Otp";
+import OTP from "./pages/auth/OTP";
 
 //max-w-sm mx-auto md:max-w-screen-lg
 
