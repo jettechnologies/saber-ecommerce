@@ -196,3 +196,27 @@ table {
 .spin-button-none::-webkit-inner-spin-button{
   appearance:none;
 }
+
+.horizontal-slider{
+  height:5px;
+  background-color:#d0d0d0;
+  border-radius:5px;
+}
+
+.price-thumb{
+  width:2rem;
+  aspect-ratio:1/1;
+  border-radius:50%;
+  position:absolute;
+  top:-1rem;
+  left:0;
+  background-color:white;
+  @apply shadow-lg border-2 border-gray outline-blue;
+}
+.price-track{
+  position:relative;
+}
+
+input, a, select{
+  @apply outline-blue;
+}
