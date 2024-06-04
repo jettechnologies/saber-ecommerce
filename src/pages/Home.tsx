@@ -90,9 +90,11 @@ function Home() {
                     <p className="text-base font-meduim">
                         Experience music like never before with our headphones
                     </p>
-                    <Button btnLink = "store" size = "medium" className="capitalize text-white text-lg w-[15rem]">
-                        shopping now
-                    </Button>
+                    <Link to = "/store">
+                      <Button size = "medium" className="capitalize text-white text-lg w-[15rem]">
+                          shopping now
+                      </Button>
+                    </Link>
                 </div>
               </div>
             </Hero>,
@@ -108,9 +110,11 @@ function Home() {
                   <p className="text-base font-meduim">
                       Experience music like never before
                   </p>
-                  <Button btnLink = "store" size = "medium" className="capitalize text-white text-lg w-[15rem]">
-                      shopping now
-                  </Button>
+                  <Link to = "/store">
+                      <Button size = "medium" className="capitalize text-white text-lg w-[15rem]">
+                          shopping now
+                      </Button>
+                    </Link>
                 </div>
               </div>
           </Hero>,

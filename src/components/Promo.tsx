@@ -1,5 +1,6 @@
 import Button from "./Button";
 import promoImage from "../assets/images/promotion-card.png";
+import { Link } from "react-router-dom";
 
 const Promo = () => {
   return (

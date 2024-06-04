@@ -2,8 +2,7 @@ import React,{ useState, useRef, useEffect } from "react";
 import FormContainer from "../../components/FormContainer";
 import { MailOpen } from "lucide-react";
 
-
-const Otp = () => {
+const OTP = () => {
     let currentOTPIndex = 0;
 
     const [otp, setOtp] = useState(new Array(6).fill(""));
@@ -77,4 +76,4 @@ const Otp = () => {
   )
 }
 
-export default Otp;
+export default OTP
