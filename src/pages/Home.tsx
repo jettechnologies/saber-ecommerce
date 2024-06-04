@@ -196,10 +196,10 @@ function Home() {
           {/* Best sellers */}
           <div className="mt-14">
             <Section title="best sellers" link="store">
-                <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 border-black border-2 z-10">
+                <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 z-10">
                     {
                       [1,2,3,4,5,6,7,8].map((index) =>(
-                        <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[25rem] border-2 border-black" key = {index}>
+                        <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[25rem]" key = {index}>
                           <ProductCard tag = "hot"/>
                         </div>
                       ))

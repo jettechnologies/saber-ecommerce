@@ -18,7 +18,7 @@ const Signin = () => {
                     <input className="pl-2 w-full outline-none border-none" type="password" name="password" id="password" placeholder="Password" />
                 </div>
                 <div className="w-full">
-                    <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-xl uppercase font-semibold bg-black text-white hover:text-text-black hover:bg-white hover:border-2 hover:border-black ">
+                    <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white hover:text-text-black hover:bg-white hover:border-2 hover:border-black ">
                         login
                     </button>
                 </div>

@@ -5,7 +5,7 @@ const Promo = () => {
   return (
     <div className="w-full h-full">
         <div className="flex flex-col md:flex-row">
-            <div className="flex-1 h-full bg-[#A8A8A8]">
+            <div className="flex-1 bg-[#A8A8A8]">
                 <img src={promoImage} alt="promo image" className="w-full h-full object-cover"/>
             </div>
             <div className="flex-1 bg-[#ffdd99]">
