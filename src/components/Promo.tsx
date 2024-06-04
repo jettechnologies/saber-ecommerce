@@ -64,9 +64,11 @@ const Promo = () => {
                 </div>
               </div>
             </div>
-            <Button type = "black" size = "medium" btnLink="store" className="mt-4 text-base">
-                Shop now
-            </Button>
+            <Link to = "/store">
+              <Button type = "black" size = "medium" className="mt-4 text-base">
+                  Shop now
+              </Button>
+            </Link>
         </div>
         </div>
         </div>
