@@ -56,7 +56,7 @@ const Otp = () => {
                         ref={activeOTPIndex === index ? inputRef : null}
                         type="number"
                         className={
-                            "w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-gray-400 focus:border-gray-700 focus:text-gray-700 text-gray-400 transition"
+                            "w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-black text-gray-400 transition"
                         }
                         onChange={handleOnChange}
                         onKeyDown={(e) => handleOnKeyDown(e, index)}
