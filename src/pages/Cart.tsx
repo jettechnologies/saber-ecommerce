@@ -7,18 +7,18 @@ const Cart = () => {
 
   const uniqueItemsIds = new Set();
 
-  if (cartItems.length === 0) {return (<div className=" flex flex-col items-center justify-center text-center w-auto min-h-screen">
+  if (cartItems.length === 0) {return (<div className=" flex flex-col items-center justify-center text-center w-auto h-[--hero-height]">
     <h1 className="text-3xl font-semibold">It seems like your cart it's empty, let's change that!</h1>
     <Link
-          to="/store"
-          className="w-[50%]  mt-6 bg-main flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
-        >
+      to="/store"
+      className="w-[50%]  mt-6 bg-black flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
+    >
           Shop
         </Link>
   </div>)}
 
   return (
-    <div className="flex flex-col gap-6 mt-10 min-h-screen">
+    <div className="flex flex-col gap-6 mt-10 min-h-[--hero-height]">
       {cartItems.map((item) => {
         if (!uniqueItemsIds.has(item.id)) {
           uniqueItemsIds.add(item.id);
