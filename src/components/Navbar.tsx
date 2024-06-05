@@ -61,8 +61,7 @@ export default function Navbar() {
             to={"/cart"}
             className={` ${
               currentUrl.includes("cart")
-                ? "bg-icon text-white"
-                : "bg-gray-200 text-secondary"
+                && "bg-gray"
             } p-2 rounded-lg`}
           >
             <CartIcon className="w-5 h-5 text-white"/>
@@ -70,9 +69,8 @@ export default function Navbar() {
           <Link
             to={"/auth/login"}
             className={` ${
-              currentUrl.includes("cart")
-                ? "text-white"
-                : "bg-gray-200 text-secondary"
+              currentUrl.includes("/auth/login")
+                && "bg-gray"
             } p-2 rounded-lg`}
           >
             <UserIcon className="w-5 h-5 "/>

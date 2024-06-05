@@ -57,8 +57,9 @@ function Home() {
         <Carrousel
           hasDots = {true}
           hasArrows = {true}
+          autoPlayInterval={3500}
           content={[
-            <Hero className=" bg-[#ffc95c] px-12">
+            <Hero className=" bg-[#ffc95c] px-12 z-20">
               <div className="flex-1 lg:w-[50%] h-[50%] lg:h-full order-2 lg:order-1">
                 <img src={heroImg} alt="Hero image" className="w-full h-full object-contain"/>
               </div>

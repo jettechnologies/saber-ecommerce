@@ -36,7 +36,7 @@ const OTP = () => {
     console.log(activeOTPIndex);
 
   return (
-    <>
+    <div className="w-full">
         <FormContainer>
             <form className="bg-white rounded-md shadow-2xl p-5 mt-6">
                 <div className="flex flex-col gap-y-4 items-center justify-center mb-8">
@@ -55,7 +55,7 @@ const OTP = () => {
                         ref={activeOTPIndex === index ? inputRef : null}
                         type="number"
                         className={
-                            "w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-[#d0d0d0] text-gray-400 transition"
+                            "w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-[#d0d0d0] focus-within:border-blue text-gray-400 transition"
                         }
                         onChange={handleOnChange}
                         onKeyDown={(e) => handleOnKeyDown(e, index)}
@@ -72,7 +72,7 @@ const OTP = () => {
                 </div>
             </form>
         </FormContainer>
-    </>
+    </div>
   )
 }
 

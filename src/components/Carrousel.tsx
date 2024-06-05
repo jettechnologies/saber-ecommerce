@@ -72,7 +72,7 @@ const Carrousel: React.FC<CarrouselProps> =
       {content?.map((slide, index) => (
         <div
           key={index}
-          className={`absolute h-full w-full transition-opacity duration-300 z-0 bg-black ${
+          className={`absolute h-full w-full transition-opacity duration-300 ${
             index === currentSlide ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -80,47 +80,46 @@ const Carrousel: React.FC<CarrouselProps> =
         </div>
       ))}
 
-      <div className="relative h-full inset-0 bg-green-800 z-20">{content[currentSlide]}</div>
+    <div className="relative h-full inset-0 z-[-1]">{content[currentSlide]}</div>
 
-      {hasArrows && <div className="w-full absolute left-0 bottom-0 top-0 flex justify-between">
-        <div className="flex items-center justify-start">
-          <button className="overflow-hidden" onClick={previousSlide}>
-            <img
-              className="transition-transform hover:scale-150"
-              src={arrowLeft}
-              alt="previous"
-            />
-          </button>
-        </div>
-
-        <div className="flex items-center justify-end">
-          <button className="overflow-hidden" onClick={nextSlide}>
-            <img
-              className="overflow-hidden transition-transform hover:scale-150"
-              src={arrowRight}
-              alt="next"
-            />
-          </button>
-        </div>
-      </div>}
-
-      {hasDots &&<div className="absolute bottom-4 flex justify-center items-center w-full rounded-full">
-        <div className="h-2 flex rounded-full bg-gray-400 overflow-hidden">
-          {content?.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                // setCurrentSlide(index);
-                goToSlide(index)
-              }}
-              className={`h-full w-10 ${
-                index === currentSlide ? "bg-white" : ""
-              }`}
-            ></button>
-          ))}
-        </div>
-      </div>}
+    {hasArrows && <><div className="absolute left-0 bottom-0 top-0 flex items-center justify-start">
+      <button className="overflow-hidden" onClick={previousSlide}>
+        <img
+          className="transition-transform hover:scale-150"
+          src={arrowLeft}
+          alt="previous"
+        />
+      </button>
     </div>
+
+    <div className="absolute right-0 top-0 bottom-0 flex items-center justify-end">
+      <button className="overflow-hidden" onClick={nextSlide}>
+        <img
+          className="overflow-hidden transition-transform hover:scale-150"
+          src={arrowRight}
+          alt="next"
+        />
+      </button>
+    </div></>}
+
+    {hasDots && <div className="absolute bottom-4 flex justify-center items-center w-full rounded-full">
+      <div className="h-2 flex rounded-full bg-gray-400 overflow-hidden">
+        {content?.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              setCurrentSlide(index);
+              goToSlide(index)
+            }}
+            className={`h-full w-10 ${
+              index === currentSlide ? "bg-white" : ""
+            }`}
+          ></button>
+        ))}
+      </div>
+    </div>}
+  </div>
+
   );
 };
 

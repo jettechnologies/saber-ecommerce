@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { User, Mail, LockKeyhole } from "lucide-react";
 import { useEffect, useState } from "react";
 import Notification from "../../components/Notification";
+// import Button from "../../components/Button";
+import { Link } from "react-router-dom";
+import { ArrowLeftIcon } from "../../icons/svg";
 
 interface StateObj{
  str: string;
@@ -107,10 +110,11 @@ console.log(user)
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Sign up</h1>
                 <p className="text-md font-normal text-blue mb-8">Create a new account</p>
                 {error.status && <Notification message = {error.msg} type = "danger"/>}
-                <div className="flex items-center border-2 mb-8 p-3 rounded-md">
+                <div className="flex items-center border-2 border-gray focus-within:border-blue mb-8 p-3 rounded-md">
                     <User size = {20}/>
                     <input 
-                        id="name" className=" pl-2 w-full outline-none border-none" 
+                        id="name" 
+                        className=" pl-2 w-full outline-none border-none" 
                         type="text" 
                         name="name" 
                         placeholder="Full name" 
@@ -118,7 +122,7 @@ console.log(user)
                     />
                     {user.name.error && <p className="text-red-500 text-size-400 font-normal">Full name shouldn't be empty and should be a aplhabet</p>}
                 </div>
-                <div className="flex items-center border-2 mb-8 p-3 rounded-md">
+                <div className="flex items-center border-2 border-gray focus-within:border-blue mb-8 p-3 rounded-md">
                     <Mail size = {20}/>
                     <input 
                         id="email" 
@@ -130,7 +134,7 @@ console.log(user)
                     />
                     {user.email.error && <p className="text-red-500 text-size-400 font-normal">Email shouldn't be empty and should be a aplhabet</p>}
                 </div>
-                <div className="flex items-center border-2 mb-8 p-3 rounded-md">
+                <div className="flex items-center border-2 border-gray focus-within:border-blue mb-8 p-3 rounded-md">
                     <LockKeyhole size = {20}/>
                     <input 
                         className="pl-2 w-full outline-none border-none" 
@@ -142,7 +146,7 @@ console.log(user)
                     />
                     {user.password.error && <p className="text-red-500 text-size-400 font-normal">Password shouldn't be empty and should be within 8 to 15 characters</p>}
                 </div>
-                <div className="flex items-center border-2 mb-8 p-3 rounded-md">
+                <div className="flex items-center border-2 border-gray focus-within:border-blue mb-8 p-3 rounded-md">
                     <LockKeyhole size = {20}/>
                     <input 
                         className="pl-2 w-full outline-none border-none" 
@@ -153,10 +157,14 @@ console.log(user)
                         onChange={handleInputChange}
                     />
                 </div>
-                <div className="w-full">
+                <div className="w-full h-fit flex flex-col gap-y-3">
                     <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
                         Create account
                     </button>
+                    <Link to = "/" className="p-3 w-full hover:-translate-y-1 duration-500 transition-all text-blue text-size-500 font-medium capitalize flex gap-3 justify-center items-center">
+                        <ArrowLeftIcon className="w-5 h-5 text-blue" />
+                        back home
+                    </Link>
                 </div>
                 
             </form>

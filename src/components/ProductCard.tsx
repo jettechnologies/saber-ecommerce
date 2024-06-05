@@ -1,6 +1,7 @@
 import headphoneImg from "../assets/images/headsets.png";
 import { StarIcon } from "../icons/svg";
 import { Heart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Props{
     tag?: string;
@@ -16,7 +17,9 @@ const ProductCard:React.FC<Props> = ({tag}) => {
                             <p>{tag}</p>
                     </div>}
                     <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm wishlist-icon cursor-pointer">
-                        <Heart size = {20}/>
+                        <Link to = "/auth/login">
+                            <Heart size = {20}/>
+                        </Link>
                     </div>
                 </div>
                 <img src={headphoneImg} alt="product image" className="w-[60%] aspect-square object-contain"/>

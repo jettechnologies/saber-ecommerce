@@ -7,7 +7,7 @@ const Cart = () => {
 
   const uniqueItemsIds = new Set();
 
-  if (cartItems.length === 0) {return (<div className=" flex flex-col items-center justify-center text-center w-auto">
+  if (cartItems.length === 0) {return (<div className=" flex flex-col items-center justify-center text-center w-auto min-h-screen">
     <h1 className="text-3xl font-semibold">It seems like your cart it's empty, let's change that!</h1>
     <Link
           to="/store"
