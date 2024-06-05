@@ -30,7 +30,7 @@ const Signin = () => {
                     </button>
                 </div>
                 <div className="flex w-full justify-center gap-3 accent-blue mt-4">
-                    <Link to = "/auth/signup" className="text-sm ml-2 text-blue cursor-pointer hover:-translate-y-1 duration-500 transition-all">Don't have an account yet? Login</Link>
+                    <Link to = "/auth/signup" className="text-sm ml-2 text-blue cursor-pointer hover:-translate-y-1 duration-500 transition-all">Don't have an account yet? Signup</Link>
                 </div>
                 
             </form>
