@@ -1,6 +1,6 @@
 import FormContainer from "../../components/FormContainer";
 import { useNavigate } from "react-router-dom";
-import { User, Mail, LockKeyhole } from "lucide-react";
+import { User, Mail, Info, LockKeyhole } from "lucide-react";
 import { useEffect, useState } from "react";
 import Notification from "../../components/Notification";
 // import Button from "../../components/Button";
@@ -121,6 +121,7 @@ console.log(user)
                             placeholder="Name" 
                             onChange={handleInputChange}
                         />
+                        {user.name.error && <Info size={20} color=" rgb(239 68 68)" />}
                     </div>
                     {user.name.error && <p className="text-red-500 text-size-400 font-normal m-2">Fullname should be alphabets only </p>}
                 </div>
@@ -135,6 +136,7 @@ console.log(user)
                             placeholder="Email" 
                             onChange={handleInputChange}
                         />
+                        {user.email.error && <Info size={20} color=" rgb(239 68 68)" />}
                     </div>
                     {user.email.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>
@@ -149,6 +151,7 @@ console.log(user)
                             placeholder="Password" 
                             onChange={handleInputChange}
                         />
+                        {user.password.error && <Info size={20} color=" rgb(239 68 68)" />}
                     </div>
                     {user.password.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>
@@ -163,6 +166,7 @@ console.log(user)
                             placeholder="Confirm Password" 
                             onChange={handleInputChange}
                         />
+                        {user.confirmPassword.error && <Info size={20} color=" rgb(239 68 68)" />}
                     </div>
                     {user.confirmPassword.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>

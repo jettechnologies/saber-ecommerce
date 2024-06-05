@@ -95,7 +95,7 @@ const Signin = () => {
                 {error.status && <Notification message = {error.msg} type = "danger"/>}
                 <div>
                     <div className={`flex items-center ${user.email.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
-                        <LockKeyhole size = {20}/>
+                        <Mail size = {20}/>
                         <input 
                             className="pl-2 w-full outline-none border-none" 
                             type="text" 
@@ -104,6 +104,7 @@ const Signin = () => {
                             placeholder="Email" 
                             onChange={handleInputChange}
                         />
+                        {user.email.error && <Info size={20} color=" rgb(239 68 68)" />}
                     </div>
                     {user.email.error && <p className="text-red-500 text-size-400 font-normal m-2">Enter a correct email format</p>}
                 </div>
@@ -118,6 +119,7 @@ const Signin = () => {
                             placeholder="Password" 
                             onChange={handleInputChange}
                         />
+                        {user.password.error && <Info size={20} color=" rgb(239 68 68)" />}
                     </div>
                     {user.password.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>
