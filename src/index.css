@@ -220,3 +220,7 @@ table {
 input, a, select{
   @apply outline-blue;
 }
+
+.user-icon:hover .user-sub-nav {
+  display:block;
+}

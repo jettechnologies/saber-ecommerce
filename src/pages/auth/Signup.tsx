@@ -16,7 +16,7 @@ interface User{
  name:StateObj;
  email: StateObj;
  password: StateObj;
- confirmPassword: {str:string};
+ confirmPassword: {str:string, error: boolean};
 }
 
 interface Error{
@@ -32,7 +32,7 @@ const Signup = () => {
         name: {str: "", error: false},
         email: {str: "", error: false},
         password: {str: "", error: false},
-        confirmPassword: {str: ""}
+        confirmPassword: {str: "", error: false}
     });
     const [error, setError] = useState<Error>({
         status: false,
@@ -110,52 +110,61 @@ console.log(user)
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Sign up</h1>
                 <p className="text-md font-normal text-blue mb-8">Create a new account</p>
                 {error.status && <Notification message = {error.msg} type = "danger"/>}
-                <div className="flex items-center border-2 border-gray focus-within:border-blue mb-8 p-3 rounded-md">
-                    <User size = {20}/>
-                    <input 
-                        id="name" 
-                        className=" pl-2 w-full outline-none border-none" 
-                        type="text" 
-                        name="name" 
-                        placeholder="Full name" 
-                        onChange={handleInputChange}
-                    />
-                    {user.name.error && <p className="text-red-500 text-size-400 font-normal">Full name shouldn't be empty and should be a aplhabet</p>}
+                <div>
+                    <div className={`flex items-center ${user.name.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
+                        <User size = {20}/>
+                        <input 
+                            className="pl-2 w-full outline-none border-none" 
+                            type="text" 
+                            name="name" 
+                            id="name" 
+                            placeholder="Name" 
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    {user.name.error && <p className="text-red-500 text-size-400 font-normal m-2">Fullname should be alphabets only </p>}
                 </div>
-                <div className="flex items-center border-2 border-gray focus-within:border-blue mb-8 p-3 rounded-md">
-                    <Mail size = {20}/>
-                    <input 
-                        id="email" 
-                        className=" pl-2 w-full outline-none border-none" 
-                        type="email" 
-                        name="email" 
-                        placeholder="Email Address" 
-                        onChange={handleInputChange}
-                    />
-                    {user.email.error && <p className="text-red-500 text-size-400 font-normal">Email shouldn't be empty and should be a aplhabet</p>}
+                <div>
+                    <div className={`flex items-center ${user.email.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
+                        <Mail size = {20}/>
+                        <input 
+                            className="pl-2 w-full outline-none border-none" 
+                            type="text" 
+                            name="email" 
+                            id="email" 
+                            placeholder="Email" 
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    {user.email.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>
-                <div className="flex items-center border-2 border-gray focus-within:border-blue mb-8 p-3 rounded-md">
-                    <LockKeyhole size = {20}/>
-                    <input 
-                        className="pl-2 w-full outline-none border-none" 
-                        type="password" 
-                        name="password" 
-                        id="password" 
-                        placeholder="Password" 
-                        onChange={handleInputChange}
-                    />
-                    {user.password.error && <p className="text-red-500 text-size-400 font-normal">Password shouldn't be empty and should be within 8 to 15 characters</p>}
+                <div>
+                    <div className={`flex items-center ${user.password.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
+                        <LockKeyhole size = {20}/>
+                        <input 
+                            className="pl-2 w-full outline-none border-none" 
+                            type="password" 
+                            name="password" 
+                            id="password" 
+                            placeholder="Password" 
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    {user.password.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>
-                <div className="flex items-center border-2 border-gray focus-within:border-blue mb-8 p-3 rounded-md">
-                    <LockKeyhole size = {20}/>
-                    <input 
-                        className="pl-2 w-full outline-none border-none" 
-                        type="password" 
-                        name="confirmPassword" 
-                        id="confirmPassword" 
-                        placeholder="Confirm password" 
-                        onChange={handleInputChange}
-                    />
+                <div>
+                    <div className={`flex items-center ${user.confirmPassword.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
+                        <LockKeyhole size = {20}/>
+                        <input 
+                            className="pl-2 w-full outline-none border-none" 
+                            type="password" 
+                            name="confirmPassword" 
+                            id="password" 
+                            placeholder="Confirm Password" 
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    {user.confirmPassword.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>
                 <div className="w-full h-fit flex flex-col gap-y-3">
                     <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">

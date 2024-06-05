@@ -14,6 +14,7 @@ import TestimonialCard from "../components/TestimonialCard";
 import testimonyOne from "../assets/images/testimonial/testimonial1.webp";
 import testimonyTwo from "../assets/images/testimonial/testimonial2.webp";
 import testimonyThree from "../assets/images/testimonial/testimonial3.webp";
+import ProductSlider from "../components/ProductSlider";
 // import ProductSlider from "../components/ProductSlider";
 // import { useRef } from 'react';
 
@@ -122,20 +123,22 @@ function Home() {
 
           ]}
         />
+
       </header>
 
       {/* Content section */}
       <section className="mx-4 mt-10 lg:mx-14 min-h-screen">
         {/* Highlighted categories */}
-        {/* <div className="w-full h-[20rem] border-2 border-black flex overflow-hidden">
-          <div className="w-[30rem] h-full border-2 border-black"></div>
-          <div className="w-[30rem] h-full border-2 border-black"></div>
-          <div className="w-[30rem] h-full border-2 border-black"></div>
-          <div className="w-[30rem] h-full border-2 border-black"></div>
-          <div className="w-[30rem] h-full border-2 border-black"></div>
-          <div className="w-[30rem] h-full border-2 border-black"></div>
-          <div className="w-[30rem] h-full border-2 border-black"></div>
-        </div> */}
+        <Section title="new arrivals" link="/store">
+          <ProductSlider 
+            autoPlay = {false}
+            contents={[1,2,3,4,5,6,7,8].map((index) =>(
+              <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {index}>
+                <ProductCard tag = "hot"/>
+              </div>
+            ))} 
+          />
+        </Section>
 
         {/* Shop catergories */}
         <div className="mt-14">
@@ -206,7 +209,7 @@ function Home() {
                 <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 z-10">
                     {
                       [1,2,3,4,5,6,7,8].map((index) =>(
-                        <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[25rem]" key = {index}>
+                        <div className="w-[45vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {index}>
                           <ProductCard tag = "hot"/>
                         </div>
                       ))

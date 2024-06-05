@@ -1,21 +1,125 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormContainer from "../../components/FormContainer";
-import { Mail, LockKeyhole } from "lucide-react";
+import { Mail, LockKeyhole, Info } from "lucide-react";
+import { useState, useEffect } from "react";
+import Notification from "../../components/Notification";
+
+interface User{
+    email: {
+        str: string,
+        error: boolean
+    },
+    password: {
+        str: string,
+        error: boolean  
+    }
+}
 
 const Signin = () => {
+
+    const navigate = useNavigate();
+
+    const [user, setUser] = useState<User>({
+        email: {
+            str: "",
+            error: false,
+        },
+        password: {
+            str: "",
+            error: false,
+        }
+    });
+
+    const [error, setError] = useState<{msg:string; status:boolean}>({
+        msg: "",
+        status: false,
+    });
+
+    const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
+        const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+        const { name, value } = target;
+
+        setUser({ ...user, [name]: {str: value.toLocaleLowerCase(), error: false} });
+    }
+
+    const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();
+        
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/i;
+
+        const { email, password } = user;
+
+        if(email.str === "" || password.str === "" ){
+            setError({status: true, msg: "All fields are required!"});
+            return
+        }
+
+        if(!emailRegex.test(email.str)){
+            setUser({ ...user, email: { ...email, error: true } });
+            return;
+        }
+        else if(!passwordRegex.test(password.str)){
+            setUser({ ...user, password: { ...password, error: true } });
+            return;
+        }
+
+        const data = {
+            email: email.str,
+            password: password.str,
+        }
+
+        console.log(data);
+
+        navigate("/", { replace: true });
+    }
+
+    useEffect(() =>{
+        let errorRemoval: ReturnType<typeof setTimeout>;
+    
+        if(error){
+           errorRemoval =  setTimeout(() =>{
+                setError({status: false, msg: ""});
+            }, 2000)
+        }
+    
+        return() => clearTimeout(errorRemoval)
+    }, [error]);
+
   return (
     <>
         <FormContainer>
-            <form className="bg-white rounded-md shadow-2xl p-5">
+            <form className="bg-white rounded-md shadow-2xl p-5" onSubmit={handleFormSubmit}>
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Hello Again!</h1>
                 <p className="text-md font-normal text-blue mb-8">Welcome Back</p>
-                <div className="flex items-center border-2 border-gray focus-within:border-blue mb-8 py-3 px-3 rounded-md">
-                    <Mail size = {20}/>
-                    <input id="email" className=" pl-2 w-full outline-none border-none" type="email" name="email" placeholder="Email Address" />
+                {error.status && <Notification message = {error.msg} type = "danger"/>}
+                <div>
+                    <div className={`flex items-center ${user.email.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
+                        <LockKeyhole size = {20}/>
+                        <input 
+                            className="pl-2 w-full outline-none border-none" 
+                            type="text" 
+                            name="email" 
+                            id="email" 
+                            placeholder="Email" 
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    {user.email.error && <p className="text-red-500 text-size-400 font-normal m-2">Enter a correct email format</p>}
                 </div>
-                <div className="flex items-center border-2 border-gray focus-within:border-blue mb-3 py-3 px-3 rounded-md">
-                    <LockKeyhole size = {20}/>
-                    <input className="pl-2 w-full outline-none border-none" type="password" name="password" id="password" placeholder="Password" />
+                <div>
+                    <div className={`flex items-center ${user.password.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
+                        <LockKeyhole size = {20}/>
+                        <input 
+                            className="pl-2 w-full outline-none border-none" 
+                            type="password" 
+                            name="password" 
+                            id="password" 
+                            placeholder="Password" 
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    {user.password.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>
                 <div className="flex w-full h-fit p-2 mb-3 justify-between">
                     <div className="flex gap-2">
