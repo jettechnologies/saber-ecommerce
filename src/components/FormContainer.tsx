@@ -1,7 +1,7 @@
 import Carrousel from "./Carrousel";
-import heroImg from "../assets/images/hero.png";
-import headphoneImg from "../assets/images/headsets.png";
-import earpodImg from "../assets/images/earpods.webp";
+import heroImg from "@/assets/images/hero.png";
+import headphoneImg from "@/assets/images/headsets.png";
+import earpodImg from "@/assets/images/earpods.webp";
 
 interface Props{
     children:React.ReactNode;

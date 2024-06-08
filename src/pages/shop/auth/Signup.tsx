@@ -1,11 +1,11 @@
-import FormContainer from "../../components/FormContainer";
+import FormContainer from "@/components/FormContainer";
 import { useNavigate } from "react-router-dom";
 import { User, Mail, Info, LockKeyhole } from "lucide-react";
 import { useEffect, useState } from "react";
-import Notification from "../../components/Notification";
+import Notification from "@/components/Notification";
 // import Button from "../../components/Button";
 import { Link } from "react-router-dom";
-import { ArrowLeftIcon } from "../../icons/svg";
+import { ArrowLeftIcon } from "@/icons/svg";
 
 interface StateObj{
  str: string;

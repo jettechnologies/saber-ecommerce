@@ -1,5 +1,5 @@
 import React,{ useState, useRef, useEffect } from "react";
-import FormContainer from "../../components/FormContainer";
+import FormContainer from "@/components/FormContainer";
 import { MailOpen } from "lucide-react";
 
 const OTP = () => {

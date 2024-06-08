@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import FormContainer from "../../components/FormContainer";
+import FormContainer from "@/components/FormContainer";
 import { Mail, LockKeyhole, Info } from "lucide-react";
 import { useState, useEffect } from "react";
-import Notification from "../../components/Notification";
+import Notification from "@/components/Notification";
 
 interface User{
     email: {

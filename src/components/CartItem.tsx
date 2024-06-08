@@ -1,4 +1,4 @@
-import { useCartContext } from "../context/cartContext";
+import { useCartContext } from "@/context/cartContext";
 import { ProductType } from "../types";
 
 type CartItemProps = {

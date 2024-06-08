@@ -1,5 +1,5 @@
-import Categories from "../components/Categories";
-import filterIcon from "../assets/icons/filter.svg";
+import Categories from "@/components/Categories";
+import filterIcon from "@/assets/icons/filter.svg";
 
 const Filters = () => {
   return (

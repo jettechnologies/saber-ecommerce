@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCategories } from "../hooks/useCategories";
+import { useCategories } from "@/hooks/useCategories";
 import { Link } from "react-router-dom";
 
 const Categories = () => {
@@ -7,7 +7,7 @@ const Categories = () => {
 
   useEffect(() => {
     getCategories();
-  }, []);
+  }, [getCategories]);
 
   if (error) {
     return <div>{error}</div>;

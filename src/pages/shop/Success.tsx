@@ -1,4 +1,4 @@
-import thankYou from "../assets/images/thank-you.webp";
+import thankYou from "@/images/thank-you.webp";
 
 const Success = () => {
   return (

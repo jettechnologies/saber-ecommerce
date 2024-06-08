@@ -1,5 +1,5 @@
-import { ProductType } from "../types";
-import { useCartContext } from "../context/cartContext";
+import { ProductType } from "@/types";
+import { useCartContext } from "@/context/cartContext";
 import { useEffect, useState } from "react";
 
 function AddToCartBtn({
@@ -24,7 +24,7 @@ function AddToCartBtn({
   useEffect(() => {
     const itemInCart = cartItems.some((item) => item.id === product.id);
     setIsInCart(itemInCart);
-  },[cartItems])
+  },[cartItems, product.id])
 
   return (
     <button

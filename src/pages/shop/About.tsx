@@ -1,8 +1,8 @@
-import TestimonialCard from "../components/TestimonialCard";
-import testimonial1 from "../assets/images/testimonial/testimonial1.webp";
-import testimonial2 from "../assets/images/testimonial/testimonial2.webp";
-import testimonial3 from "../assets/images/testimonial/testimonial3.webp";
-import working from "../assets/images/heroImageWorking.webp";
+import TestimonialCard from "@/components/TestimonialCard";
+import testimonial1 from "@/assets/images/testimonial/testimonial1.webp";
+import testimonial2 from "@/assets/images/testimonial/testimonial2.webp";
+import testimonial3 from "@/assets/images/testimonial/testimonial3.webp";
+import working from "@/assets/images/heroImageWorking.webp";
 
 const AboutUs = () => {
   return (

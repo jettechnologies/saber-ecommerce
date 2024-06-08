@@ -1,16 +1,16 @@
 import { useParams } from "react-router";
-import { useProductDetail } from "../hooks/useProductDetail";
+import { useProductDetail } from "@/hooks/useProductDetail";
 import { useEffect } from "react";
-import Spinner from "../components/Spinner";
-import ImageCarousel from "../components/ImageCarousell";
-import Icon from "../components/Icon";
-import creditCard from "../assets/icons/creditCard.svg";
-import star from "../assets/icons/star.svg";
-import truck from "../assets/icons/truck.svg";
-import repeat from "../assets/icons/repeat.svg";
-import AddToCartBtn from "../components/addToCartBtn";
-import Section from "../components/Section";
-import Recommended from "../components/Recommended";
+import Spinner from "@/components/Spinner";
+import ImageCarousel from "@/components/ImageCarousell";
+import Icon from "@/components/Icon";
+import creditCard from "@/assets/icons/creditCard.svg";
+import star from "@/assets/icons/star.svg";
+import truck from "@/assets/icons/truck.svg";
+import repeat from "@/assets/icons/repeat.svg";
+import AddToCartBtn from "@/components/addToCartBtn";
+import Section from "@/components/Section";
+import Recommended from "@/components/Recommended";
 import { Link } from "react-router-dom";
 
 function Detail() {

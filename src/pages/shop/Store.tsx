@@ -1,17 +1,17 @@
 // import ProductList from "../components/ProductList";
 // import Filters from "../components/Filters";
-import Modal from "../components/Modal";
+import Modal from "@/components/Modal";
 // import { useParams } from "react-router";
 // import { useNavigate } from "react-router-dom";
 // import filterIcon from "../assets/icons/filter.svg";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { DropdownIcon } from "../icons/svg";
-import Select from "../components/Select";
+import { DropdownIcon } from "../../icons/svg";
+import Select from "@/components/Select";
 // import SideNavBar from "../components/SideNavBar";
 import { DollarSign, SlidersHorizontal } from "lucide-react";
 import ReactSlider from "react-slider";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "@/components/ProductCard";
 
 function Store() {
   // const { search, category = "all" } = useParams<{

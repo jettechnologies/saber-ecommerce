@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import arrowLeft from "../assets/icons/arrowLeft.svg";
-import arrowRight from "../assets/icons/arrowRight.svg";
+import arrowLeft from "@/assets/icons/arrowLeft.svg";
+import arrowRight from "@/assets/icons/arrowRight.svg";
 import { twMerge } from "tailwind-merge";
 
 type CarrouselProps = {

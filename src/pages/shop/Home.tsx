@@ -1,22 +1,20 @@
-import Hero from "../components/Hero";
-import Section from "../components/Section";
-import Carrousel from "../components/Carrousel";
-import heroImg from "../assets/images/hero.png";
-import headphoneImg from "../assets/images/headsets.png";
-import earpodImg from "../assets/images/earpods.webp";
-import Button from "../components/Button";
+import Hero from "@/components/Hero";
+import Section from "@/components/Section";
+import Carrousel from "@/components/Carrousel";
+import heroImg from "@/assets/images/hero.png";
+import headphoneImg from "@/assets/images/headsets.png";
+import earpodImg from "@/assets/images/earpods.webp";
+import Button from "@/components/Button";
 import { Link } from "react-router-dom";
-// import { ArrowRightIcon } from "../icons/svg";
 import { ArrowRightIcon, Truck, Banknote, LockKeyhole,Phone } from "lucide-react";
-import ProductCard from "../components/ProductCard";
-import Promo from "../components/Promo";
-import TestimonialCard from "../components/TestimonialCard";
-import testimonyOne from "../assets/images/testimonial/testimonial1.webp";
-import testimonyTwo from "../assets/images/testimonial/testimonial2.webp";
-import testimonyThree from "../assets/images/testimonial/testimonial3.webp";
-import ProductSlider from "../components/ProductSlider";
-// import ProductSlider from "../components/ProductSlider";
-// import { useRef } from 'react';
+import ProductCard from "@/components/ProductCard";
+import Promo from "@/components/Promo";
+import TestimonialCard from "@/components/TestimonialCard";
+import testimonyOne from "@/assets/images/testimonial/testimonial1.webp";
+import testimonyTwo from "@/assets/images/testimonial/testimonial2.webp";
+import testimonyThree from "@/assets/images/testimonial/testimonial3.webp";
+import ProductSlider from "@/components/ProductSlider";
+
 
 interface Testimonies{
   id:number;
