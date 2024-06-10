@@ -3,21 +3,21 @@ import { ProductType } from "@/types";
 
 const Product = ({ product }: { product: ProductType }) => {
   return (
-    <Link to={`/product/${product.id}`}>
+    <Link to={`/product/${product.product_id}`}>
       <div
-        key={product.id}
+        key={product.product_id}
         className="mx-auto max-w-md min-w-full flex mb-10  flex-col gap-2 "
       >
         <img
           className="h-full w-full object-cover object-center border-[1px] rounded-md"
           src={product.image[0]}
-          alt={`product image of ${product.title}`}
+          alt={`product image of ${product.name}`}
         />
 
         <div className="flex flex-col md:flex-row justify-between gap-1">
           <div className="flex flex-col overflow-hidden">
             <h2 className="font-semibold  text-gray-900 line-clamp-1 text-sm lg:text-base">
-              {product.title}
+              {product.name}
             </h2>
             <p className="text-gray-600 font-semibold line-clamp-1 text-xs lg:text-sm">
               {product.category.charAt(0).toUpperCase() +

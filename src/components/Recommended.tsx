@@ -1,5 +1,5 @@
 import { useProducts } from "../hooks/useProducts";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { ProductType } from "../types";
 import Product from "./Product";
 
@@ -12,18 +12,18 @@ const Recommended = ({ product }: RecommendedProps) => {
 
   const shortproduct = products
     .filter((p) => {
-      return p.id !== Number(product?.id);
+      return p.product_id !== Number(product?.product_id);
     })
     .slice(0, 4);
 
-  useEffect(() => {
-    getProducts(1, "", product?.category);
-  }, [product]);
+  // useEffect(() => {
+  //   getProducts(1, "", product?.category);
+  // }, [product]);
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {shortproduct.map((item) => (
-        <Product product={item} key={item.id} />
+        <Product product={item} key={item.product_id} />
       ))}
     </div>
   );
