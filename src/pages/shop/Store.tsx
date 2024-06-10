@@ -14,6 +14,7 @@ import ReactSlider from "react-slider";
 import ProductCard from "@/components/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
 import Spinner from "@/components/Spinner";
+import Button from "@/components/Button";
 
 function Store() {
   const { search } = useParams<{
@@ -53,23 +54,25 @@ function Store() {
     </div>;
   }
 
-  if (!products || error) {
-    return (
-      <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24">
-        <h1>
-          The product you tried to reach does not exist, please search another
-          one.
-        </h1>
+  console.log(products)
 
-        <Link
-          to="/store"
-          className="w-full lg:w-[50%] mt-6 bg-main flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
-        >
-          <button className="flex items-center gap-2">Shop</button>
-        </Link>
-      </div>
-    );
-  }
+  // if (products.length === 0 || error) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-screen">
+  //       <h1>
+  //         The product you tried to reach does not exist, please search another
+  //         one.
+  //       </h1>
+
+  //       <Link
+  //         to="/store"
+  //         className="w-full lg:w-[50%] mt-6 flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
+  //       >
+  //         <Button size = "large" className="text-size-500 w-full h-full">Shop</Button>
+  //       </Link>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
@@ -125,7 +128,7 @@ function Store() {
             {/* exte */}
 
             <div className="w-full">
-              <div className="flex flex-wrap justify-between gap-4">
+              {products.length > 0 ? <div className="flex flex-wrap justify-between gap-4">
                       {
                         products.map(product => (
                           <div className="w-full md:w-[44.5vw] lg:w-[22.5vw] h-[23rem] z-20" key={product.product_id}>
@@ -134,6 +137,20 @@ function Store() {
                         ))
                       }
                     </div>
+                  : (products.length === 0 || error) &&
+                  <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-full">
+                    <h1>
+                      The product you tried to reach does not exist, please search another
+                      one.
+                    </h1>
+                    <Link
+                      to="/store"
+                      className="w-full lg:w-[50%] mt-6 flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
+                    >
+                      <Button size = "large" className="text-size-500 w-full h-full">Shop</Button>
+                    </Link>
+                </div>
+                }
             </div>
         </div>
 

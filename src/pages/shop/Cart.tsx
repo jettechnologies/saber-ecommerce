@@ -55,7 +55,7 @@ const Cart = () => {
             });
           }}
           to="/success"
-          className="w-full  mt-6 bg-main flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
+          className="w-full  mt-6 bg-black flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
         >
           Checkout
         </Link>

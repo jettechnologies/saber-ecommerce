@@ -23,8 +23,6 @@ function Detail() {
     getProduct(Number(id));
   }, [id, getProduct]);
 
-  console.log(product)
-
   if (loading) {
     return <Spinner />;
   }
@@ -73,7 +71,9 @@ function Detail() {
                       add to cart
                     </Button>
                   </Link> */}
-                  <AddToCartBtn product={product} />
+                  <div className="w-[14rem]">
+                    <AddToCartBtn product={product} />
+                  </div>
                   <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3">
                     <h1 className="font-semibold text-lg text-[#3C4242]">
                       ${product.price}

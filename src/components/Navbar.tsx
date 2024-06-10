@@ -7,12 +7,15 @@ import { routes } from "../config/router/paths";
 import menuHamburger from "../assets/icons/menuHamburger.svg";
 import menuArrowRight from "../assets/icons/menuArrowRight.svg";
 import { CartIcon, SearchIcon, UserIcon } from "../icons/svg";
+import { useCartContext } from "@/context/cartContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
   const location = useLocation();
   const currentUrl = location.pathname;
+
+  const { cartItems } = useCartContext();
 
   const handleClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -62,9 +65,12 @@ export default function Navbar() {
             className={` ${
               currentUrl.includes("cart")
                 && "bg-gray"
-            } p-2 rounded-lg`}
+            } p-2 rounded-lg relative`}
           >
             <CartIcon className="w-5 h-5 text-white"/>
+            {cartItems.length >0 && <div className="absolute top-0 right-0 w-5 h-5 rounded-full flex items-center justify-center bg-black text-white">
+              <p className="text-size-400 font-normal ">{cartItems.length}</p>
+            </div>}
           </Link>
           <div
             className={` ${
