@@ -8,7 +8,8 @@ interface RecommendedProps {
 }
 
 const Recommended = ({ product }: RecommendedProps) => {
-  const { products, getProducts } = useProducts();
+  // const { products, getProducts } = useProducts();
+  const { products } = useProducts();
 
   const shortproduct = products
     .filter((p) => {
