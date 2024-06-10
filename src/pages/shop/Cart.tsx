@@ -54,8 +54,8 @@ const Cart = () => {
               removeFromCart(Number(id));
             });
           }}
-          to="/success"
-          className="w-full  mt-6 bg-black flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
+          to="/checkout"
+          className="w-full  mt-6 bg-text-black flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
         >
           Checkout
         </Link>

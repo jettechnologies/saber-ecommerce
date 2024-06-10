@@ -1,7 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { routes } from "./config/router/paths";
-// import Footer from "./components/Footer";
-// import Navbar from "./components/Navbar";
 import { Home, AboutUs, Store, Signin, Signup, OTP, Detail, Cart, Success, Layout } from "./pages/shop";
 import UserLayout from "@/pages/shop/users/UserLayout";
 import UserProfile from "@/pages/shop/users/UserProfile";
@@ -9,7 +7,13 @@ import Orders from "@/pages/shop/users/Orders";
 import Wishlist from "@/pages/shop/users/Wishlist";
 import EditAccount from "./pages/shop/users/EditAccount";
 import ResetPassword from "./pages/shop/users/ResetPassword";
-// import { useState } from "react";
+import Checkout from "./pages/shop/Checkout";
+import AdminLayout from "./pages/dashboard/AdminLayout";
+import AdminDashboard from "./pages/dashboard/AdminDashboard";
+import Products from "./pages/dashboard/Products";
+import Customers from "./pages/dashboard/Customers";
+import Adminstrators from "./pages/dashboard/Adminstrators";
+import Settings from "./pages/dashboard/Settings";
 
 
 function App() {
@@ -26,14 +30,25 @@ function App() {
         <Route path="/auth/otp" element = {<OTP />}></Route>
         <Route path="/product/:id" element={<Detail />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
         <Route path="/user"  element = {<UserLayout />}>
+          <Route index element={<Navigate to="profile" />} />
           <Route path="profile" element = {<UserProfile />} />
           <Route path="orders" element = {<Orders />} />
           <Route path = "wishlist" element = {<Wishlist />} />
         </Route>
         <Route path="/user/edit-account" element = {<EditAccount />} />
         <Route path="/user/reset-password" element = {<ResetPassword />} />
+      </Route>
+      <Route path="/admin" element = {<AdminLayout />}>
+        <Route index element={<Navigate to="dashboard" />} />
+        <Route path="dashboard" element = {<AdminDashboard />} />
+        <Route path="view-orders" element = {<Orders />} />
+        <Route path="products" element = {<Products />} />
+        <Route path="view-customers" element = {<Customers />} />
+        <Route path="accounts" element = {<Adminstrators />} />
+        <Route path="account-setting" element = {<Settings />} />
       </Route>
     </Routes>
     </>

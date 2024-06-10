@@ -34,7 +34,7 @@ export const productsFetch = async() =>{
       product_id: product.product_id,
       name: product.name,
       description: product.description,
-      price: product.price.toFixed(2),
+      price: (parseFloat(product.price.toFixed(2))),
       category: product.category,
       image: product.image,
       availability: product.availability,

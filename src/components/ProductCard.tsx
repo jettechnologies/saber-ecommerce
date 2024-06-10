@@ -32,12 +32,12 @@ const ProductCard:React.FC<Props> = ({tag, product}) => {
                 <img src={headphoneImg} alt="product image" className="w-[60%] aspect-square object-contain"/>
             </div>
            </Link>
-            <div className="w-full min-h-[25%] flex flex-col gap-y-2">
+            <div className="w-full min-h-[25%] flex flex-col justify-evenly">
                 <div className="w-fit flex gap-1">
                     <StarRating rating={rating}/>
                 </div>
                 <p className="text-size-500 font-medium">{name}</p>
-                <p className="text-size-500 font-medium">{price}</p>
+                <p className="text-size-500 font-medium">${price}</p>
             </div>
         </div>
     </div>

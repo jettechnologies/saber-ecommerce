@@ -4,11 +4,13 @@ import Footer from "@/components/Footer";
 
 const Layout = () => {
   return (
-    <main className="max-container min-h-screen font-roboto">
-        <Navbar />
+    <>
+      <Navbar />
+      <main className="max-container min-h-screen font-roboto">
         <Outlet />
-        <Footer />
-    </main>
+      </main>
+      <Footer />
+    </>
   )
 }
 
