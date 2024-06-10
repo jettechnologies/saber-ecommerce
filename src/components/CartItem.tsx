@@ -1,5 +1,6 @@
 import { useCartContext } from "@/context/cartContext";
 import { ProductType } from "../types";
+import headphoneImg from "@/assets/images/headsets.png"
 
 type CartItemProps = {
   item: ProductType;
@@ -16,13 +17,13 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
       <div className="flex gap-5 max-w-[18rem]">
         <img
           className="h-[6rem] w-[6rem] rounded-lg"
-          src={item.image[0]}
-          alt={`Image of  ${item.title}`}
+          src={headphoneImg}
+          alt={`Image of  ${item.name}`}
         />
         <div className="hidden lg:flex flex-col gap-1">
-          <h1 className="font-semibold line-clamp-2">{item.title}</h1>
+          <h1 className="font-semibold line-clamp-2">{item.name}</h1>
           <h3 className="font-semibold text-icon">
-            {item.category[0].toUpperCase() + item.category.slice(1)}
+            {item.category}
           </h3>
         </div>
       </div>
@@ -30,7 +31,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
       {/* Product price */}
       <div className="hidden lg:flex font-bold w-[5rem]">
         <div className="flex justify-center items-center">
-          <h1>${item.price.toFixed(2)}</h1>
+          <h1>${item.price}</h1>
         </div>
       </div>
 
@@ -39,12 +40,12 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
         <div className="flex items-center gap-2 bg-secondary rounded-2xl justify-center">
           <button
             className="px-2 pl-4 py-2 rounded-l-2xl hover:bg-slate-300 transition-colors"
-            onClick={() => removeSingleFromCart(item.id)}
+            onClick={() => removeSingleFromCart(item.product_id)}
           >
             -
           </button>
           <div className="w-[1rem] flex justify-center">
-            {quantityOfItem(item.id)}
+            {quantityOfItem(item.product_id)}
           </div>
           <button
             className="px-2 pr-4 py-2 rounded-r-2xl hover:bg-slate-300 transition-colors"
@@ -62,14 +63,14 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
       {/* Subtotal */}
       <div className="flex items-center font-bold w-[5rem]">
-        <h1>${(quantityOfItem(item.id) * item.price).toFixed(2)}</h1>
+        <h1>${(quantityOfItem(item.product_id) * item.price)}</h1>
       </div>
 
       {/* Discard product */}
       <div className="flex items-center justify-start">
         <button
           className="text-main hover:scale-[120%] overflow-hidden flex justify-start"
-          onClick={() => removeFromCart(item.id)}
+          onClick={() => removeFromCart(item.product_id)}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

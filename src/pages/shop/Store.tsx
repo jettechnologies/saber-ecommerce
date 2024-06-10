@@ -1,10 +1,10 @@
 // import ProductList from "../components/ProductList";
 // import Filters from "../components/Filters";
 import Modal from "@/components/Modal";
-// import { useParams } from "react-router";
+import { useParams } from "react-router";
 // import { useNavigate } from "react-router-dom";
 // import filterIcon from "../assets/icons/filter.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { DropdownIcon } from "../../icons/svg";
 import Select from "@/components/Select";
@@ -12,13 +12,14 @@ import Select from "@/components/Select";
 import { DollarSign, SlidersHorizontal } from "lucide-react";
 import ReactSlider from "react-slider";
 import ProductCard from "@/components/ProductCard";
+import { useProducts } from "@/hooks/useProducts";
+import Spinner from "@/components/Spinner";
 
 function Store() {
-  // const { search, category = "all" } = useParams<{
-  //   search?: string;
-  //   category?: string;
-  // }>();
-  // const searchTerm = search ?? "";
+  const { search } = useParams<{
+    search?: string;
+  }>();
+  const searchTerm = search ?? "";
   // const categoryTerm = category ?? "all";
 
   // const navigate = useNavigate();
@@ -28,6 +29,13 @@ function Store() {
   // };
   const location = useLocation();
   const paths:string[] = location.pathname.split("/").filter(Boolean);
+
+  const {products, loading, error, getProducts}  = useProducts();
+
+  useEffect(() =>{
+    getProducts(searchTerm)
+  }, [getProducts, searchTerm]);
+
 
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
@@ -39,7 +47,29 @@ function Store() {
 
   const [values, setValues] = useState([MIN, MAX]);
 
-  console.log(values)
+  if (loading) {
+    return <div className="w-full min-h-screen">
+      <Spinner />
+    </div>;
+  }
+
+  if (!products || error) {
+    return (
+      <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24">
+        <h1>
+          The product you tried to reach does not exist, please search another
+          one.
+        </h1>
+
+        <Link
+          to="/store"
+          className="w-full lg:w-[50%] mt-6 bg-main flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
+        >
+          <button className="flex items-center gap-2">Shop</button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -97,9 +127,9 @@ function Store() {
             <div className="w-full">
               <div className="flex flex-wrap justify-between gap-4">
                       {
-                        [1,2,3,4,5,6,7,8].map(index => (
-                          <div className="w-full md:w-[44.5vw] lg:w-[22.5vw] h-[23rem] z-20" key={index}>
-                            <ProductCard />
+                        products.map(product => (
+                          <div className="w-full md:w-[44.5vw] lg:w-[22.5vw] h-[23rem] z-20" key={product.product_id}>
+                            <ProductCard product={product}/>
                           </div>
                         ))
                       }

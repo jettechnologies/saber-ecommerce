@@ -8,16 +8,16 @@ export const useProducts = () => {
   const [error, setError] = useState<string | null>(null);
 
   const getProducts = useCallback(
-    async (page: number, search = "", category = "") => {
+    async (search = "") => {
       try {
         setLoading(true);
-        const fetchedProducts = await productsFetch(page, category);
+        const fetchedProducts = await productsFetch();
         let filteredProducts = fetchedProducts;
 
         if (search) {
           const searchQuery = search.toLowerCase();
           filteredProducts = fetchedProducts.filter((product: ProductType) =>
-            product.title.toLowerCase().includes(searchQuery)
+            product.name.toLowerCase().includes(searchQuery)
           );
         }
 

@@ -14,6 +14,8 @@ import testimonyOne from "@/assets/images/testimonial/testimonial1.webp";
 import testimonyTwo from "@/assets/images/testimonial/testimonial2.webp";
 import testimonyThree from "@/assets/images/testimonial/testimonial3.webp";
 import ProductSlider from "@/components/ProductSlider";
+import { useProducts } from "@/hooks/useProducts";
+import { useEffect, useMemo } from "react";
 
 
 interface Testimonies{
@@ -27,6 +29,16 @@ function Home() {
 
   // const leftArrowEl = useRef<HTMLDivElement>(null);
   // const rightArrowEl = useRef<HTMLDivElement>(null);
+  const { products, getProducts } = useProducts();
+
+  useEffect(() =>{
+    getProducts();
+  }, [getProducts]);
+
+  // console.log(categories, error, loading)
+  const sortedProductsByRating = useMemo(() => {
+   return [...products].sort((a, b) => b.rating - a.rating)
+  }, [products])
 
 
   const testimonies:Testimonies[] = [{
@@ -130,9 +142,9 @@ function Home() {
         <Section title="new arrivals" link="/store">
           <ProductSlider 
             autoPlay = {false}
-            contents={[1,2,3,4,5,6,7,8].map((index) =>(
-              <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {index}>
-                <ProductCard tag = "hot"/>
+            contents={products.map((product) =>(
+              <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.product_id}>
+                <ProductCard product={product}/>
               </div>
             ))} 
           />
@@ -142,15 +154,15 @@ function Home() {
         <div className="mt-14">
           <Section title="shop catergories" link="store">
             <div className="grid gap-4">
-              <div className="grid grid-rows-4 md:grid-rows-[30vh_30vh] md:grid-cols-2 mt-8 gap-4 min-h-[42rem] w-full md:min-h-[22rem]">
-                  <div className="w-full h-full py-4 px-6 bg-gray row-start-1 row-span-2 md:row-start-1 md:row-end-3 md:col-start-1 md:col-span-1">
+              <div className="grid grid-rows-5 md:grid-rows-[30vh_30vh_30vh_30vh] md:grid-cols-2 mt-8 gap-4 min-h-[42rem] w-full md:min-h-[22rem]">
+                  <div className="w-full h-full py-4 px-6 bg-gray row-start-1 row-span-2 md:row-start-1 md:row-end-3 md:col-start-1 md:col-span-2">
                     <div className="w-full h-full flex flex-col gap-y-5">
                       <div className="w-full h-[70%] flex items-center justify-center">
                         <img src={headphoneImg} alt="headphone image" className="w-full h-full object-contain"/>
                       </div>
                       <div className="w-full h-fit">
                         <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
-                          Headband
+                          Electronics
                         </h4>
                         <Link to = "store">
                           <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
@@ -161,14 +173,14 @@ function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="w-full h-full py-4 px-6 bg-gray row-start-3 row-span-1 md:row-span-1 md:col-start-2 md:col-span-1">
+                  <div className="w-full h-full py-4 px-6 bg-gray row-start-3 row-span-1 md:row-span-1 md:col-start-1 md:col-span-1">
                     <div className="w-full h-full gap-y-5 flex">
                       <div className="w-[70%] order-2 h-full flex items-center justify-center">
                         <img src={headphoneImg} alt="headphone image" className="w-full h-full object-contain"/>
                       </div>
                       <div className="w-[30%] h-fit order-1 self-center">
                         <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
-                          Headband
+                          Wearables
                         </h4>
                         <Link to = "store">
                           <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
@@ -186,7 +198,43 @@ function Home() {
                       </div>
                       <div className="w-[30%] h-fit order-1 self-center">
                         <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
-                          earpods
+                          gamings
+                        </h4>
+                        <Link to = "store">
+                          <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
+                            <p className="text-size-500 font-medium text-black capitalize">shop</p>
+                            <ArrowRightIcon size = {24}/>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full h-full py-4 px-6 bg-gray row-start-5 row-span-1 md:row-span-1 md:col-start-1 md:col-span-1">
+                  <div className="w-full h-full gap-y-5 flex">
+                      <div className="w-[70%] order-2 h-full flex items-center justify-center">
+                        <img src={earpodImg} alt="earpod image" className="w-full h-full object-contain"/>
+                      </div>
+                      <div className="w-[30%] h-fit order-1 self-center">
+                        <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
+                          cameras
+                        </h4>
+                        <Link to = "store">
+                          <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
+                            <p className="text-size-500 font-medium text-black capitalize">shop</p>
+                            <ArrowRightIcon size = {24}/>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full h-full py-4 px-6 bg-gray row-start-6 row-span-1 md:row-span-1 md:col-start-2 md:col-span-1">
+                  <div className="w-full h-full gap-y-5 flex">
+                      <div className="w-[70%] order-2 h-full flex items-center justify-center">
+                        <img src={earpodImg} alt="earpod image" className="w-full h-full object-contain"/>
+                      </div>
+                      <div className="w-[30%] h-fit order-1 self-center">
+                        <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
+                          appliances
                         </h4>
                         <Link to = "store">
                           <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
@@ -206,9 +254,14 @@ function Home() {
             <Section title="best sellers" link="store">
                 <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 z-10">
                     {
-                      [1,2,3,4,5,6,7,8].map((index) =>(
-                        <div className="w-[45vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {index}>
-                          <ProductCard tag = "hot"/>
+                      // [1,2,3,4,5,6,7,8].map((index) =>(
+                      //   <div className="w-[45vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {index}>
+                      //     <ProductCard tag = "hot"/>
+                      //   </div>
+                      // ))
+                      sortedProductsByRating.map((product) =>(
+                        <div className="w-[45vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.product_id}>
+                          <ProductCard tag = "hot" product={product}/>
                         </div>
                       ))
                     }

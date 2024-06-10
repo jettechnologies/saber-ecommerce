@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { ProductType } from "../types";
-import { productDetailFetch } from "../services/productDetail";
+// import { productDetailFetch } from "../services/productDetail";
+import { productsFetch } from "@/services/products";
 
 export const useProductDetail = () => {
   const [product, setProduct] = useState<ProductType | undefined>();
@@ -10,8 +11,9 @@ export const useProductDetail = () => {
   const getProduct = useCallback(async (id: number) => {
     try {
       setLoading(true);
-      const fetchedProduct = await productDetailFetch(id);
-      setProduct(fetchedProduct);
+      const fetchedProduct = await productsFetch();
+      const filteredProducts = fetchedProduct.filter((product: ProductType) => product.product_id === id)
+      setProduct(filteredProducts[0]);
       setError(null);
     } catch (e: any) {
       setError(e.message);

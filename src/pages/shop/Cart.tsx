@@ -20,10 +20,10 @@ const Cart = () => {
   return (
     <div className="flex flex-col gap-6 mt-10 min-h-[--hero-height]">
       {cartItems.map((item) => {
-        if (!uniqueItemsIds.has(item.id)) {
-          uniqueItemsIds.add(item.id);
+        if (!uniqueItemsIds.has(item.product_id)) {
+          uniqueItemsIds.add(item.product_id);
           return (
-            <ul key={item.id} className="flex flex-col gap-6 px-4 lg:px-24">
+            <ul key={item.product_id} className="flex flex-col gap-6 px-4 lg:px-24">
               <CartItem item={item} />
               <hr className="h-2" />
             </ul>
@@ -35,7 +35,7 @@ const Cart = () => {
         <div className="my-6 mx-4 lg:mx-24 font-semibold">
           <div className="flex gap-4 justify-between">
             <h1>Subtotal</h1>
-            <h1>${totalPrice.toFixed(2)}</h1>
+            <h1>${totalPrice}</h1>
           </div>
           <div className="flex gap-4 justify-between">
             <h1>Shipping</h1>
@@ -45,7 +45,7 @@ const Cart = () => {
 
         <div className="flex gap-4 justify-between mx-4 lg:mx-24 mb-6 font-bold">
           <h1>Grand Total</h1>
-          <h1>${totalPrice.toFixed(2)}</h1>
+          <h1>${totalPrice}</h1>
         </div>
         <hr className="h-2" />
         <Link

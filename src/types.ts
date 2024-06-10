@@ -1,8 +1,10 @@
 export interface ProductType {
-    id: number;
-    title: string;
+    product_id: number;
+    name: string;
     description: string;
     price: number;
     category: string;
-    image: [string];
+    image: string;
+    availability: boolean;
+    rating: number;
   }

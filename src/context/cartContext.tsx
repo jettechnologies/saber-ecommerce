@@ -28,23 +28,23 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     (item: ProductType) => {
       setCartItems((prevCartItems) => [...prevCartItems, item]);
     },
-    [cartItems]
+    []
   );
 
   // Remove item from cart
   const removeFromCart = useCallback(
     (itemId: number) => {
       setCartItems((prevCartItems) =>
-        prevCartItems.filter((item) => item.id !== itemId)
+        prevCartItems.filter((item) => item.product_id !== itemId)
       );
     },
-    [cartItems]
+    []
   );
 
   // Remove single item from cart
   const removeSingleFromCart = useCallback(
     (itemId: number) => {
-      const itemIndex = cartItems.findIndex((item) => item.id === itemId);
+      const itemIndex = cartItems.findIndex((item) => item.product_id === itemId);
       if (itemIndex !== -1) {
         const updatedCartItems = [...cartItems];
         updatedCartItems.splice(itemIndex, 1);
@@ -58,7 +58,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const quantityOfItem = useCallback(
     (itemId: number) => {
       const matchingItems = cartItems.filter((item) => {
-        return item.id === itemId;
+        return item.product_id === itemId;
       });
       return matchingItems.length;
     },
@@ -80,7 +80,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       quantityOfItem,
       totalPrice,
     }),
-    [cartItems, addToCart, removeFromCart, removeSingleFromCart, quantityOfItem]
+    [cartItems, addToCart, removeFromCart, removeSingleFromCart, quantityOfItem, totalPrice]
   );
 
   return <cartContext.Provider value={value}>{children}</cartContext.Provider>;

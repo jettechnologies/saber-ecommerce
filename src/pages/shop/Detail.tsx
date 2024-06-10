@@ -2,16 +2,18 @@ import { useParams } from "react-router";
 import { useProductDetail } from "@/hooks/useProductDetail";
 import { useEffect } from "react";
 import Spinner from "@/components/Spinner";
-import ImageCarousel from "@/components/ImageCarousell";
+// import ImageCarousel from "@/components/ImageCarousell";
 import Icon from "@/components/Icon";
 import creditCard from "@/assets/icons/creditCard.svg";
 import star from "@/assets/icons/star.svg";
 import truck from "@/assets/icons/truck.svg";
 import repeat from "@/assets/icons/repeat.svg";
 import AddToCartBtn from "@/components/addToCartBtn";
+// import Button from "@/components/Button";
 import Section from "@/components/Section";
-import Recommended from "@/components/Recommended";
+// import Recommended from "@/components/Recommended";
 import { Link } from "react-router-dom";
+import headphoneImg from "@/assets/images/headsets.png";
 
 function Detail() {
   const { product, getProduct, loading, error } = useProductDetail();
@@ -20,6 +22,8 @@ function Detail() {
   useEffect(() => {
     getProduct(Number(id));
   }, [id, getProduct]);
+
+  console.log(product)
 
   if (loading) {
     return <Spinner />;
@@ -49,19 +53,26 @@ function Detail() {
         {product && (
           <div className="flex-row lg:flex gap-12">
             <div className="mx-[-1rem]">
-              <ImageCarousel images={product.image} />
+              {/* <ImageCarousel images={product.image} /> */}
+              <img src={headphoneImg} alt="product image" className="w-[60%] aspect-square object-contain"/>
             </div>
 
             <div>
               <div>
                 <h2 className="text-icon font-medium text-lg mt-6 mb-7">
-                  {product.category[0].toUpperCase() +
-                    product.category.slice(1)}
+                  {/* {product.category[0].toUpperCase() +
+                    product.category.slice(1)} */}
+                    {product.category}
                 </h2>
                 <h1 className="text-[#3C4242] font-semibold text-3xl">
-                  {product.title}
+                  {product.name}
                 </h1>
                 <div className="flex items-center gap-6 mt-[2.5rem] justify-center lg:justify-left">
+                  {/* <Link to = "/store">
+                    <Button size = "medium" className="capitalize text-white text-lg w-[15rem]">
+                      add to cart
+                    </Button>
+                  </Link> */}
                   <AddToCartBtn product={product} />
                   <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3">
                     <h1 className="font-semibold text-lg text-[#3C4242]">
@@ -77,7 +88,7 @@ function Detail() {
 
               <Section title="Description" >
                 <div className="mt-4">
-                  <p>{product.description}</p>
+                  <p className="font-normal text-size-500 text-text-black">{product.description}</p>
                 </div>
               </Section>
 
@@ -114,13 +125,13 @@ function Detail() {
         )}
 
         {/* Recomendations */}
-        <div className="mt-16">
+        {/* <div className="mt-16">
           <Section title="Similar Products">
             <div className="mt-4">
               <Recommended product={product} />
             </div>
           </Section>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -4,7 +4,6 @@ export const productDetailFetch = async (id: number) => {
     const json = await response.json();
 
     const product = json;
-    product.image = ["https://i.imgur.com/iePzniM.png", "https://i.imgur.com/xH3dQso.png", "https://i.imgur.com/YCg9tL6.png"];
     return product;
   } catch (error) {
     throw new Error("Error fetching product");

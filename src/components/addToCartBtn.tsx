@@ -17,14 +17,14 @@ function AddToCartBtn({
     if (!isInCart) {
       addToCart(product);
     } else {
-      removeFromCart(product.id);
+      removeFromCart(product.product_id);
     }
   };
 
   useEffect(() => {
-    const itemInCart = cartItems.some((item) => item.id === product.id);
+    const itemInCart = cartItems.some((item) => item.product_id === product.product_id);
     setIsInCart(itemInCart);
-  },[cartItems, product.id])
+  },[cartItems, product.product_id])
 
   return (
     <button

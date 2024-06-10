@@ -39,7 +39,7 @@ const ProductSlider:React.FC<Props> = ({
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full py-4">
       <Carousel
         responsive={responsive}
         autoPlay={autoPlay}
