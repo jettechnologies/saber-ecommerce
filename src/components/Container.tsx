@@ -19,7 +19,7 @@ const Container:React.FC<Props> = ({
       }
 
   return (
-    <section className={twMerge("w-full h-full px-5 py-3 border-2 border-black", typeClassNames[type], className)}>
+    <section className={twMerge("w-full h-full px-5 py-3", typeClassNames[type], className)}>
         {children}
     </section>
   )

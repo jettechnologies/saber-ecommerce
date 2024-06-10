@@ -1,14 +1,17 @@
 import { CircleX } from "lucide-react"
+import { twMerge } from "tailwind-merge";
 
 interface Props{
     message: string;
     isCloseIcon?: boolean;
     type: "danger" | "warning" | "success";
+    className?: string;
 }
 
 const Notification:React.FC<Props> = ({
     message,
     isCloseIcon = false,
+    className,
     type
 }) => {
 
@@ -19,7 +22,7 @@ const Notification:React.FC<Props> = ({
     }
 
   return (
-    <div className={`py-2 px-4 ${notificationType[type]} text-white mb-4 flex items-center justify-between`}>
+    <div className={twMerge("py-2 px-4 flex items-center justify-between", notificationType[type], className)}>
         <p className="text-size-400 font-normal">{message}</p>
         {isCloseIcon && <div className="border-2 border-black p-1 cursor-pointer"><CircleX size = {20} /></div>}
     </div>

@@ -14,10 +14,10 @@ const AdminLayout = () => {
   return (
     <main className="max-container min-h-screen grid grid-rows-[auto_1fr] grid-cols-[auto_1fr] bg-gray font-roboto">
         <header className="py-4 col-start-2 col-span-2 w-full min-h-[--header-height] bg-white flex justify-center">
-            <form className="w-fit flex p-2 border border-black focus-within:border-blue focus-within:border-2 rounded-sm">
+            <form className="w-fit flex p-1 border border-black focus-within:border-blue focus-within:border-2 rounded-sm">
               <input type="text" 
                 placeholder="Search items, categories"
-                className="w-[16rem] h-12 border-none outline-none text-text-black bg-transparent"
+                className="w-[16rem] h-10 border-none outline-none text-text-black bg-transparent pl-2"
               />
               <Button size = "small" className="text-size-400 flex gap-2 h-[3rem] text-white items-center justify-center font-normal">
                   <Search color="#fff"/>
@@ -78,7 +78,7 @@ const AdminLayout = () => {
               </div>
             </div>
         </SideNavBar>
-        <div id="main-content" className="w-full col-start-2 col-span-2 row-start-2 row-span-2 h-full p-5">
+        <div id="main-content" className="w-full col-start-2 col-span-2 row-start-2 row-span-2 h-fit p-5">
             <Outlet />
         </div>
     </main>

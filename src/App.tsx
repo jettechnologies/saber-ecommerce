@@ -4,6 +4,7 @@ import { Home, AboutUs, Store, Signin, Signup, OTP, Detail, Cart, Success, Layou
 import UserLayout from "@/pages/shop/users/UserLayout";
 import UserProfile from "@/pages/shop/users/UserProfile";
 import Orders from "@/pages/shop/users/Orders";
+import ViewOrders from "./pages/dashboard/ViewOrders";
 import Wishlist from "@/pages/shop/users/Wishlist";
 import EditAccount from "./pages/shop/users/EditAccount";
 import ResetPassword from "./pages/shop/users/ResetPassword";
@@ -44,7 +45,7 @@ function App() {
       <Route path="/admin" element = {<AdminLayout />}>
         <Route index element={<Navigate to="dashboard" />} />
         <Route path="dashboard" element = {<AdminDashboard />} />
-        <Route path="view-orders" element = {<Orders />} />
+        <Route path="view-orders" element = {<ViewOrders />} />
         <Route path="products" element = {<Products />} />
         <Route path="view-customers" element = {<Customers />} />
         <Route path="accounts" element = {<Adminstrators />} />

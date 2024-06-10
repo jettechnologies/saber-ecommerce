@@ -109,7 +109,7 @@ console.log(user)
             <form className="bg-white rounded-md shadow-2xl p-5" onSubmit={formSubmit}>
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Sign up</h1>
                 <p className="text-md font-normal text-blue mb-8">Create a new account</p>
-                {error.status && <Notification message = {error.msg} type = "danger"/>}
+                {error.status && <Notification message = {error.msg} type = "danger" className="text-white mb-4"/>}
                 <div>
                     <div className={`flex items-center ${user.name.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
                         <User size = {20}/>

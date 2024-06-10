@@ -1,50 +1,20 @@
 import Notification from "@/components/Notification";
-import Select from "@/components/Select";
 import Container from "@/components/Container";
-import Button from "@/components/Button";
-import { CirclePlusIcon } from "lucide-react";
+import Select from "@/components/Select";
 
-const Products = () => {
+const ViewOrders = () => {
   return (
-    <div className="w-full h-full">
-        <div className="min-h-16 w-full">
-            <Container >
-                <div className="flex justify-between">
-                    <div className="flex gap-x-4">
-                      <div className="w-fit h-full">
-                          <Select className="border border-black" select={[{key: "category", value: "category"}, {key: "electronics", value: "electronics"}, {key: "wearables", value: "wearables"}, {key: "gamings", value: "gamings"}, {key: "cameras", value: "cameras"}]}/>
-                      </div>
-                      <div className="w-fit h-full">
-                          <Select className="border border-black" select={[{key: "status", value: "status"}, {key: "pending", value: "pending"}, {key: "completed", value: "completed"}, {key: "failed", value: "failed"}]}/>
-                      </div>
-                      <div className="w-fit h-full">
-                          <Select className="border border-black" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
-                      </div>
-                      <div className="w-fit h-full">
-                          <Select className="border border-black" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
-                      </div>
-                    </div>
-                    <Button size = "small" className="text-size-400 flex gap-2 h-[3rem] text-white items-center justify-center font-normal">
-                      <CirclePlusIcon color="#fff"/>
-                      Add Product
-                    </Button>
-                </div>
-            </Container>
-        </div>
-        <Container className="mt-4 min-h-screen">
+    <Container className="mt-4 min-h-screen">
             <div className="flex justify-between items-center w-full mb-4">
                 <h3 className="font-semibold text-size-500 text-text-bold">
-                    Customers
+                    All Orders
                 </h3>
-                <p className="text-[#c0c0c0] hover:text-blue text-size-400 font-medium p-2 cursor-pointer">
-                    See all
-                </p>
             </div>
             <div className="h-full">
                 <table className="min-w-full text-center text-sm font-light">
                     <thead className="font-medium border-b bg-black text-white">
                         <tr>
-                            <th scope="col" className="px-6 py-4">Cusromer Name</th>
+                            <th scope="col" className="px-6 py-4">Customer Name</th>
                             <th scope="col" className="px-6 py-4">#ID</th>
                             <th scope="col" className="px-6 py-4">Spent</th>
                             <th scope="col" className="px-6 py-4">Last Ordered</th>
@@ -171,8 +141,7 @@ const Products = () => {
                 </div>
             </div>
         </Container>
-    </div>
   )
 }
 
-export default Products
+export default ViewOrders;

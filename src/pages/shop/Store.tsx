@@ -138,7 +138,7 @@ function Store() {
                       }
                     </div>
                   : (products.length === 0 || error) &&
-                  <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-full">
+                  <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-">
                     <h1>
                       The product you tried to reach does not exist, please search another
                       one.
