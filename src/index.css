@@ -217,10 +217,28 @@ table {
   position:relative;
 }
 
-input, a, select{
+input, a, select, textarea{
   @apply outline-blue;
 }
 
 .user-icon:hover .user-sub-nav {
   display:block;
 }
+
+#product-form > div:not(:last-child), #create-admin-form > div:not(:last-child) {
+  margin-bottom:1.25rem;
+}
+
+/* customizing the product description scrollbar */
+/* #product-desc::-webkit-scrollbar{
+  width:12px;
+}
+#product-desc::-webkit-scrollbar-track{
+  background-color:#121212;
+}
+#product-desc::-webkit-scrollbar-thumb{
+  background-color:#f0f0f0;
+  width:30px;
+  height:4px;
+  @apply rounded-full;
+} */

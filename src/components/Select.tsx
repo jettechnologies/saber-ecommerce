@@ -5,12 +5,14 @@ interface Props{
         key:string;
         value:string;
     }[]
-    className?:string
+    className?:string;
+    id:string;
+    name: string
 }
 
-const Select:React.FC<Props> = ({select, className}) => {
+const Select:React.FC<Props> = ({select, className, id, name}) => {
   return (
-    <select name="sort" id="sort" className={twMerge("p-3 text-size-500 font-medium font-roboto text-text-black capitalize cursor-pointer", className)}>
+    <select name={name} id={id} className={twMerge("p-3 rounded-md text-size-500 font-medium font-roboto text-text-black capitalize cursor-pointer", className)}>
        {
             select.map(select => (
                 <option key = {select.key} value={select.key}>

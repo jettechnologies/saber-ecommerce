@@ -1,5 +1,6 @@
 import Container from "@/components/Container";
-import Select from "@/components/Select";
+import { Link } from "react-router-dom";
+import { CirclePlusIcon } from "lucide-react";
 
 const Adminstrators = () => {
   return (
@@ -8,6 +9,10 @@ const Adminstrators = () => {
                 <h3 className="font-semibold text-size-500 text-text-bold">
                     Administrators
                 </h3>
+                <Link to = "create-admin" className="text-size-xs px-4 py-2 flex gap-2 h-[3rem] bg-black rounded-md text-white items-center justify-center font-normal">
+                    <CirclePlusIcon color="#fff"/>
+                    Create Admin
+                </Link>
             </div>
             <div className="h-full">
                 <table className="min-w-full text-center text-sm font-light">
@@ -17,7 +22,7 @@ const Adminstrators = () => {
                             <th scope="col" className="px-6 py-4">Date</th>
                             <th scope="col" className="px-6 py-4">Name</th>
                             <th scope="col" className="px-6 py-4">Email</th>
-                            <th scope="col" className="px-6 py-4">Role</th>
+                            <th scope="col" className="px-6 py-4">Access Levels</th>
                             <th scope="col" className="px-6 py-4">Action</th>
                         </tr>
                     </thead>
@@ -89,10 +94,7 @@ const Adminstrators = () => {
                     </tbody>
                 </table>
             </div>
-            <div className="mt-6 w-full flex justify-between">
-                <div className="w-fit h-full">
-                    <Select className="border border-black" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
-                </div>
+            <div className="mt-6 w-full flex justify-end">
                 <div className="w-48 h-10 border-2 border-black">
 
                 </div>

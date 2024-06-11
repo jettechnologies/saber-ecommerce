@@ -15,6 +15,8 @@ import Products from "./pages/dashboard/Products";
 import Customers from "./pages/dashboard/Customers";
 import Adminstrators from "./pages/dashboard/Adminstrators";
 import Settings from "./pages/dashboard/Settings";
+import CreateAdmin from "./pages/dashboard/CreateAdmin";
+import AddProduct from "./pages/dashboard/AddProduct";
 
 
 function App() {
@@ -46,9 +48,15 @@ function App() {
         <Route index element={<Navigate to="dashboard" />} />
         <Route path="dashboard" element = {<AdminDashboard />} />
         <Route path="view-orders" element = {<ViewOrders />} />
-        <Route path="products" element = {<Products />} />
+        <Route path="products">
+          <Route index = {true} element = {<Products />} />
+          <Route path="add-product" element = {<AddProduct />} />
+        </Route>
         <Route path="view-customers" element = {<Customers />} />
-        <Route path="accounts" element = {<Adminstrators />} />
+        <Route path="accounts">
+          <Route index = {true} element = {<Adminstrators />} />
+          <Route path="create-admin" element = {<CreateAdmin />} />
+        </Route>
         <Route path="account-setting" element = {<Settings />} />
       </Route>
     </Routes>

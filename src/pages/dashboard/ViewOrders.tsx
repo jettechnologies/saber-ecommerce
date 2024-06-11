@@ -1,6 +1,5 @@
 import Notification from "@/components/Notification";
 import Container from "@/components/Container";
-import Select from "@/components/Select";
 
 const ViewOrders = () => {
   return (
@@ -132,10 +131,7 @@ const ViewOrders = () => {
                     </tbody>
                 </table>
             </div>
-            <div className="mt-6 w-full flex justify-between">
-                <div className="w-fit h-full">
-                    <Select className="border border-black" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
-                </div>
+            <div className="mt-6 w-full flex justify-end">
                 <div className="w-48 h-10 border-2 border-black">
 
                 </div>
