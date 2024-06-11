@@ -118,7 +118,7 @@ function Store() {
               <label htmlFor="sort">
                 <p className="text-size-500 font-medium text-text-black">Sort by</p>
               </label>
-              <Select className="border-2 border-gray " select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
+              <Select id = "sort" name="sort" className="border-2 border-gray " select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
             </div>
           </div>
         </div>
@@ -164,19 +164,19 @@ function Store() {
                       </ul>
                     </div>
                     <div className="border-b border-black p-4 flex flex-col gap-4">
-                      <p className="font-medium text-size-500 text-text-black capitalize">
+                      <label htmlFor="category" className="font-medium text-size-500 text-text-black capitalize">
                         categories
-                      </p>
+                      </label>
                       <div className="w-full h-full">
-                        <Select className="border border-black" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
+                        <Select id="category" name="category" className="border border-black" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
                       </div>
                     </div>
                     <div className="border-b border-black p-4 flex flex-col gap-4">
-                      <p className="font-medium text-size-500 text-text-black capitalize">
+                      <label htmlFor="sort" className="font-medium text-size-500 text-text-black capitalize">
                         sort by
-                      </p>
+                      </label>
                       <div className="w-full h-full">
-                        <Select className="border border-black" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
+                        <Select id = "sort" name="sort" className="border border-black" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
                       </div>
                     </div>
                     <div className="border-b border-black p-4 pb-6 flex flex-col gap-4">
