@@ -4,19 +4,10 @@ import { Home, AboutUs, Store, Signin, Signup, OTP, Detail, Cart, Success, Layou
 import UserLayout from "@/pages/shop/users/UserLayout";
 import UserProfile from "@/pages/shop/users/UserProfile";
 import Orders from "@/pages/shop/users/Orders";
-import ViewOrders from "./pages/dashboard/ViewOrders";
 import Wishlist from "@/pages/shop/users/Wishlist";
 import EditAccount from "./pages/shop/users/EditAccount";
 import ResetPassword from "./pages/shop/users/ResetPassword";
 import Checkout from "./pages/shop/Checkout";
-import AdminLayout from "./pages/dashboard/AdminLayout";
-import AdminDashboard from "./pages/dashboard/AdminDashboard";
-import Products from "./pages/dashboard/Products";
-import Customers from "./pages/dashboard/Customers";
-import Adminstrators from "./pages/dashboard/Adminstrators";
-import Settings from "./pages/dashboard/Settings";
-import CreateAdmin from "./pages/dashboard/CreateAdmin";
-import AddProduct from "./pages/dashboard/AddProduct";
 
 
 function App() {
@@ -43,21 +34,6 @@ function App() {
         </Route>
         <Route path="/user/edit-account" element = {<EditAccount />} />
         <Route path="/user/reset-password" element = {<ResetPassword />} />
-      </Route>
-      <Route path="/admin" element = {<AdminLayout />}>
-        <Route index element={<Navigate to="dashboard" />} />
-        <Route path="dashboard" element = {<AdminDashboard />} />
-        <Route path="view-orders" element = {<ViewOrders />} />
-        <Route path="products">
-          <Route index = {true} element = {<Products />} />
-          <Route path="add-product" element = {<AddProduct />} />
-        </Route>
-        <Route path="view-customers" element = {<Customers />} />
-        <Route path="accounts">
-          <Route index = {true} element = {<Adminstrators />} />
-          <Route path="create-admin" element = {<CreateAdmin />} />
-        </Route>
-        <Route path="account-setting" element = {<Settings />} />
       </Route>
     </Routes>
     </>

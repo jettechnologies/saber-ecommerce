@@ -52,14 +52,14 @@ const OTP = () => {
                     return (
                     <React.Fragment key={index}>
                         <input
-                        ref={activeOTPIndex === index ? inputRef : null}
-                        type="number"
-                        className={
-                            "w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-[#d0d0d0] focus-within:border-blue text-gray-400 transition"
-                        }
-                        onChange={handleOnChange}
-                        onKeyDown={(e) => handleOnKeyDown(e, index)}
-                        value={otp[index]}
+                          ref={activeOTPIndex === index ? inputRef : null}
+                          type="number"
+                          className={
+                              "w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-[#d0d0d0] focus-within:border-blue text-gray-400 transition"
+                          }
+                          onChange={handleOnChange}
+                          onKeyDown={(e) => handleOnKeyDown(e, index)}
+                          value={otp[index]}
                         />
                     </React.Fragment>
                     );
