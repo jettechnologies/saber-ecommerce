@@ -91,7 +91,7 @@ function Detail() {
                     </Button>
                   </Link> */}
                   <div className="w-[14rem]">
-                    <AddToCartBtn product={data} />
+                    <AddToCartBtn />
                   </div>
                   <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3">
                     <h1 className="font-semibold text-lg text-[#3C4242]">

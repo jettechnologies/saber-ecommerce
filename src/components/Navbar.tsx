@@ -6,8 +6,8 @@ import Search from "./Search";
 import { routes } from "../config/router/paths";
 import menuHamburger from "../assets/icons/menuHamburger.svg";
 import menuArrowRight from "../assets/icons/menuArrowRight.svg";
-import { CartIcon, SearchIcon, UserIcon } from "../icons/svg";
-import { useCartContext } from "@/context/cartContext";
+import { SearchIcon, UserIcon } from "../icons/svg";
+// import { useCartContext } from "@/context/cartContext";
 // import { categoriesFetch } from "../services/categories";
 
 interface Catergories{
@@ -50,7 +50,7 @@ export default function Navbar() {
   }, []);
 
 
-  const { cartItems } = useCartContext();
+  // const { cartItems } = useCartContext();
 
   const handleClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -136,10 +136,10 @@ export default function Navbar() {
                 && "bg-gray"
             } p-2 rounded-lg relative`}
           >
-            <CartIcon className="w-5 h-5 text-white"/>
+            {/* <CartIcon className="w-5 h-5 text-white"/>
             {cartItems.length >0 && <div className="absolute top-0 right-0 w-5 h-5 rounded-full flex items-center justify-center bg-black text-white">
               <p className="text-size-400 font-normal ">{cartItems.length}</p>
-            </div>}
+            </div>} */}
           </Link>
           <div
             className={` ${
