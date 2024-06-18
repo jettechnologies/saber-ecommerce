@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { routes } from "./config/router/paths";
-import { Home, AboutUs, Store, Signin, Signup, OTP, Detail, Cart, Success, Layout } from "./pages/shop";
+import { Home, AboutUs, Store, Signin, Signup, OTP, Detail, Success, Layout } from "./pages/shop";
 import UserLayout from "@/pages/shop/users/UserLayout";
 import UserProfile from "@/pages/shop/users/UserProfile";
 import Orders from "@/pages/shop/users/Orders";
@@ -23,7 +23,7 @@ function App() {
         <Route path="/auth/signup" element = {<Signup />}></Route>
         <Route path="/auth/otp" element = {<OTP />}></Route>
         <Route path="/product/:id" element={<Detail />} />
-        <Route path="/cart" element={<Cart />} />
+        {/* <Route path="/cart" element={<Cart />} /> */}
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
         <Route path="/user"  element = {<UserLayout />}>
