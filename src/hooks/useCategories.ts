@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import { categoriesFetch } from "../services/categories";
-import { ProductType } from "../types";
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<string[]>([]);
@@ -13,7 +12,7 @@ export const useCategories = () => {
     try {
       setLoading(true);
       const fetchedCategories = await categoriesFetch();
-      const categories = getUniqueCategories(fetchedCategories);
+      console.log(fetchedCategories);
       setCategories(categories);
       setError(null);
     } catch (e: any) {
@@ -21,14 +20,16 @@ export const useCategories = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [categories]);
 
   return { categories, loading, error, getCategories};
 };
 
 
-const getUniqueCategories = (products: ProductType[]): string[] => {
-  const categories = products.map(product => product.category);
-  const uniqueCategories = Array.from(new Set(categories));
-  return uniqueCategories;
-};
+// creating categores for the products categories and removing the duplicates
+// const getUniqueCategories = (products: ProductType[]): string[] => {
+//   const categories = products.map(product => product.category);
+//   const uniqueCategories = Array.from(new Set(categories));
+//   console.log(uniqueCategories)
+//   return uniqueCategories;
+// };

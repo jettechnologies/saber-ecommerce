@@ -14,8 +14,10 @@ import testimonyOne from "@/assets/images/testimonial/testimonial1.webp";
 import testimonyTwo from "@/assets/images/testimonial/testimonial2.webp";
 import testimonyThree from "@/assets/images/testimonial/testimonial3.webp";
 import ProductSlider from "@/components/ProductSlider";
-import { useProducts } from "@/hooks/useProducts";
-import { useEffect, useMemo } from "react";
+import useGetRequest from "@/hooks/useGetRequest";
+// import { useEffect, useMemo, useState } from "react";
+import Spinner from "@/components/Spinner";
+import { ProductType, CategoryType } from "@/types";
 
 
 interface Testimonies{
@@ -25,20 +27,12 @@ interface Testimonies{
   content: string;
 }
 
+
+
+
 function Home() {
-
-  // const leftArrowEl = useRef<HTMLDivElement>(null);
-  // const rightArrowEl = useRef<HTMLDivElement>(null);
-  const { products, getProducts } = useProducts();
-
-  useEffect(() =>{
-    getProducts();
-  }, [getProducts]);
-
-  // console.log(categories, error, loading)
-  const sortedProductsByRating = useMemo(() => {
-   return [...products].sort((a, b) => b.rating - a.rating)
-  }, [products])
+  const fetchCategory = useGetRequest<CategoryType[]>("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-all-product-categories");
+  const productsFetch = useGetRequest<ProductType[]>("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-all-products");
 
 
   const testimonies:Testimonies[] = [{
@@ -60,7 +54,6 @@ function Home() {
     content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
   }
   ]
-
   return (
     <main className="w-full h-full">
       {/* Hero section */}
@@ -140,132 +133,96 @@ function Home() {
       <section className="mx-4 mt-10 lg:mx-14 min-h-screen">
         {/* Highlighted categories */}
         <Section title="new arrivals" link="/store">
-          <ProductSlider 
+          {!productsFetch.loading ? <ProductSlider 
             autoPlay = {false}
-            contents={products.map((product) =>(
-              <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.product_id}>
-                <ProductCard product={product}/>
+            contents={productsFetch.data.map((product:ProductType) =>(
+              <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
+                <ProductCard product={product} tag={product.isOutOfStock}/>
               </div>
             ))} 
-          />
+          /> :
+            <div className="w-full h-[25rem]">
+              <Spinner />
+            </div>
+          }
+          {/* <></> */}
         </Section>
 
         {/* Shop catergories */}
+        {/* grid grid-rows-5 md:grid-rows-[30vh_30vh_30vh_30vh] md:grid-cols-2 */}
         <div className="mt-14">
           <Section title="shop catergories" link="store">
             <div className="grid gap-4">
-              <div className="grid grid-rows-5 md:grid-rows-[30vh_30vh_30vh_30vh] md:grid-cols-2 mt-8 gap-4 min-h-[42rem] w-full md:min-h-[22rem]">
-                  <div className="w-full h-full py-4 px-6 bg-gray row-start-1 row-span-2 md:row-start-1 md:row-end-3 md:col-start-1 md:col-span-2">
-                    <div className="w-full h-full flex flex-col gap-y-5">
-                      <div className="w-full h-[70%] flex items-center justify-center">
-                        <img src={headphoneImg} alt="headphone image" className="w-full h-full object-contain"/>
-                      </div>
-                      <div className="w-full h-fit">
-                        <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
-                          Electronics
-                        </h4>
-                        <Link to = "store">
-                          <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
-                            <p className="text-size-500 font-medium text-black capitalize">shop</p>
-                            <ArrowRightIcon size = {24}/>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-full h-full py-4 px-6 bg-gray row-start-3 row-span-1 md:row-span-1 md:col-start-1 md:col-span-1">
+              {!fetchCategory.loading ? <div className="flex flex-col mt-8 gap-4 min-h-[42rem] w-full md:min-h-[22rem]">
+                {fetchCategory.data.length > 0 && <div 
+                  id = "category-card"
+                  style = {{backgroundImage: `url(${fetchCategory.data[0].banner})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} 
+                  className={`w-full h-[25rem] py-4 px-6 relative rounded-md overflow-clip`}>
                     <div className="w-full h-full gap-y-5 flex">
-                      <div className="w-[70%] order-2 h-full flex items-center justify-center">
-                        <img src={headphoneImg} alt="headphone image" className="w-full h-full object-contain"/>
-                      </div>
-                      <div className="w-[30%] h-fit order-1 self-center">
-                        <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
-                          Wearables
-                        </h4>
-                        <Link to = "store">
-                          <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
-                            <p className="text-size-500 font-medium text-black capitalize">shop</p>
-                            <ArrowRightIcon size = {24}/>
+                      <div className="w-[30%] h-fit self-center">
+                            <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
+                              {fetchCategory.data[0].name}
+                            </h4>
+                            <Link to = {`store/${fetchCategory.data[0].id}`}>
+                              <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
+                                <p className="text-size-500 font-medium text-blue capitalize">shop</p>
+                                <ArrowRightIcon size = {24} color="#fff"/>
+                              </div>
+                            </Link>
                           </div>
-                        </Link>
+                    </div>
+                    <div id = "category-card-desc" className="absolute bg-black w-[60%] lg:w-[40%] h-full bottom-0 -right-[200%] p-4 opacity-60 z-10 flex items-center justify-center">
+                      <div className="z-50">
+                        <p className="text-white text-size-500 font-normal first-letter:uppercase">
+                          {fetchCategory.data[0].description}
+                        </p>
                       </div>
                     </div>
-                  </div>
-                  <div className="w-full h-full py-4 px-6 bg-gray row-start-4 row-span-1 md:row-span-1 md:col-start-2 md:col-span-1">
-                  <div className="w-full h-full gap-y-5 flex">
-                      <div className="w-[70%] order-2 h-full flex items-center justify-center">
-                        <img src={earpodImg} alt="earpod image" className="w-full h-full object-contain"/>
-                      </div>
-                      <div className="w-[30%] h-fit order-1 self-center">
-                        <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
-                          gamings
-                        </h4>
-                        <Link to = "store">
-                          <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
-                            <p className="text-size-500 font-medium text-black capitalize">shop</p>
-                            <ArrowRightIcon size = {24}/>
+                    </div>}
+                  <div className = "flex max-sm:flex-col flex-wrap w-full min-h-[42rem] max-sm:gap-y-4 justify-between">
+                      {
+                        fetchCategory.data.length > 0 && fetchCategory.data.slice(1,5).map((category) => (
+                        <div 
+                          id = "category-card"
+                          style = {{backgroundImage: `url(${category.banner})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} 
+                          className="w-full md:w-[49%] py-4 px-6 h-[20rem] relative rounded-md overflow-clip">
+                          <div className="w-full h-full gap-y-5 flex">
+                          <div className="w-[30%] h-fit self-center">
+                            <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
+                              {category.name}
+                            </h4>
+                            <Link to = "store">
+                              <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
+                                <p className="text-size-500 font-medium text-blue capitalize">shop</p>
+                                <ArrowRightIcon size = {24} color="#fff"/>
+                              </div>
+                            </Link>
                           </div>
-                        </Link>
+                    </div>
+                    <div id = "category-card-desc" className="absolute bg-black w-[60%] lg:w-[40%] h-full bottom-0 -right-[200%] p-4 opacity-60 z-10 flex items-center justify-center">
+                      <div className="z-50 mx-auto">
+                        <p className="text-white text-size-400 font-normal first-letter:uppercase">
+                          {category.description}
+                        </p>
                       </div>
                     </div>
+                        </div>
+                      ))
+                    }
                   </div>
-                  <div className="w-full h-full py-4 px-6 bg-gray row-start-5 row-span-1 md:row-span-1 md:col-start-1 md:col-span-1">
-                  <div className="w-full h-full gap-y-5 flex">
-                      <div className="w-[70%] order-2 h-full flex items-center justify-center">
-                        <img src={earpodImg} alt="earpod image" className="w-full h-full object-contain"/>
-                      </div>
-                      <div className="w-[30%] h-fit order-1 self-center">
-                        <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
-                          cameras
-                        </h4>
-                        <Link to = "store">
-                          <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
-                            <p className="text-size-500 font-medium text-black capitalize">shop</p>
-                            <ArrowRightIcon size = {24}/>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-full h-full py-4 px-6 bg-gray row-start-6 row-span-1 md:row-span-1 md:col-start-2 md:col-span-1">
-                  <div className="w-full h-full gap-y-5 flex">
-                      <div className="w-[70%] order-2 h-full flex items-center justify-center">
-                        <img src={earpodImg} alt="earpod image" className="w-full h-full object-contain"/>
-                      </div>
-                      <div className="w-[30%] h-fit order-1 self-center">
-                        <h4 className="text-size-600 md:text-3xl font-semibold text-black mb-3 capitalize">
-                          appliances
-                        </h4>
-                        <Link to = "store">
-                          <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
-                            <p className="text-size-500 font-medium text-black capitalize">shop</p>
-                            <ArrowRightIcon size = {24}/>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-              </div>
+                </div>
+                :
+                <div className="w-full h-[25rem]">
+                  <Spinner />
+                </div>
+              }
             </div>
           </Section>
 
           {/* Best sellers */}
           <div className="mt-14">
             <Section title="best sellers" link="store">
-                <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 z-10">
-                    {
-                      // [1,2,3,4,5,6,7,8].map((index) =>(
-                      //   <div className="w-[45vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {index}>
-                      //     <ProductCard tag = "hot"/>
-                      //   </div>
-                      // ))
-                      sortedProductsByRating.map((product) =>(
-                        <div className="w-[45vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.product_id}>
-                          <ProductCard tag = "hot" product={product}/>
-                        </div>
-                      ))
-                    }
-                </div>
+                <></>
             </Section>
           </div>
 

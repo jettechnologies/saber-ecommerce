@@ -12,31 +12,48 @@ import Select from "@/components/Select";
 import { DollarSign, SlidersHorizontal } from "lucide-react";
 import ReactSlider from "react-slider";
 import ProductCard from "@/components/ProductCard";
-import { useProducts } from "@/hooks/useProducts";
+import { useNavigate } from "react-router-dom";
+// import { useProducts } from "@/hooks/useProducts";
 import Spinner from "@/components/Spinner";
 import Button from "@/components/Button";
+import useGetRequest from "@/hooks/useGetRequest";
+import { CategoryType, CategoryTypeWithProduct, ProductType } from "@/types";
 
 function Store() {
-  const { search } = useParams<{
-    search?: string;
+  const { category } = useParams<{
+    category?: string;
   }>();
-  const searchTerm = search ?? "";
-  // const categoryTerm = category ?? "all";
-
-  // const navigate = useNavigate();
-
-  // const handleClearFilter = () => {
-  //   navigate("/store/all");
-  // };
+  const categoryTerm = category ?? "";
+  
   const location = useLocation();
   const paths:string[] = location.pathname.split("/").filter(Boolean);
 
-  const {products, loading, error, getProducts}  = useProducts();
+  const navigate = useNavigate();
+
+  const productsFetch = useGetRequest<ProductType[]>("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-all-products");
+  const categoryWithProduct = useGetRequest<CategoryTypeWithProduct[]>(`https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-one-product-category-with-products/${categoryTerm}`)
+  const categories = useGetRequest<CategoryType[]>("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-all-product-categories");
+
+  const productCategories: { key: string; value: string }[] = categories.data.map(
+    (category) => ({
+      key: category.id.toLocaleString(),
+      value: category.name,
+    })
+  );
+
+  // state to handle filtering would have to make it possible that it accepts the whole filter value of sort and price differences
+  const [filter, setFilter] = useState("");
+
+  const handleCategorySearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+
+    setFilter(target.value);
+  }
 
   useEffect(() =>{
-    getProducts(searchTerm)
-  }, [getProducts, searchTerm]);
-
+    filter !== "" && navigate(`/store/${filter}`, {replace: true});
+    setFilter("");
+  },[filter, navigate, setFilter]);
 
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
@@ -48,31 +65,12 @@ function Store() {
 
   const [values, setValues] = useState([MIN, MAX]);
 
-  if (loading) {
+  if (productsFetch.loading) {
     return <div className="w-full min-h-screen">
       <Spinner />
     </div>;
   }
-
-  console.log(products)
-
-  // if (products.length === 0 || error) {
-  //   return (
-  //     <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-screen">
-  //       <h1>
-  //         The product you tried to reach does not exist, please search another
-  //         one.
-  //       </h1>
-
-  //       <Link
-  //         to="/store"
-  //         className="w-full lg:w-[50%] mt-6 flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
-  //       >
-  //         <Button size = "large" className="text-size-500 w-full h-full">Shop</Button>
-  //       </Link>
-  //     </div>
-  //   );
-  // }
+  console.log(filter)
 
   return (
     <>
@@ -85,10 +83,16 @@ function Store() {
               </Link>
               <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
             </li>
+            <li className="flex items-center gap-2">
+              <Link to = "/store">
+                Shop
+              </Link>
+              <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
+            </li>
             {
-              paths.map((path, index) =>(
+              paths.slice(1).map((path, index) =>(
                 <li className="flex items-center gap-2" key = {index}>
-                  <Link to = {`/${path}`}>
+                  <Link to = {`/store/${path}`}>
                     {path}
                   </Link>
                   <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
@@ -118,7 +122,7 @@ function Store() {
               <label htmlFor="sort">
                 <p className="text-size-500 font-medium text-text-black">Sort by</p>
               </label>
-              <Select id = "sort" name="sort" className="border-2 border-gray " select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
+              <Select id = "sort" name="sort" className="border border-black" defaultText="Sort by" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
             </div>
           </div>
         </div>
@@ -128,36 +132,61 @@ function Store() {
             {/* exte */}
 
             <div className="w-full">
-              {products.length > 0 ? <div className="flex flex-wrap justify-between gap-4">
+              {categoryTerm === "" ?(productsFetch.data.length > 0 ? <div className="flex flex-wrap justify-between gap-4">
                       {
-                        products.map(product => (
-                          <div className="w-full md:w-[44.5vw] lg:w-[22.5vw] h-[23rem] z-20" key={product.product_id}>
+                        productsFetch.data.map(product => (
+                          <div className="w-full md:w-[44.5vw] lg:w-[22.5vw] h-[23rem] z-20" key={product.id}>
                             <ProductCard product={product}/>
                           </div>
                         ))
                       }
                     </div>
-                  : (products.length === 0 || error) &&
-                  <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-">
-                    <h1>
-                      The product you tried to reach does not exist, please search another
-                      one.
-                    </h1>
-                    <Link
-                      to="/store"
-                      className="w-full lg:w-[50%] mt-6 flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
-                    >
-                      <Button size = "large" className="text-size-500 w-full h-full">Shop</Button>
-                    </Link>
-                </div>
-                }
+                  : (productsFetch.data.length === 0 || productsFetch.error) &&
+                      <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-">
+                        <h1>
+                          The product you tried to reach does not exist, please search another
+                          one.
+                        </h1>
+                        <Link
+                          to="/store"
+                          className="w-full lg:w-[50%] mt-6 flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
+                        >
+                          <Button size = "large" className="text-size-500 w-full h-full">Shop</Button>
+                        </Link>
+                    </div>
+                ): (
+                  (categoryWithProduct.data[0]?.products && categoryWithProduct.data[0]?.products.length > 0 )? <div className="flex flex-wrap justify-between gap-4">
+                      {
+                        categoryWithProduct.data[0]?.products.map(product => (
+                          <div className="w-full md:w-[44.5vw] lg:w-[22.5vw] h-[23rem] z-20" key={product.id}>
+                            <ProductCard product={product}/>
+                          </div>
+                        ))
+                      }
+                    </div>
+                  : (categoryWithProduct.data[0]?.products.length === 0 || categoryWithProduct.error) &&
+                      <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-">
+                        <h1>
+                          The product you tried to reach does not exist, please search another
+                          one.
+                        </h1>
+                        <Link
+                          to="/store"
+                          className="w-full lg:w-[50%] mt-6 flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
+                        >
+                          <Button size = "large" className="text-size-500 w-full h-full">Shop</Button>
+                        </Link>
+                    </div>
+                ) }
             </div>
         </div>
 
       </section>
 
-      <Modal position="left" open={isFiltersOpen} onClose={handleClick}>
-        <div onClick={handleClick}>
+
+      {/* <div className={`w-full h-[--hero-height] ${!isFiltersOpen ? "block": "hidden"} border-2 border-black`}></div> */}
+      <Modal open={isFiltersOpen} onClose={handleClick} position = "left">
+        <div>
         <div className="border-b border-black pb-4">
                       <h3 className="font-semibold text-xl capitalize text-text-black mb-4">filters</h3>
                       <ul className="flex flex-wrap gap-3">
@@ -168,7 +197,15 @@ function Store() {
                         categories
                       </label>
                       <div className="w-full h-full">
-                        <Select id="category" name="category" className="border border-black" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
+                        <Select 
+                          id="category" 
+                          name="category" 
+                          value={filter} 
+                          defaultText="Categories" 
+                          handleInputChange={handleCategorySearch}
+                          className="border border-black"
+                          select={productCategories}
+                        />
                       </div>
                     </div>
                     <div className="border-b border-black p-4 flex flex-col gap-4">
@@ -176,7 +213,7 @@ function Store() {
                         sort by
                       </label>
                       <div className="w-full h-full">
-                        <Select id = "sort" name="sort" className="border border-black" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
+                        <Select id = "sort" name="sort" className="border border-black" defaultText="Sort by" select={[{key: "recommend", value: "recommend"}, {key: "customer review", value: "customer review"}, {key: "lowest - highest", value: "lowest - highest"}]}/>
                       </div>
                     </div>
                     <div className="border-b border-black p-4 pb-6 flex flex-col gap-4">

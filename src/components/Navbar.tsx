@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import Modal from "./Modal";
@@ -8,12 +8,47 @@ import menuHamburger from "../assets/icons/menuHamburger.svg";
 import menuArrowRight from "../assets/icons/menuArrowRight.svg";
 import { CartIcon, SearchIcon, UserIcon } from "../icons/svg";
 import { useCartContext } from "@/context/cartContext";
+// import { categoriesFetch } from "../services/categories";
+
+interface Catergories{
+  id: number;
+  name: string;
+  description: string;
+  createdAT: string;
+  updatedAT: string | null;
+  banner: string;
+}
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
+  const [categories, setCategories] = useState<Catergories[] | []>([]);
   const location = useLocation();
   const currentUrl = location.pathname;
+  // const [categories,getCategories, loading, error] = useCategories();
+
+  useEffect(() =>{
+    const getCategories = async () => {
+      try {
+        const res = await fetch("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-all-product-categories");
+        
+        const data = await res.json();
+        console.log(data[0])
+        
+        setCategories(data[0]);
+
+        if (!res.ok) {
+          console.log(res);
+          return;
+        }
+      } catch (e : any) {
+        console.log(e.message);
+      }
+    }
+    
+    getCategories();   
+  }, []);
+
 
   const { cartItems } = useCartContext();
 
@@ -26,9 +61,11 @@ export default function Navbar() {
     { to: routes.ABOUT, text: "About Us" },
   ];
 
+  
+
   return (
     <>
-      <header className="max-h-[--header-height] px-8 flex py-4 justify-between place-items-center border-b-[1px] md:px-24 bg-white z-[999] sticky top-0 left-0">
+      <header className="font-roboto max-h-[--header-height] z-[400] sticky top-0 left-0 px-8 flex py-4 justify-between place-items-center border-b-[1px] md:px-24 bg-white">
         <div className=" flex justify-start lg:hidden">
           <button onClick={handleClick}>
             <img src={menuHamburger} alt="open menu" />
@@ -38,7 +75,7 @@ export default function Navbar() {
         <Logo />
 
         <div className="hidden lg:flex justify-center">
-          {navLinks.map((link) => (
+          {/* {navLinks.map((link) => (
             <Link
               key={link.to}
               to={link.to}
@@ -49,7 +86,39 @@ export default function Navbar() {
               <h1>{link.text}</h1>
               <div className="flex justify-end"></div>
             </Link>
-          ))}
+          ))} */}
+          <ul className="flex gap-5 border- border-black">
+            <li id = "shop" className="w-[20rem] relative">
+              <Link
+                to={"/store"}
+                className={`flex gap-8 text-size-500 font-semibold`}
+              >
+                <h1>Shop</h1>
+              </Link>
+              <ul className="hidden flex-col absolute top-[3rem] bg-white w-[17rem] items-center left-0 z-[999]">
+                {
+                  categories.length > 0 && categories.map((category) => (
+                    <li key = {category.name} className="py-4 text-text-black text-md capitalize">
+                      <Link
+                        to={"/store"}
+                        className={`flex gap-8 text-size-500 font-semibold`}
+                      >
+                        {category.name}
+                      </Link>
+                    </li>
+                  ))
+                }
+              </ul>
+            </li>
+            <li>
+            <Link
+                to={"/aboutus"}
+                className={`flex gap-8 text-size-500 font-semibold`}
+              >
+                <h1>About</h1>
+              </Link>
+            </li>
+          </ul>
         </div>
 
         <div className="flex gap-3">

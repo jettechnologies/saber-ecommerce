@@ -1,4 +1,5 @@
 import { twMerge } from "tailwind-merge";
+import React from "react"
 
 interface Props{
     select: {
@@ -6,13 +7,28 @@ interface Props{
         value:string;
     }[]
     className?:string;
+    defaultText:string;
     id:string;
-    name: string
+    name: string;
+    isMultiple?:boolean;
+    value?:string;
+    handleInputChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void
 }
 
-const Select:React.FC<Props> = ({select, className, id, name}) => {
+const Select:React.FC<Props> = ({select, className, value, isMultiple, id, name, defaultText, handleInputChange}) => {
+
   return (
-    <select name={name} id={id} className={twMerge("p-3 rounded-md text-size-500 font-medium font-roboto text-text-black capitalize cursor-pointer", className)}>
+    <select 
+      name={name} 
+      id={id} 
+      multiple = {isMultiple}
+      value={value}
+      className={twMerge("py-2 px-4 rounded-md text-size-400 font-normal font-roboto text-text-black capitalize cursor-pointer", className)}
+      onChange={handleInputChange}
+    >
+      <option disabled selected hidden value="">
+        {defaultText}
+      </option>
        {
             select.map(select => (
                 <option key = {select.key} value={select.key}>

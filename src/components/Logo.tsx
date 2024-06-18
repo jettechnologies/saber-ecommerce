@@ -5,7 +5,7 @@ export default function Logo() {
   return (
     <Link to="/" className="flex gap-1 text-xl font-semibold items-center">
       <img src={logo} alt="the logo of Commerce" />
-      <h1>Sagar stores</h1>
+      <h1>Thegearmates</h1>
     </Link>
   );
 }

@@ -1,8 +1,12 @@
 import React,{ useState, useRef, useEffect } from "react";
 import FormContainer from "@/components/FormContainer";
 import { MailOpen } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const OTP = () => {
+  const location = useLocation();
+  const clientEmail = location.state?.email || "";
+
     let currentOTPIndex = 0;
 
     const [otp, setOtp] = useState(new Array(6).fill(""));
@@ -43,8 +47,12 @@ const OTP = () => {
                     <div className="w-[96px] grid place-items-center bg-[#d6d5d5] aspect-square rounded-full shadow-sm">
                         <MailOpen size={60} strokeWidth={1}/>
                     </div>
-                    <p className="font-semibold text-size-500 text-blue w-[80%] text-center">
-                        Please verify your account by entering the 6 digit code sent to your email
+                    <p className="font-semibold text-size-400 text-blue w-[80%] text-center">
+                        Please verify your account by entering the 6 digit code sent to
+                        <br />
+                        <span className="text-black text-size-500 capitalize">
+                          {clientEmail}
+                        </span>
                     </p>
                 </div>
                 <div className="flex gap-1 md:gap-3 xl:gap-5 justify-center mb-8 py-2">

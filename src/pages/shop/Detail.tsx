@@ -1,7 +1,6 @@
 import { useParams } from "react-router";
-import { useProductDetail } from "@/hooks/useProductDetail";
-import { useEffect } from "react";
-import Spinner from "@/components/Spinner";
+import { useEffect, useState } from "react";
+// import Spinner from "@/components/Spinner";
 // import ImageCarousel from "@/components/ImageCarousell";
 import Icon from "@/components/Icon";
 import creditCard from "@/assets/icons/creditCard.svg";
@@ -11,23 +10,45 @@ import repeat from "@/assets/icons/repeat.svg";
 import AddToCartBtn from "@/components/addToCartBtn";
 // import Button from "@/components/Button";
 import Section from "@/components/Section";
-// import Recommended from "@/components/Recommended";
+import Recommended from "@/components/Recommended";
 import { Link } from "react-router-dom";
-import headphoneImg from "@/assets/images/headsets.png";
+import { ProductType } from "@/types";
 
 function Detail() {
-  const { product, getProduct, loading, error } = useProductDetail();
+
   const { id } = useParams();
+  const [data, setData] = useState<ProductType>()
 
+  // const {data, loading, error} = useGetRequest<ProductType[]>(`https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-one-product/${id}`)
   useEffect(() => {
-    getProduct(Number(id));
-  }, [id, getProduct]);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-one-product/${id}`);
 
-  if (loading) {
-    return <Spinner />;
-  }
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
 
-  if (!product || error) {
+        const result: ProductType = await response.json();
+        // console.log(result)
+        setData(result);
+      } catch (err) {
+        console.log(err)
+      } 
+    };
+
+    fetchData();
+  }, [id]);
+
+  console.log(data)
+
+  // if (loading) {
+  //   return <Spinner />;
+  // }
+
+  console.log(data, id)
+
+  if (!data) {
     return (
       <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24">
         <h1>
@@ -48,35 +69,33 @@ function Detail() {
   return (
     <>
       <div className="mx-4 md:mx-24">
-        {product && (
+        {data && (
           <div className="flex-row lg:flex gap-12">
-            <div className="mx-[-1rem]">
+            <div className="mx-[-1rem] grid place-items-center">
               {/* <ImageCarousel images={product.image} /> */}
-              <img src={headphoneImg} alt="product image" className="w-[60%] aspect-square object-contain"/>
+              <img src={data.productImage} alt="product image" className="w-[60%] aspect-square object-contain"/>
             </div>
 
             <div>
               <div>
-                <h2 className="text-icon font-medium text-lg mt-6 mb-7">
-                  {/* {product.category[0].toUpperCase() +
-                    product.category.slice(1)} */}
-                    {product.category}
+                <h2 className="text-icon font-medium text-lg mt-6 mb-7 first-letter:uppercase">
+                    {data.category?.name}
                 </h2>
-                <h1 className="text-[#3C4242] font-semibold text-3xl">
-                  {product.name}
+                <h1 className="text-[#3C4242] font-semibold text-3xl uppercase">
+                  {data.name}
                 </h1>
-                <div className="flex items-center gap-6 mt-[2.5rem] justify-center lg:justify-left">
+                <div className="flex items-center gap-6 mt-[2.5rem] justify-center lg:justify-start">
                   {/* <Link to = "/store">
                     <Button size = "medium" className="capitalize text-white text-lg w-[15rem]">
                       add to cart
                     </Button>
                   </Link> */}
                   <div className="w-[14rem]">
-                    <AddToCartBtn product={product} />
+                    <AddToCartBtn product={data} />
                   </div>
                   <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3">
                     <h1 className="font-semibold text-lg text-[#3C4242]">
-                      ${product.price}
+                      {data.price}
                     </h1>
                   </div>
                 </div>
@@ -88,7 +107,7 @@ function Detail() {
 
               <Section title="Description" >
                 <div className="mt-4">
-                  <p className="font-normal text-size-500 text-text-black">{product.description}</p>
+                  <p className="font-normal text-size-500 text-text-black first-letter:uppercase">{data.description}</p>
                 </div>
               </Section>
 
@@ -123,18 +142,19 @@ function Detail() {
             </div>
           </div>
         )}
-
         {/* Recomendations */}
-        {/* <div className="mt-16">
+        <div className="mt-16">
           <Section title="Similar Products">
             <div className="mt-4">
-              <Recommended product={product} />
+              <Recommended productId={data.id} categoryId = {data.category.id} />
             </div>
           </Section>
-        </div> */}
+        </div>
       </div>
     </>
   );
 }
 
 export default Detail;
+
+
