@@ -19,7 +19,7 @@ const useGetRequest = <T>(url: string, options?: UseGetRequestOptions): UseGetRe
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(url, {
+        const response = await fetch(`${import.meta.env.VITE_PRODUCT_LIST_API}${url}`, {
           headers: options?.headers,
         });
 

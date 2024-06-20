@@ -13,16 +13,25 @@ import Section from "@/components/Section";
 import Recommended from "@/components/Recommended";
 import { Link } from "react-router-dom";
 import { ProductType } from "@/types";
+import Spinner from "@/components/Spinner";
+import { IndianRupee } from "lucide-react";
+import Button from "@/components/Button";
+import { useCartContext } from "@/context/cartContext";
 
 function Detail() {
 
   const { id } = useParams();
   const [data, setData] = useState<ProductType>()
+  const [loading, setLoading] = useState(true);
+  const { addVariantsToCart, productVariant } = useCartContext();
+
+  console.log(productVariant)
 
   // const {data, loading, error} = useGetRequest<ProductType[]>(`https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-one-product/${id}`)
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // setLoading(true)
         const response = await fetch(`https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-one-product/${id}`);
 
         if (!response.ok) {
@@ -30,11 +39,14 @@ function Detail() {
         }
 
         const result: ProductType = await response.json();
-        // console.log(result)
+        console.log(result)
         setData(result);
       } catch (err) {
         console.log(err)
       } 
+      finally{
+        setLoading(false);
+      }
     };
 
     fetchData();
@@ -42,11 +54,13 @@ function Detail() {
 
   console.log(data)
 
-  // if (loading) {
-  //   return <Spinner />;
-  // }
-
   console.log(data, id)
+
+  if(loading){
+    return <div className="w-full h-full border-2">
+      <Spinner />
+    </div>
+  }
 
   if (!data) {
     return (
@@ -85,15 +99,11 @@ function Detail() {
                   {data.name}
                 </h1>
                 <div className="flex items-center gap-6 mt-[2.5rem] justify-center lg:justify-start">
-                  {/* <Link to = "/store">
-                    <Button size = "medium" className="capitalize text-white text-lg w-[15rem]">
-                      add to cart
-                    </Button>
-                  </Link> */}
                   <div className="w-[14rem]">
-                    <AddToCartBtn />
+                    <AddToCartBtn product={data}/>
                   </div>
-                  <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3">
+                  <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3 flex gap-1 items-center">
+                    <IndianRupee size={20} />
                     <h1 className="font-semibold text-lg text-[#3C4242]">
                       {data.price}
                     </h1>
@@ -113,6 +123,34 @@ function Detail() {
 
               <hr className="my-6" />
 
+              <section className="w-full flex flex-col">
+                {(data.available_sizes && data.available_sizes !== "") && <div className="">
+                  <h4 className="text-size-400 text-text-black font-medium uppercase mb-4">
+                    Select size
+                  </h4>
+                  <div className="flex gap-4">
+                    {data.available_sizes.split(",").map((size, index) =>(<div key = {index} className="w-full h-full">
+                      <Button size="medium" type="white" className="font-medium capitalize" handleClick={() => addVariantsToCart("color", size)}>
+                        {size}
+                      </Button>
+                    </div>))}
+                  </div>
+                  </div>}
+                  {(data.available_colors && data.available_colors !== "") && <div >
+                  <h4 className="text-size-500 text-text-black font-semibold uppercase mb-4">
+                    Select color
+                  </h4>
+                  <div className="flex gap-4">
+                    {data.available_colors.split(",").map((color, index) =>(<div key = {index} className="w-full h-full">
+                      <Button size="medium" type="white" className="font-medium capitalize" handleClick={() => addVariantsToCart("color", color)}>
+                        {color}
+                      </Button>
+                    </div>))}
+                  </div>
+                  </div>}
+              </section>
+
+              <hr className="my-6" />       
               {/* Assurances */}
 
               <div className="grid grid-cols-2 gap-5 justify-items-left">

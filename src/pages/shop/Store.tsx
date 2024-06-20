@@ -30,9 +30,9 @@ function Store() {
 
   const navigate = useNavigate();
 
-  const productsFetch = useGetRequest<ProductType[]>("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-all-products");
-  const categoryWithProduct = useGetRequest<CategoryTypeWithProduct[]>(`https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-one-product-category-with-products/${categoryTerm}`)
-  const categories = useGetRequest<CategoryType[]>("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-all-product-categories");
+  const productsFetch = useGetRequest<ProductType[]>("browse/fetch-all-products");
+  const categoryWithProduct = useGetRequest<CategoryTypeWithProduct[]>(`browse/fetch-one-product-category-with-products/${categoryTerm}`)
+  const categories = useGetRequest<CategoryType[]>("browse/fetch-all-product-categories");
 
   const productCategories: { key: string; value: string }[] = categories.data.map(
     (category) => ({
@@ -70,7 +70,7 @@ function Store() {
       <Spinner />
     </div>;
   }
-  console.log(filter)
+  // console.log(filter)
 
   return (
     <>

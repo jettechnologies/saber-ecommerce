@@ -1,31 +1,30 @@
-// import { ProductType } from "@/types";
-// import { useCartContext } from "@/context/cartContext";
-// import { useEffect, useState } from "react";
+import { ProductType } from "@/types";
+import { useCartContext } from "@/context/cartContext";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 import { ShoppingBag } from 'lucide-react';
 
-// function AddToCartBtn({
-//   product,
-// }: {
-//   product: ProductType;
-// }) {
-function AddToCartBtn(){
-//   const [isInCart, setIsInCart] = useState(false);
+function AddToCartBtn({
+  product,
+}: {
+  product: ProductType;
+}) {
+  const [isInCart, setIsInCart] = useState(false);
 
-//   const { addToCart, removeFromCart, cartItems } = useCartContext();
+  const { addToCart, removeFromCart, cartItems } = useCartContext();
 
-//   const handleClick = () => {
-//     if (!isInCart) {
-//       addToCart(product);
-//     } else {
-//       removeFromCart(product.productId);
-//     }
-//   };
+  const handleClick = () => {
+    if (!isInCart) {
+      addToCart(product);
+    } else {
+      removeFromCart(product.id);
+    }
+  };
 
-//   useEffect(() => {
-//     const itemInCart = cartItems.some((item) => item.productId === product.product_id);
-//     setIsInCart(itemInCart);
-//   },[cartItems, product.product_id])
+  useEffect(() => {
+    const itemInCart = cartItems.some((item) => item.id === product.id);
+    setIsInCart(itemInCart);
+  },[cartItems, product.id])
 
   return (
     // <button
@@ -59,10 +58,9 @@ function AddToCartBtn(){
     //       <h1 className="line-clamp-1">Add to Cart</h1>
     //     ))}
     // </button>
-    <Button size="medium" className="flex items-center justify-evenly w-full text-size-500 text-white" >
+    <Button size="medium" className="flex items-center justify-evenly w-full text-size-500 text-white" handleClick={handleClick}>
         <ShoppingBag color="#fff" />
-        {/* {isInCart ? "Remove from Cart" : "Add to Cart"} */}
-        Add to Cart
+        {isInCart ? "Remove from Cart" : "Add to Cart"}
     </Button>
   );
 }

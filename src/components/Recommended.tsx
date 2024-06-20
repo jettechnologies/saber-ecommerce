@@ -12,7 +12,7 @@ interface RecommendedProps {
 const Recommended:React.FC<RecommendedProps> = ({ categoryId, productId }) => {
   // const { products, getProducts } = useProducts();
   
-  const {data, loading, error} = useGetRequest<CategoryTypeWithProduct[]>(`https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-one-product-category-with-products/${categoryId}`)
+  const {data, loading, error} = useGetRequest<CategoryTypeWithProduct[]>(`browse/fetch-one-product-category-with-products/${categoryId}`)
   
   console.log(data, loading, error)
   const recommendedProducts = data[0]?.products.filter(product => product.id !== productId).slice(0,5)

@@ -8,6 +8,7 @@ import Wishlist from "@/pages/shop/users/Wishlist";
 import EditAccount from "./pages/shop/users/EditAccount";
 import ResetPassword from "./pages/shop/users/ResetPassword";
 import Checkout from "./pages/shop/Checkout";
+import Cart from "./pages/shop/Cart";
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
         <Route path="/auth/signup" element = {<Signup />}></Route>
         <Route path="/auth/otp" element = {<OTP />}></Route>
         <Route path="/product/:id" element={<Detail />} />
-        {/* <Route path="/cart" element={<Cart />} /> */}
+        <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
         <Route path="/user"  element = {<UserLayout />}>

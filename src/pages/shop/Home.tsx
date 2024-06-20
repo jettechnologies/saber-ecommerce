@@ -6,7 +6,7 @@ import headphoneImg from "@/assets/images/headsets.png";
 import earpodImg from "@/assets/images/earpods.webp";
 import Button from "@/components/Button";
 import { Link } from "react-router-dom";
-import { ArrowRightIcon, Truck, Banknote, LockKeyhole,Phone } from "lucide-react";
+import { Truck, Banknote, LockKeyhole,Phone } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import Promo from "@/components/Promo";
 import TestimonialCard from "@/components/TestimonialCard";
@@ -31,8 +31,8 @@ interface Testimonies{
 
 
 function Home() {
-  const fetchCategory = useGetRequest<CategoryType[]>("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-all-product-categories");
-  const productsFetch = useGetRequest<ProductType[]>("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-all-products");
+  const fetchCategory = useGetRequest<CategoryType[]>("browse/fetch-all-product-categories");
+  const productsFetch = useGetRequest<ProductType[]>("browse/fetch-all-products");
 
 
   const testimonies:Testimonies[] = [{
@@ -154,7 +154,7 @@ function Home() {
           <Section title="shop catergories" link="store">
             <div className="grid gap-4">
               {!fetchCategory.loading ? <div className="flex flex-col mt-8 gap-4 min-h-[42rem] w-full md:min-h-[22rem]">
-                {fetchCategory.data.length > 0 && <div 
+                {fetchCategory.data.length > 0 && <Link to = {`store/${fetchCategory.data[0].id}`}><div 
                   id = "category-card"
                   style = {{backgroundImage: `url(${fetchCategory.data[0].banner})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} 
                   className={`w-full h-[25rem] py-4 px-6 relative rounded-md overflow-clip`}>
@@ -163,12 +163,12 @@ function Home() {
                             <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
                               {fetchCategory.data[0].name}
                             </h4>
-                            <Link to = {`store/${fetchCategory.data[0].id}`}>
+                            {/* <Link to = {`store/${fetchCategory.data[0].id}`}>
                               <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
                                 <p className="text-size-500 font-medium text-blue capitalize">shop</p>
                                 <ArrowRightIcon size = {24} color="#fff"/>
                               </div>
-                            </Link>
+                            </Link> */}
                           </div>
                     </div>
                     <div id = "category-card-desc" className="absolute bg-black w-[60%] lg:w-[40%] h-full bottom-0 -right-[200%] p-4 opacity-60 z-10 flex items-center justify-center">
@@ -178,27 +178,29 @@ function Home() {
                         </p>
                       </div>
                     </div>
-                    </div>}
+                    </div></Link>}
                   <div className = "flex max-sm:flex-col flex-wrap w-full min-h-[42rem] max-sm:gap-y-4 justify-between">
                       {
                         fetchCategory.data.length > 0 && fetchCategory.data.slice(1,5).map((category) => (
+                        <Link to = {`store/${category.id}`}>
                         <div 
                           id = "category-card"
                           style = {{backgroundImage: `url(${category.banner})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} 
-                          className="w-full md:w-[49%] py-4 px-6 h-[20rem] relative rounded-md overflow-clip">
+                          className="w-full lg:w-[44.5vw] md:w-[47vw] py-4 px-6 h-[20rem] relative rounded-md overflow-clip border-2">
                           <div className="w-full h-full gap-y-5 flex">
                           <div className="w-[30%] h-fit self-center">
                             <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
                               {category.name}
                             </h4>
-                            <Link to = "store">
+                            {/* <Link to = {`store/${category.id}`}>
                               <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
                                 <p className="text-size-500 font-medium text-blue capitalize">shop</p>
                                 <ArrowRightIcon size = {24} color="#fff"/>
                               </div>
                             </Link>
-                          </div>
-                    </div>
+                          </div> */}
+                        </div>
+                        </div>
                     <div id = "category-card-desc" className="absolute bg-black w-[60%] lg:w-[40%] h-full bottom-0 -right-[200%] p-4 opacity-60 z-10 flex items-center justify-center">
                       <div className="z-50 mx-auto">
                         <p className="text-white text-size-400 font-normal first-letter:uppercase">
@@ -206,10 +208,11 @@ function Home() {
                         </p>
                       </div>
                     </div>
-                        </div>
+                    </div>
+                    </Link>
                       ))
                     }
-                  </div>
+                    </div>
                 </div>
                 :
                 <div className="w-full h-[25rem]">
