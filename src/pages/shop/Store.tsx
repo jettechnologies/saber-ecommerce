@@ -56,7 +56,7 @@ function Store() {
   const [filter, setFilter] = useState("");
 
   const handleCategorySearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
-    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 
     setFilter(target.value);
   }
@@ -211,7 +211,7 @@ function Store() {
                         <Select 
                           id="category" 
                           name="category" 
-                          value={filter} 
+                          // value={filter} 
                           defaultText="Categories" 
                           handleInputChange={handleCategorySearch}
                           className="border border-black"

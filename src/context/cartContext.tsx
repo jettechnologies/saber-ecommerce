@@ -350,6 +350,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
 
       const resData = await response.json();
+      console.log(resData)
       setCartId(resData.id);
       setItem(resData.id);
       setCartItems(resData.items);
