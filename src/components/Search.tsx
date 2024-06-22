@@ -21,7 +21,8 @@ const Search:React.FC<Props> = ({setSearchVisible}) => {
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     if (isValid) {
-      navigate(`/store/all/${data.search}`);
+      // navigate(`/store/all/${data.search}`);
+      navigate(`/store?search=${encodeURIComponent(data.search)}`);
     } else {
       const errorMessage = errors.search?.message || "Invalid input";
       alert(errorMessage);
@@ -38,7 +39,7 @@ const Search:React.FC<Props> = ({setSearchVisible}) => {
           <input
             type="text"
             placeholder="Search"
-            className="p-2 rounded-lg pl-10 bg-gray border border-black w-full"
+            className="p-2 rounded-lg pl-10 w-[20rem] border"
             {...register("search", {
               required: "Can't search for an empty product",
               minLength: {

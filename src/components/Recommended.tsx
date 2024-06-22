@@ -10,14 +10,11 @@ interface RecommendedProps {
 }
 
 const Recommended:React.FC<RecommendedProps> = ({ categoryId, productId }) => {
-  // const { products, getProducts } = useProducts();
   
-  const {data, loading, error} = useGetRequest<CategoryTypeWithProduct[]>(`browse/fetch-one-product-category-with-products/${categoryId}`)
+  const {data, loading} = useGetRequest<CategoryTypeWithProduct[]>(`browse/fetch-one-product-category-with-products/${categoryId}`)
   
-  console.log(data, loading, error)
   const recommendedProducts = data[0]?.products.filter(product => product.id !== productId).slice(0,5)
 
-  console.log(recommendedProducts)
   if(loading){
     return(
       <div className="w-full h-full">
@@ -32,15 +29,10 @@ const Recommended:React.FC<RecommendedProps> = ({ categoryId, productId }) => {
       </div>)
   }
 
-
-  // useEffect(() => {
-  //   getProducts(1, "", product?.category);
-  // }, [product]);
-
   return (
     <div className="flex flex-wrap gap-4">
       {recommendedProducts.map((product) => (
-        <div className="w-[45%] lg:w-[30%] h-[20rem]">
+        <div key = {product.id} className="w-[45%] lg:w-[30%] h-[20rem]">
           <ProductCard product={product}/>
         </div>
       ))}

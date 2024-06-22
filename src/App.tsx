@@ -19,7 +19,7 @@ function App() {
       <Route element = {<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path={routes.ABOUT} element={<AboutUs />} />
-        <Route path="/store/:category?/:search?" element={<Store />} />
+        <Route path="/store/:category?" element={<Store />} />
         <Route path="/auth/login" element = {<Signin />}></Route>
         <Route path="/auth/signup" element = {<Signup />}></Route>
         <Route path="/auth/otp" element = {<OTP />}></Route>

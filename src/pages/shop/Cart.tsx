@@ -3,22 +3,22 @@ import CartItem from "@/components/CartItem";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
-  const { cartItems, totalPrice, removeFromCart } = useCartContext();
+  const { cartItems, totalPrice } = useCartContext();
 
   const uniqueItemsIds = new Set();
 
-  if (cartItems.length === 0) {return (<div className=" flex flex-col items-center justify-center text-center w-auto h-[--hero-height]">
-    <h1 className="text-3xl font-semibold">It seems like your cart it's empty, let's change that!</h1>
-    <Link
-      to="/store"
-      className="w-[50%]  mt-6 bg-black flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
-    >
-          Shop
-        </Link>
-  </div>)}
+  // if (cartItems.length === 0) {return (<div className=" flex flex-col items-center justify-center text-center w-auto h-[--hero-height]">
+  //   <h1 className="text-3xl font-semibold">It seems like your cart it's empty, let's change that!</h1>
+  //   <Link
+  //     to="/store"
+  //     className="w-[50%]  mt-6 bg-black flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
+  //   >
+  //         Shop
+  //       </Link>
+  // </div>)}
 
   return (
-    <div className="flex flex-col gap-6 mt-10 min-h-[--hero-height]">
+    <div className="flex flex-col gap-6 mt-10 min-h-screen">
       {cartItems.map((item) => {
         if (!uniqueItemsIds.has(item.id)) {
           uniqueItemsIds.add(item.id);
@@ -37,7 +37,7 @@ const Cart = () => {
             <h1>Subtotal</h1>
             <h1>${totalPrice}</h1>
           </div>
-          <div className="flex gap-4 justify-between">
+          <div className="flex gap-4 justify-between mt-4">
             <h1>Shipping</h1>
             <h1>FREE</h1>
           </div>
@@ -49,11 +49,6 @@ const Cart = () => {
         </div>
         <hr className="h-2" />
         <Link
-          onClick={() => {
-            uniqueItemsIds.forEach((id) => {
-              removeFromCart(Number(id));
-            });
-          }}
           to="/checkout"
           className="w-full  mt-6 bg-text-black flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
         >
@@ -63,5 +58,11 @@ const Cart = () => {
     </div>
   );
 };
+
+// onClick={() => {
+//   uniqueItemsIds.forEach((id) => {
+//     removeFromCart(Number(id));
+//   });
+// }}
 
 export default Cart;

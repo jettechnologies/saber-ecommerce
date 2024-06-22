@@ -11,13 +11,16 @@ type UseGetRequestResponse<T> = {
   loading: boolean;
 };
 
-const useGetRequest = <T>(url: string, options?: UseGetRequestOptions): UseGetRequestResponse<T> => {
+const useGetRequest = <T>(url: string, options?: UseGetRequestOptions, fetchFlag = true): UseGetRequestResponse<T> => {
   const [data, setData] = useState<T | []>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
+
+      if(!fetchFlag) return;
+
       try {
         const response = await fetch(`${import.meta.env.VITE_PRODUCT_LIST_API}${url}`, {
           headers: options?.headers,
@@ -38,7 +41,7 @@ const useGetRequest = <T>(url: string, options?: UseGetRequestOptions): UseGetRe
     };
 
     fetchData();
-  }, [url, options?.headers]);
+  }, [url, options?.headers, fetchFlag]);
 
   return { data, error, loading };
 };

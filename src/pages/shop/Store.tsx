@@ -24,14 +24,17 @@ function Store() {
     category?: string;
   }>();
   const categoryTerm = category ?? "";
+  const navigate = useNavigate();
+
   
   const location = useLocation();
   const paths:string[] = location.pathname.split("/").filter(Boolean);
+  const searchParams = new URLSearchParams(location.search);
+  const search = searchParams.get('search') || '';
 
-  const navigate = useNavigate();
 
   const productsFetch = useGetRequest<ProductType[]>("browse/fetch-all-products");
-  const categoryWithProduct = useGetRequest<CategoryTypeWithProduct[]>(`browse/fetch-one-product-category-with-products/${categoryTerm}`)
+  const categoryWithProduct = useGetRequest<CategoryTypeWithProduct[]>(`browse/fetch-one-product-category-with-products/${categoryTerm}`, {}, !!categoryTerm);
   const categories = useGetRequest<CategoryType[]>("browse/fetch-all-product-categories");
 
   const productCategories: { key: string; value: string }[] = categories.data.map(
@@ -40,6 +43,14 @@ function Store() {
       value: category.name,
     })
   );
+
+  const { data: searchResults, loading: searchLoading, error: searchError } = useGetRequest<ProductType[]>(
+    `browse/search-product?keyword=${search}`,
+    {}, // Empty options object
+    !!search // Only fetch if search is not empty
+  );
+
+  console.log(searchError, searchLoading, searchResults);
 
   // state to handle filtering would have to make it possible that it accepts the whole filter value of sort and price differences
   const [filter, setFilter] = useState("");

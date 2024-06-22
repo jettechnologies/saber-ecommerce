@@ -1,13 +1,13 @@
 import { useCartContext } from "@/context/cartContext";
-import { ProductType } from "../types";
+import { Items } from "../types";
 // import headphoneImg from "@/assets/images/headsets.png"
 
 type CartItemProps = {
-  item: ProductType;
+  item: Items;
 };
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
-  const { quantityOfItem, addToCart, removeFromCart, removeSingleFromCart } =
+  const { quantityOfItem, incrementQuantity, decrementQuantity, removeFromCart } =
     useCartContext();
 
     console.log(item);
@@ -16,16 +16,16 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
     <div className="flex justify-around lg:grid lg:grid-cols-[7fr_repeat(5,1fr)] gap-2 lg:gap-24 ">
       {/* Product description */}
 
-      <div className="flex gap-5 max-w-[18rem]">
+      <div className="flex items-center gap-5 max-w-[18rem]">
         <img
           className="h-[6rem] w-[6rem] rounded-lg"
-          src={item.productImage}
-          alt={`Image of  ${item.name}`}
+          src={item.product?.productImage}
+          alt={`Image of  ${item.product?.name}`}
         />
         <div className="hidden lg:flex flex-col gap-1">
-          <h1 className="font-semibold line-clamp-2">{item.name}</h1>
+          <h1 className="font-semibold line-clamp-2">{item.product?.name}</h1>
           <h3 className="font-semibold text-icon">
-            {item.category?.name}
+            {item.product?.category?.name}
           </h3>
         </div>
       </div>
@@ -42,16 +42,16 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
         <div className="flex items-center gap-2 bg-secondary rounded-2xl justify-center">
           <button
             className="px-2 pl-4 py-2 rounded-l-2xl hover:bg-slate-300 transition-colors"
-            onClick={() => removeSingleFromCart(item.id)}
+            onClick={() => decrementQuantity(item.id)}
           >
             -
           </button>
           <div className="w-[1rem] flex justify-center">
-            {quantityOfItem(item.id)}
+            {quantityOfItem(item.product.id)}
           </div>
           <button
             className="px-2 pr-4 py-2 rounded-r-2xl hover:bg-slate-300 transition-colors"
-            onClick={() => addToCart(item)}
+            onClick={() => incrementQuantity(item.id)}
           >
             +
           </button>
@@ -59,13 +59,13 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
       </div>
 
       {/* Shipping */}
-      <div className="lg:flex items-center hidden">
+      {/* <div className="lg:flex items-center hidden">
         <h1 className="text-secondary font-bold ">FREE</h1>
-      </div>
+      </div> */}
 
       {/* Subtotal */}
       <div className="flex items-center font-bold w-[5rem]">
-        <h1>${(quantityOfItem(item.id) * parseInt(item.price))}</h1>
+        <h1>${(quantityOfItem(item.product.id) * parseInt(item.price))}</h1>
       </div>
 
       {/* Discard product */}

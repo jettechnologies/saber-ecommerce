@@ -9,51 +9,16 @@ import { Link } from "react-router-dom";
 import { Truck, Banknote, LockKeyhole,Phone } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import Promo from "@/components/Promo";
-import TestimonialCard from "@/components/TestimonialCard";
-import testimonyOne from "@/assets/images/testimonial/testimonial1.webp";
-import testimonyTwo from "@/assets/images/testimonial/testimonial2.webp";
-import testimonyThree from "@/assets/images/testimonial/testimonial3.webp";
 import ProductSlider from "@/components/ProductSlider";
 import useGetRequest from "@/hooks/useGetRequest";
 // import { useEffect, useMemo, useState } from "react";
 import Spinner from "@/components/Spinner";
 import { ProductType, CategoryType } from "@/types";
 
-
-interface Testimonies{
-  id:number;
-  img: string;
-  name: string;
-  content: string;
-}
-
-
-
-
 function Home() {
   const fetchCategory = useGetRequest<CategoryType[]>("browse/fetch-all-product-categories");
   const productsFetch = useGetRequest<ProductType[]>("browse/fetch-all-products");
 
-
-  const testimonies:Testimonies[] = [{
-    id: 1,
-    img: testimonyOne,
-    name: "John Doe",
-    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
-  }, 
-  {
-    id: 2,
-    img: testimonyTwo,
-    name: "Alex Howard",
-    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
-  },
-  {
-    id: 3,
-    img: testimonyThree,
-    name: "Theresa Hue",
-    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, corporis Autem, corporis"
-  }
-  ]
   return (
     <main className="w-full h-full">
       {/* Hero section */}
@@ -131,7 +96,7 @@ function Home() {
 
       {/* Content section */}
       <section className="mx-4 mt-10 lg:mx-14 min-h-screen">
-        {/* Highlighted categories */}
+        {/* Highlighted categories sort out by timespan */}
         <Section title="new arrivals" link="/store">
           {!productsFetch.loading ? <ProductSlider 
             autoPlay = {false}
@@ -222,18 +187,32 @@ function Home() {
             </div>
           </Section>
 
-          {/* Best sellers */}
-          <div className="mt-14">
-            <Section title="best sellers" link="store">
-                <></>
-            </Section>
-          </div>
-
           {/* Discont sales or Newletter */}
           <section className="mt-14">
             {/* remember to add a state in the global store that would enable the store owner to either turn a promo or a newletter on */}
             <Promo />
           </section>
+
+          {/* Best sellers  sort out by rating*/}
+          <div className="mt-14">
+            <Section title="best sellers" link="store">
+              {!productsFetch.loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 z-10">
+                {
+                  productsFetch.data.map((product:ProductType) =>(
+                    <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
+                      <ProductCard product={product} tag={product.isOutOfStock}/>
+                    </div>))
+                }
+                </div>
+                :
+                <div className="w-full h-[25rem]">
+                  <Spinner />
+                </div>
+              }
+            </Section>
+          </div>
+
+          {/* newsletter section */}
 
           {/* Store Benefits */}
           <section className="mt-14">
@@ -274,24 +253,6 @@ function Home() {
                   </p>
                 </div>
               </div>
-            </div>
-          </section>
-
-          {/* Testimonials */}
-          <section className="mt-14 h-fit">
-            <h3 className="text-3xl md:text-5xl text-black font-bold capitalize mb-10">
-              Testimonials
-            </h3>
-            <div className="flex flex-wrap gap-4">
-              {
-                testimonies.map((testimonial) =>(
-                  <div className="flex-[1_1_25vw] min-h-40 " key={testimonial.id}>
-                    <TestimonialCard img = {testimonial.img} name = {testimonial.name}>
-                      <p className="text-size-500 font-medium text-text-black">{testimonial.content}</p>
-                    </TestimonialCard>
-                  </div>
-                ))
-              }
             </div>
           </section>
         </div>

@@ -1,13 +1,3 @@
-// export interface ProductType {
-//     product_id: number;
-//     name: string;
-//     description: string;
-//     price: number;
-//     category: string;
-//     image: string;
-//     availability: boolean;
-//     rating: number;
-//   }
 
 export interface ProductType {
   availability: "in_stock" | "out_stock";
@@ -50,10 +40,6 @@ export interface CategoryType{
   banner: string;
 }
 
-// export interface CategoryTypeWithProduct extends CategoryType{
-//   products: ProductType[];
-// }
-
 export interface CategoryTypeWithProduct{
   id: number;
   name: string;
@@ -62,4 +48,22 @@ export interface CategoryTypeWithProduct{
   updatedAT: string | null;
   banner: string;
   products: ProductType[];
+}
+
+// Define the Item interface
+export interface Items {
+  id: string;
+  quantity: number;
+  price: string;
+  color: string;
+  sizes: string;
+  addedAT: string;
+  product: ProductType;
+}
+
+// Define the Cart interface
+export interface CartType {
+  id: number;
+  isCheckedOut: boolean;
+  items: Items[];
 }

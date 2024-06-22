@@ -240,7 +240,7 @@ input[type = "number"] {
   margin-bottom:1.25rem;
 }
 
-#shop ul:hover{
+#shop:hover .category-nav{
   display: flex;
 }
 

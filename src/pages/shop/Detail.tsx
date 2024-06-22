@@ -25,9 +25,6 @@ function Detail() {
   const [loading, setLoading] = useState(true);
   const { addVariantsToCart, productVariant } = useCartContext();
 
-  console.log(productVariant)
-
-  // const {data, loading, error} = useGetRequest<ProductType[]>(`https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-one-product/${id}`)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -39,7 +36,6 @@ function Detail() {
         }
 
         const result: ProductType = await response.json();
-        console.log(result)
         setData(result);
       } catch (err) {
         console.log(err)
@@ -51,10 +47,6 @@ function Detail() {
 
     fetchData();
   }, [id]);
-
-  console.log(data)
-
-  console.log(data, id)
 
   if(loading){
     return <div className="w-full h-full border-2">
@@ -100,7 +92,7 @@ function Detail() {
                 </h1>
                 <div className="flex items-center gap-6 mt-[2.5rem] justify-center lg:justify-start">
                   <div className="w-[14rem]">
-                    <AddToCartBtn product={data}/>
+                    <AddToCartBtn productId={data.id}/>
                   </div>
                   <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3 flex gap-1 items-center">
                     <IndianRupee size={20} />
@@ -124,13 +116,17 @@ function Detail() {
               <hr className="my-6" />
 
               <section className="w-full flex flex-col">
-                {(data.available_sizes && data.available_sizes !== "") && <div className="">
-                  <h4 className="text-size-400 text-text-black font-medium uppercase mb-4">
+                {(data.available_sizes && data.available_sizes !== "") && <div className="mb-8">
+                  <h4 className="text-size-500 text-text-black font-semibold uppercase mb-4">
                     Select size
                   </h4>
                   <div className="flex gap-4">
                     {data.available_sizes.split(",").map((size, index) =>(<div key = {index} className="w-full h-full">
-                      <Button size="medium" type="white" className="font-medium capitalize" handleClick={() => addVariantsToCart("color", size)}>
+                      <Button 
+                        size="medium" 
+                        type="white" 
+                        className={`font-medium capitalize ${productVariant.size === size && "border border-blue text-blue"}`} 
+                        handleClick={() => addVariantsToCart("size", size)}>
                         {size}
                       </Button>
                     </div>))}
@@ -141,8 +137,12 @@ function Detail() {
                     Select color
                   </h4>
                   <div className="flex gap-4">
-                    {data.available_colors.split(",").map((color, index) =>(<div key = {index} className="w-full h-full">
-                      <Button size="medium" type="white" className="font-medium capitalize" handleClick={() => addVariantsToCart("color", color)}>
+                    {data.available_colors.split(",").map((color, index) =>(<div key = {index} className="w-fit h-fit">
+                      <Button 
+                        size="medium" 
+                        type="white" 
+                        className={`font-medium capitalize ${productVariant.color === color && "border border-blue text-blue"}`}  
+                        handleClick={() => addVariantsToCart("color", color)}>
                         {color}
                       </Button>
                     </div>))}
