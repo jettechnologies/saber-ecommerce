@@ -3,16 +3,34 @@ import FormContainer from "@/components/FormContainer";
 import { MailOpen } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useApiRequest from "@/hooks/useApiRequest";
+import Cookies from 'js-cookie';
+import { jwtDecode } from "jwt-decode";
+import { useAuth } from "@/context/authContext";
+
+interface OTPResponseType{
+  accessToken: {
+    token: string;
+  };
+  isValid: boolean;
+}
 
 
 const OTP = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const clientEmail = location.state?.email || "";
+  const clientEmail:string = location.state?.email ?? "";
 
-  const { response, error, loading, makeRequest } = useApiRequest({
-    url: "user-auth/verify-email"
+  const [countdown, setCountdown] = useState(2 * 60);
+  const [isResend, setIsResend] = useState(false);
+  // const [loading, setLoaidng] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  // const [response, setResponse] = useState<string | null>(null);
+
+  const { response, error, loading, makeRequest } = useApiRequest<OTPResponseType, {otp: string}>({
+    method: "POST",
   });
+
+  const { setToken, setIsLogin } = useAuth();
 
     let currentOTPIndex = 0;
 
@@ -65,16 +83,47 @@ const OTP = () => {
         otp: otpString,
       }
 
-      makeRequest(data);
+      console.log(isResend)
 
-      if(error !== null){
-        return;
-      }
-      
-      navigate("/auth/login", {replace:true});
+      const url = isResend ? 'user-auth/resend-otp' : 'user-auth/verify-email';
+      const headers: HeadersInit | undefined = isResend ? { "email": clientEmail } : undefined;
+
+      await makeRequest(data, url, headers);
+        if(error !== null){
+          return;
+        }
+
+        if(response !== null && response !== undefined){   
+          console.log(response?.accessToken?.token) 
+          const decodedToken: any = jwtDecode(response?.accessToken?.token);
+          console.log(decodedToken);
+        
+          Cookies.set("auth_token", response?.accessToken?.token, {
+            expires: new Date(decodedToken?.exp * 1000)
+          })
+          
+          setToken(response?.accessToken?.token)
+          setIsLogin(true);
+          navigate("/", {replace:true});
+        }
     }
 
-    console.log(activeOTPIndex);
+    // countdown logic
+    useEffect(() => {
+      // Exit early when countdown reaches 0
+      if (countdown === 0) {
+        setIsResend(true)
+        return
+      }
+  
+      // Set interval to decrease countdown by 1 every second
+      const intervalId = setInterval(() => {
+        setCountdown(prevCountdown => prevCountdown - 1);
+      }, 1000);
+  
+      // Clean up interval on component unmount or when countdown reaches 0
+      return () => clearInterval(intervalId);
+    }, [countdown]);
 
   return (
     <div className="w-full">
@@ -110,10 +159,25 @@ const OTP = () => {
                     );
                 })}
                 </div>
-                <div className="w-full">
+                {/* <div className="w-full">
                     <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
                         Verify account
                     </button>
+                </div> */}
+                {!isResend ? <div className="w-full">
+                    <button disabled = {loading} type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
+                      {loading ? "Loading..." : "Verify account"}
+                    </button>
+                  </div>
+                  : <div className="w-full">
+                    <button disabled = {loading} type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
+                      {loading ? "Loading..." : "Resend OTP"}
+                    </button>
+                  </div>
+                }
+                <div>
+                  <h1>Timer Countdown</h1>
+                  <div>Countdown: {countdown}</div>
                 </div>
             </form>
         </FormContainer>

@@ -30,7 +30,7 @@ const Signup = () => {
 
     const navigate = useNavigate()
     const { response, error, loading, makeRequest } = useApiRequest({
-        url: "user-auth/register"
+        method: "POST",
     });
 
     const [user, setUser] = useState<User>({
@@ -58,7 +58,7 @@ const Signup = () => {
     setUser({ ...user, [name]: {str: value.toLocaleLowerCase(), error: false} });
 }
 
-const formSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+const formSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const nameRegex = /^[a-zA-Z\s]*$/;
     // const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i;
@@ -97,10 +97,11 @@ const formSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         mobile: mobile.str,
     }
   
-    makeRequest(data);
+    // makeRequest("user-auth/register", data);
+    await makeRequest(data, "user-auth/register");
     if(error !== null){return}
 
-    navigate("/auth/otp", { replace: true });
+    navigate("/auth/otp", { replace: true, state: { email: user.email.str} });
 
 }
 

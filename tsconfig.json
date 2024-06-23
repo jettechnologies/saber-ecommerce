@@ -28,12 +28,3 @@
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
-
-
-  // "@/*": ["./src/*"],
-  //       "@components/*": ["./components/*"],
-  //       "@assets": ["./assets/*"],
-  //       "@context/*": ["./context/*"],
-  //       "@hooks/*": ["./hooks/*"],
-  //       "@pages/*": ["./pages/*"],
-  //       "@services/*": ["./services/*"]

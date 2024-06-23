@@ -6,17 +6,20 @@ import { BrowserRouter } from "react-router-dom";
 import { CartContextProvider } from "./context/cartContext.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
 import { DataProvider } from "./context/productCatergoriesContext.tsx";
+import { AuthProvider } from "./context/authContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-      <DataProvider>
-        <CartContextProvider>
-          <BrowserRouter>
-            <ScrollToTop />
-            <App />
-          </BrowserRouter>
-        </CartContextProvider>
-      </DataProvider>
+      <AuthProvider>
+        <DataProvider>
+          <CartContextProvider>
+            <BrowserRouter>
+              <ScrollToTop />
+              <App />
+            </BrowserRouter>
+          </CartContextProvider>
+        </DataProvider>
+      </AuthProvider>
   </React.StrictMode>
 );
 

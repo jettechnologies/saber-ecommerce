@@ -3,6 +3,10 @@ import FormContainer from "@/components/FormContainer";
 import { Mail, LockKeyhole, Info } from "lucide-react";
 import { useState, useEffect } from "react";
 import Notification from "@/components/Notification";
+import useApiRequest from "@/hooks/useApiRequest";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import { useAuth } from "@/context/authContext";
 
 interface User{
     email: {
@@ -15,9 +19,22 @@ interface User{
     }
 }
 
+interface OTPResponseType{
+    accessToken: {
+      token: string;
+    };
+    isValid: boolean;
+  }
+
 const Signin = () => {
 
     const navigate = useNavigate();
+
+    const { loading, error, response, makeRequest } = useApiRequest<OTPResponseType, {email:string, password: string}>({
+        method:"POST",
+    });
+
+    const { setIsLogin, setToken } = useAuth();
 
     const [user, setUser] = useState<User>({
         email: {
@@ -30,7 +47,7 @@ const Signin = () => {
         }
     });
 
-    const [error, setError] = useState<{msg:string; status:boolean}>({
+    const [validateError, setValidateError] = useState<{msg:string; status:boolean}>({
         msg: "",
         status: false,
     });
@@ -42,7 +59,7 @@ const Signin = () => {
         setUser({ ...user, [name]: {str: value.toLocaleLowerCase(), error: false} });
     }
 
-    const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) =>{
+    const handleFormSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
         
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -51,7 +68,7 @@ const Signin = () => {
         const { email, password } = user;
 
         if(email.str === "" || password.str === "" ){
-            setError({status: true, msg: "All fields are required!"});
+            setValidateError({status: true, msg: "All fields are required!"});
             return
         }
 
@@ -71,7 +88,27 @@ const Signin = () => {
 
         console.log(data);
 
-        navigate("/", { replace: true });
+        await makeRequest(data, "user-auth/login");
+
+        if(response !== undefined && response !== null){
+            console.log(response);
+
+            const token = Cookies.get("auth_token");
+            if(!token){
+                const decodedToken: any = jwtDecode(response?.accessToken?.token);
+                console.log(decodedToken);
+              
+                Cookies.set("auth_token", response?.accessToken?.token, {
+                  expires: new Date(decodedToken?.exp * 1000)
+                });
+            }
+
+           if(token){setToken(token);
+            setIsLogin(true);}
+
+            navigate("/", { replace: true });
+        }
+        
     }
 
     useEffect(() =>{
@@ -79,7 +116,7 @@ const Signin = () => {
     
         if(error){
            errorRemoval =  setTimeout(() =>{
-                setError({status: false, msg: ""});
+                setValidateError({status: false, msg: ""});
             }, 2000)
         }
     
@@ -92,7 +129,7 @@ const Signin = () => {
             <form className="bg-white rounded-md shadow-2xl p-5" onSubmit={handleFormSubmit}>
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Hello Again!</h1>
                 <p className="text-md font-normal text-blue mb-8">Welcome Back</p>
-                {error.status && <Notification message = {error.msg} type = "danger" className="text-white mb-4"/>}
+                {validateError.status && <Notification message = {validateError.msg} type = "danger" className="text-white mb-4"/>}
                 <div>
                     <div className={`flex items-center ${user.email.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
                         <Mail size = {20}/>
@@ -132,7 +169,7 @@ const Signin = () => {
                 </div>
                 <div className="w-full">
                     <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white ">
-                        login
+                       {loading? "Loaidng..." : "login"}
                     </button>
                 </div>
                 <div className="flex w-full justify-center gap-3 accent-blue mt-4">
