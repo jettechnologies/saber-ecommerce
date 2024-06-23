@@ -6,6 +6,7 @@ import useApiRequest from "@/hooks/useApiRequest";
 import Cookies from 'js-cookie';
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "@/context/authContext";
+import { formatDistanceStrict, addSeconds } from 'date-fns';
 
 interface OTPResponseType{
   accessToken: {
@@ -20,12 +21,6 @@ const OTP = () => {
   const navigate = useNavigate();
   const clientEmail:string = location.state?.email ?? "";
 
-  const [countdown, setCountdown] = useState(2 * 60);
-  const [isResend, setIsResend] = useState(false);
-  // const [loading, setLoaidng] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
-  // const [response, setResponse] = useState<string | null>(null);
-
   const { response, error, loading, makeRequest } = useApiRequest<OTPResponseType, {otp: string}>({
     method: "POST",
   });
@@ -37,6 +32,9 @@ const OTP = () => {
     const [otp, setOtp] = useState(new Array(4).fill(""));
     const [activeOTPIndex, setActiveOTPIndex] = useState(0);
     const [validateError, setValidateError] = useState(false);
+    const [countdown, setCountdown] = useState(2 * 60);
+    const [isResend, setIsResend] = useState(false);
+    const [formattedTime, setFormattedTime] = useState<string>('');
   
     const inputRef = useRef<HTMLInputElement>(null);
   
@@ -50,11 +48,6 @@ const OTP = () => {
   
       setOtp(newOTP);
       console.log(otp)
-
-      // makeRequest({
-
-      // });
-
     };
   
     const handleOnKeyDown = (
@@ -68,6 +61,13 @@ const OTP = () => {
     useEffect(() => {
       inputRef.current?.focus();
     }, [activeOTPIndex]);
+
+    // function for updating the value of the human reabable timer
+    useEffect(() => {
+      const endTime = addSeconds(new Date(), countdown);
+      const formatted = formatDistanceStrict(new Date(), endTime);
+      setFormattedTime(formatted);
+    }, [countdown]);
 
     const handleFormSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
       e.preventDefault();
@@ -134,12 +134,15 @@ const OTP = () => {
                         <MailOpen size={60} strokeWidth={1}/>
                     </div>
                     <p className="font-semibold text-size-400 text-blue w-[80%] text-center">
-                        Please verify your account by entering the 6 digit code sent to
+                        Please verify your account by entering the 4 digit code sent to
                         <br />
                         <span className="text-black text-size-500 capitalize">
                           {clientEmail}
                         </span>
                     </p>
+                </div>
+                <div>
+                  <div>Countdown: {formattedTime}</div>
                 </div>
                 <div className="flex gap-1 md:gap-3 xl:gap-5 justify-center mb-8 py-2">
                     {otp.map((_, index) => {
@@ -159,11 +162,6 @@ const OTP = () => {
                     );
                 })}
                 </div>
-                {/* <div className="w-full">
-                    <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
-                        Verify account
-                    </button>
-                </div> */}
                 {!isResend ? <div className="w-full">
                     <button disabled = {loading} type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
                       {loading ? "Loading..." : "Verify account"}
@@ -175,10 +173,6 @@ const OTP = () => {
                     </button>
                   </div>
                 }
-                <div>
-                  <h1>Timer Countdown</h1>
-                  <div>Countdown: {countdown}</div>
-                </div>
             </form>
         </FormContainer>
     </div>

@@ -30,11 +30,11 @@ const Signin = () => {
 
     const navigate = useNavigate();
 
-    const { loading, error, response, makeRequest } = useApiRequest<OTPResponseType, {email:string, password: string}>({
+    const { loading, error, response, makeRequest } = useApiRequest<{token: string}, {email:string, password: string}>({
         method:"POST",
     });
 
-    const { setIsLogin, setToken } = useAuth();
+    const { setIsLogin, setToken, token } = useAuth();
 
     const [user, setUser] = useState<User>({
         email: {
@@ -56,9 +56,15 @@ const Signin = () => {
         const target = e.target as HTMLInputElement | HTMLTextAreaElement;
         const { name, value } = target;
 
+        if(name === "password"){
+            setUser({ ...user, [name]: {str: value, error: false} })
+            return;
+        }
+
         setUser({ ...user, [name]: {str: value.toLocaleLowerCase(), error: false} });
     }
 
+    console.log(user)
     const handleFormSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
         
@@ -95,21 +101,23 @@ const Signin = () => {
 
             const token = Cookies.get("auth_token");
             if(!token){
-                const decodedToken: any = jwtDecode(response?.accessToken?.token);
+                const decodedToken: any = jwtDecode(response?.token);
                 console.log(decodedToken);
               
-                Cookies.set("auth_token", response?.accessToken?.token, {
+                Cookies.set("auth_token", response?.token, {
                   expires: new Date(decodedToken?.exp * 1000)
                 });
             }
 
            if(token){setToken(token);
-            setIsLogin(true);}
-
-            navigate("/", { replace: true });
+            setIsLogin(true)}
         }
+
+        navigate("/", { replace: true });
         
     }
+
+    console.log(response?.token, token)
 
     useEffect(() =>{
         let errorRemoval: ReturnType<typeof setTimeout>;
@@ -130,6 +138,7 @@ const Signin = () => {
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Hello Again!</h1>
                 <p className="text-md font-normal text-blue mb-8">Welcome Back</p>
                 {validateError.status && <Notification message = {validateError.msg} type = "danger" className="text-white mb-4"/>}
+                {error && <Notification message = {error} type = "danger" className="text-white mb-4"/>}
                 <div>
                     <div className={`flex items-center ${user.email.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
                         <Mail size = {20}/>
@@ -169,7 +178,7 @@ const Signin = () => {
                 </div>
                 <div className="w-full">
                     <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white ">
-                       {loading? "Loaidng..." : "login"}
+                       {loading? "Loading..." : "login"}
                     </button>
                 </div>
                 <div className="flex w-full justify-center gap-3 accent-blue mt-4">

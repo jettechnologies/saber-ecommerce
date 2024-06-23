@@ -16,6 +16,8 @@ const useGetRequest = <T>(url: string, options?: UseGetRequestOptions, fetchFlag
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  console.log(options)
+
   useEffect(() => {
     const fetchData = async () => {
 

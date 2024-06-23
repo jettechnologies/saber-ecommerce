@@ -12,6 +12,7 @@ import Cart from "./pages/shop/Cart";
 import Terms from "./pages/shop/Terms";
 import ReturnPolicy from "./pages/shop/ReturnPolicy";
 import PrivacyPolicy from "./pages/shop/PrivacyPolicy";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 
 function App() {
@@ -30,14 +31,17 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
-        <Route path="/user"  element = {<UserLayout />}>
-          <Route index element={<Navigate to="profile" />} />
-          <Route path="profile" element = {<UserProfile />} />
-          <Route path="orders" element = {<Orders />} />
-          <Route path = "wishlist" element = {<Wishlist />} />
+        {/* Protected users routes */}
+        <Route element = {<ProtectedRoutes />}>
+          <Route path="/user"  element = {<UserLayout />}>
+            <Route index element={<Navigate to="profile" />} />
+            <Route path="profile" element = {<UserProfile />} />
+            <Route path="orders" element = {<Orders />} />
+            <Route path = "wishlist" element = {<Wishlist />} />
+          </Route>
+          <Route path="/user/edit-account" element = {<EditAccount />} />
+          <Route path="/user/reset-password" element = {<ResetPassword />} />
         </Route>
-        <Route path="/user/edit-account" element = {<EditAccount />} />
-        <Route path="/user/reset-password" element = {<ResetPassword />} />
         <Route path = "/terms-and-condition" element = {<Terms />} />
         <Route path = "/refund-policy" element = {<ReturnPolicy />} />
         <Route path = "/privacy-policy" element = {<PrivacyPolicy />} />

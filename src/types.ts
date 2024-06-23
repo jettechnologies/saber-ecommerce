@@ -67,3 +67,31 @@ export interface CartType {
   isCheckedOut: boolean;
   items: Items[];
 }
+
+export interface UserProfile {
+  DOB: string | null;
+  LGA_of_Home_Address: string | null;
+  Nationality: string | null;
+  RegisteredAt: string;
+  UpdatedAt: string | null;
+  age: number | null;
+  carts: any[]; // Adjust the type of carts if you have a more specific type for the cart items
+  cityOfResidence: string | null;
+  email: string;
+  favourites: any[]; // Adjust the type of favourites if you have a more specific type for the favourite items
+  fullname: string;
+  gender: string | null;
+  home_address: string | null;
+  id: number;
+  isLoggedIn: boolean;
+  isRegistered: boolean;
+  isVerified: boolean;
+  mobile: string;
+  password: string;
+  password_reset_link: string | null;
+  profile_picture: string | null;
+  reset_link_exptime: string | null;
+  role: string;
+  totalRevenue: string;
+  userID: string;
+}

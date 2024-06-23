@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import Modal from "./Modal";
 import Search from "./Search";
@@ -10,15 +10,21 @@ import { SearchIcon, UserIcon } from "../icons/svg";
 import { useCartContext } from "@/context/cartContext";
 import { CartIcon } from "../icons/svg";
 import { useProductCatergories } from "@/context/productCatergoriesContext";
+import { useAuth } from "@/context/authContext";
+import { UserProfile } from "@/types";
+import Cookies from "js-cookie";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
   const location = useLocation();
   const currentUrl = location.pathname;
+  const navigate = useNavigate();
 
   const { cartItems } = useCartContext();
   const { categories } = useProductCatergories();
+  const { token, isLogin } = useAuth();
+  const [data, setData] = useState<UserProfile | null>(null);
 
   const handleClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -28,6 +34,37 @@ export default function Navbar() {
     { to: routes.STORE, text: "Shop" },
     { to: routes.ABOUT, text: "About Us" },
   ];
+
+  useEffect(() =>{
+    const getUserProfile = async() =>{
+      try{
+        const res = await fetch("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/user-auth/profile", {
+          headers:{
+            Authorization: `Bearer ${token}`,
+          }
+        });
+        if(!res.ok){
+          throw new Error(`Error: ${res.status} ${res.statusText}`);
+        }
+
+        const response = await res.json();
+        setData(response);
+      }
+      catch(err){
+        console.error((err as Error).message)
+      }
+    }
+
+    getUserProfile();
+  }, [token]);
+
+  const handleLogout = () =>{
+    Cookies.remove("auth_token");
+    
+    navigate("/", {replace: true});
+  }
+
+  console.log(token, isLogin)
 
   return (
     <>
@@ -111,11 +148,16 @@ export default function Navbar() {
               {/* user subNav */}
               <div className="shadow-md py-2 absolute top-[2.65rem] rounded-md right-0 z-[9999px] bg-gray hidden user-sub-nav">
                 <ul className="flex flex-col px-4 py-2">
-                  <Link to = "/auth/login" className="w-full py-3 border-b">
+                  {!isLogin && <Link to = "/auth/login" className="w-full py-3 border-b">
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
                       Sign in
                     </li>
-                  </Link>
+                  </Link>}
+                  {data && 
+                    <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] border-b py-3">
+                      {data.fullname}
+                    </li>
+                  }
                   <Link to = "/" className="w-full py-3">
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
                       my order
@@ -131,11 +173,13 @@ export default function Navbar() {
                       my wishlist
                     </li>
                   </Link>
-                  <Link to = "/auth/signout" className="w-full py-3 hidden border-t">
-                    <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
-                      Sign out
-                    </li>
-                  </Link>
+                  {isLogin && 
+                    <li 
+                      className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] py-3 border-t"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </li>}
                 </ul>
               </div>
 
