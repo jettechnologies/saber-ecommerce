@@ -19,13 +19,6 @@ interface User{
     }
 }
 
-interface OTPResponseType{
-    accessToken: {
-      token: string;
-    };
-    isValid: boolean;
-  }
-
 const Signin = () => {
 
     const navigate = useNavigate();
