@@ -17,7 +17,8 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "@/components/Spinner";
 import Button from "@/components/Button";
 import useGetRequest from "@/hooks/useGetRequest";
-import { CategoryType, CategoryTypeWithProduct, ProductType } from "@/types";
+import { CategoryTypeWithProduct, ProductType } from "@/types";
+import { useProductCatergories } from "@/context/productCatergoriesContext";
 
 function Store() {
   const { category } = useParams<{
@@ -32,12 +33,10 @@ function Store() {
   const searchParams = new URLSearchParams(location.search);
   const search = searchParams.get('search') || '';
 
-
-  const productsFetch = useGetRequest<ProductType[]>("browse/fetch-all-products");
+  const { categories, products, loading, error } = useProductCatergories();
   const categoryWithProduct = useGetRequest<CategoryTypeWithProduct[]>(`browse/fetch-one-product-category-with-products/${categoryTerm}`, {}, !!categoryTerm);
-  const categories = useGetRequest<CategoryType[]>("browse/fetch-all-product-categories");
 
-  const productCategories: { key: string; value: string }[] = categories.data.map(
+  const productCategories: { key: string; value: string }[] = categories.map(
     (category) => ({
       key: category.id.toLocaleString(),
       value: category.name,
@@ -76,9 +75,15 @@ function Store() {
 
   const [values, setValues] = useState([MIN, MAX]);
 
-  if (productsFetch.loading) {
+  if (loading) {
     return <div className="w-full min-h-screen">
       <Spinner />
+    </div>;
+  }
+
+  if(error){
+    return <div className="w-full min-h-screen">
+      <h5>{error}</h5>
     </div>;
   }
   // console.log(filter)
@@ -143,16 +148,16 @@ function Store() {
             {/* exte */}
 
             <div className="w-full">
-              {categoryTerm === "" ?(productsFetch.data.length > 0 ? <div className="flex flex-wrap justify-between gap-4">
+              {categoryTerm === "" ?(products.length > 0 ? <div className="flex flex-wrap justify-between gap-4">
                       {
-                        productsFetch.data.map(product => (
+                        products.map(product => (
                           <div className="w-full md:w-[44.5vw] lg:w-[22.5vw] h-[23rem] z-20" key={product.id}>
                             <ProductCard product={product}/>
                           </div>
                         ))
                       }
                     </div>
-                  : (productsFetch.data.length === 0 || productsFetch.error) &&
+                  : (products.length === 0 || error) &&
                       <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-">
                         <h1>
                           The product you tried to reach does not exist, please search another

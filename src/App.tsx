@@ -9,6 +9,9 @@ import EditAccount from "./pages/shop/users/EditAccount";
 import ResetPassword from "./pages/shop/users/ResetPassword";
 import Checkout from "./pages/shop/Checkout";
 import Cart from "./pages/shop/Cart";
+import Terms from "./pages/shop/Terms";
+import ReturnPolicy from "./pages/shop/ReturnPolicy";
+import PrivacyPolicy from "./pages/shop/PrivacyPolicy";
 
 
 function App() {
@@ -35,6 +38,9 @@ function App() {
         </Route>
         <Route path="/user/edit-account" element = {<EditAccount />} />
         <Route path="/user/reset-password" element = {<ResetPassword />} />
+        <Route path = "/terms-and-condition" element = {<Terms />} />
+        <Route path = "/refund-policy" element = {<ReturnPolicy />} />
+        <Route path = "/privacy-policy" element = {<PrivacyPolicy />} />
       </Route>
     </Routes>
     </>

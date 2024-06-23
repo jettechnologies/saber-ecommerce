@@ -9,49 +9,16 @@ import menuArrowRight from "../assets/icons/menuArrowRight.svg";
 import { SearchIcon, UserIcon } from "../icons/svg";
 import { useCartContext } from "@/context/cartContext";
 import { CartIcon } from "../icons/svg";
-// import { categoriesFetch } from "../services/categories";
-
-interface Catergories{
-  id: number;
-  name: string;
-  description: string;
-  createdAT: string;
-  updatedAT: string | null;
-  banner: string;
-}
+import { useProductCatergories } from "@/context/productCatergoriesContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
-  const [categories, setCategories] = useState<Catergories[] | []>([]);
   const location = useLocation();
   const currentUrl = location.pathname;
-  // const [categories,getCategories, loading, error] = useCategories();
-
-  useEffect(() =>{
-    const getCategories = async () => {
-      try {
-        const res = await fetch("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-all-product-categories");
-        
-        const data = await res.json();
-        console.log(data[0])
-        
-        setCategories(data[0]);
-
-        if (!res.ok) {
-          console.log(res);
-          return;
-        }
-      } catch (e : any) {
-        console.log(e.message);
-      }
-    }
-    
-    getCategories();   
-  }, []);
-
 
   const { cartItems } = useCartContext();
+  const { categories } = useProductCatergories();
 
   const handleClick = () => {
     setIsMenuOpen(!isMenuOpen);

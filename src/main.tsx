@@ -5,15 +5,18 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { CartContextProvider } from "./context/cartContext.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
+import { DataProvider } from "./context/productCatergoriesContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-      <CartContextProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <App />
-      </BrowserRouter>
-    </CartContextProvider>
+      <DataProvider>
+        <CartContextProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <App />
+          </BrowserRouter>
+        </CartContextProvider>
+      </DataProvider>
   </React.StrictMode>
 );
 

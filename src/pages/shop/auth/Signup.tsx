@@ -1,11 +1,12 @@
 import FormContainer from "@/components/FormContainer";
 import { useNavigate } from "react-router-dom";
-import { User, Mail, Info, LockKeyhole } from "lucide-react";
+import { User, Mail, Info, LockKeyhole, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import Notification from "@/components/Notification";
 // import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 import { ArrowLeftIcon } from "@/icons/svg";
+import useApiRequest from "@/hooks/useApiRequest";
 
 interface StateObj{
  str: string;
@@ -15,6 +16,7 @@ interface StateObj{
 interface User{
  name:StateObj;
  email: StateObj;
+ mobile: StateObj,
  password: StateObj;
  confirmPassword: {str:string, error: boolean};
 }
@@ -27,14 +29,18 @@ interface Error{
 const Signup = () => {
 
     const navigate = useNavigate()
+    const { response, error, loading, makeRequest } = useApiRequest({
+        url: "user-auth/register"
+    });
 
     const [user, setUser] = useState<User>({
         name: {str: "", error: false},
         email: {str: "", error: false},
+        mobile: {str: "", error: false},
         password: {str: "", error: false},
         confirmPassword: {str: "", error: false}
     });
-    const [error, setError] = useState<Error>({
+    const [validateError, setValidateError] = useState<Error>({
         status: false,
         msg : ""
     });
@@ -43,6 +49,11 @@ const Signup = () => {
   function handleInputChange(e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
     const { name, value } = target;
+
+    if(name === "password" || name === "confirmPassword"){
+        setUser({ ...user, [name]: {str: value, error: false} })
+        return;
+    }
 
     setUser({ ...user, [name]: {str: value.toLocaleLowerCase(), error: false} });
 }
@@ -54,10 +65,10 @@ const formSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/i;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    const {name, password, confirmPassword, email} = user;
+    const {name, password, confirmPassword, email, mobile} = user;
 
-    if(name.str === "" || email.str === "" || password.str === "" || confirmPassword.str === "" ){
-        setError({status: true, msg: "All fields are required!"});
+    if(name.str === "" || email.str === "" || password.str === "" || confirmPassword.str === "" || mobile.str === ""){
+        setValidateError({status: true, msg: "All fields are required!"});
         return
     }
 
@@ -70,7 +81,7 @@ const formSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         return;
     }
     else if(confirmPassword.str !== password.str){
-        setError({status: true, msg: "Passwords do not match!"});
+        setValidateError({status: true, msg: "Passwords do not match!"});
         return
     }
     else if(!emailRegex.test(email.str)){
@@ -79,29 +90,32 @@ const formSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     }
 
     const data = {
-        name: name.str,
+        fullname: name.str,
         email: email.str,
-        password: password.str
+        password: password.str,
+        confirmPassword: confirmPassword.str,
+        mobile: mobile.str,
     }
-  console.log(data);
+  
+    makeRequest(data);
+    if(error !== null){return}
 
-  navigate("/auth/otp", { replace: true });
+    navigate("/auth/otp", { replace: true });
 
 }
 
 useEffect(() =>{
     let errorRemoval: ReturnType<typeof setTimeout>;
 
-    if(error){
+    if(validateError){
        errorRemoval =  setTimeout(() =>{
-            setError({status: false, msg: ""});
+            setValidateError({status: false, msg: ""});
         }, 2000)
     }
 
     return() => clearTimeout(errorRemoval)
-}, [error]);
-
-console.log(user)
+}, [validateError]);
+console.log(response, error, user);
 
   return (
     <>
@@ -109,7 +123,7 @@ console.log(user)
             <form className="bg-white rounded-md shadow-2xl p-5" onSubmit={formSubmit}>
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Sign up</h1>
                 <p className="text-md font-normal text-blue mb-8">Create a new account</p>
-                {error.status && <Notification message = {error.msg} type = "danger" className="text-white mb-4"/>}
+                {validateError.status && <Notification message = {validateError.msg} type = "danger" className="text-white mb-4"/>}
                 <div>
                     <div className={`flex items-center ${user.name.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
                         <User size = {20}/>
@@ -139,6 +153,21 @@ console.log(user)
                         {user.email.error && <Info size={20} color=" rgb(239 68 68)" />}
                     </div>
                     {user.email.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
+                </div>
+                <div>
+                    <div className={`flex items-center ${user.name.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
+                        <Phone size = {20}/>
+                        <input 
+                            className="pl-2 w-full outline-none border-none" 
+                            type="text" 
+                            name="mobile" 
+                            id="mobile" 
+                            placeholder="mobile" 
+                            onChange={handleInputChange}
+                        />
+                        {user.mobile.error && <Info size={20} color=" rgb(239 68 68)" />}
+                    </div>
+                    {user.mobile.error && <p className="text-red-500 text-size-400 font-normal m-2">Fullname should be alphabets only </p>}
                 </div>
                 <div>
                     <div className={`flex items-center ${user.password.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
@@ -172,7 +201,7 @@ console.log(user)
                 </div>
                 <div className="w-full h-fit flex flex-col gap-y-3">
                     <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
-                        Create account
+                        {loading ? "Loading..." : "Create account"}
                     </button>
                     <Link to = "/" className="p-3 w-full hover:-translate-y-1 duration-500 transition-all text-blue text-size-500 font-medium capitalize flex gap-3 justify-center items-center">
                         <ArrowLeftIcon className="w-5 h-5 text-blue" />

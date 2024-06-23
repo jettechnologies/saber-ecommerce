@@ -1,16 +1,24 @@
 import React,{ useState, useRef, useEffect } from "react";
 import FormContainer from "@/components/FormContainer";
 import { MailOpen } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useApiRequest from "@/hooks/useApiRequest";
+
 
 const OTP = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const clientEmail = location.state?.email || "";
+
+  const { response, error, loading, makeRequest } = useApiRequest({
+    url: "user-auth/verify-email"
+  });
 
     let currentOTPIndex = 0;
 
-    const [otp, setOtp] = useState(new Array(6).fill(""));
+    const [otp, setOtp] = useState(new Array(4).fill(""));
     const [activeOTPIndex, setActiveOTPIndex] = useState(0);
+    const [validateError, setValidateError] = useState(false);
   
     const inputRef = useRef<HTMLInputElement>(null);
   
@@ -23,6 +31,12 @@ const OTP = () => {
       else setActiveOTPIndex(currentOTPIndex + 1);
   
       setOtp(newOTP);
+      console.log(otp)
+
+      // makeRequest({
+
+      // });
+
     };
   
     const handleOnKeyDown = (
@@ -37,12 +51,35 @@ const OTP = () => {
       inputRef.current?.focus();
     }, [activeOTPIndex]);
 
+    const handleFormSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
+      e.preventDefault();
+
+      const otpString = otp.map(otp => otp.toString()).join("");
+
+      if(otpString === "" || otpString.length !== 4){
+        setValidateError(prevError => !prevError);
+        return
+      }
+      
+      const data = {
+        otp: otpString,
+      }
+
+      makeRequest(data);
+
+      if(error !== null){
+        return;
+      }
+      
+      navigate("/auth/login", {replace:true});
+    }
+
     console.log(activeOTPIndex);
 
   return (
     <div className="w-full">
         <FormContainer>
-            <form className="bg-white rounded-md shadow-2xl p-5 mt-6">
+            <form onSubmit={handleFormSubmit} className="bg-white rounded-md shadow-2xl p-5 mt-6">
                 <div className="flex flex-col gap-y-4 items-center justify-center mb-8">
                     <div className="w-[96px] grid place-items-center bg-[#d6d5d5] aspect-square rounded-full shadow-sm">
                         <MailOpen size={60} strokeWidth={1}/>
@@ -63,7 +100,7 @@ const OTP = () => {
                           ref={activeOTPIndex === index ? inputRef : null}
                           type="number"
                           className={
-                              "w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-[#d0d0d0] focus-within:border-blue text-gray-400 transition"
+                              `w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none ${validateError ? "border-red-500" : "border-[#d0d0d0]"} focus-within:border-blue text-gray-400 transition`
                           }
                           onChange={handleOnChange}
                           onKeyDown={(e) => handleOnKeyDown(e, index)}

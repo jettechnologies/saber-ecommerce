@@ -6,18 +6,22 @@ import headphoneImg from "@/assets/images/headsets.png";
 import earpodImg from "@/assets/images/earpods.webp";
 import Button from "@/components/Button";
 import { Link } from "react-router-dom";
-import { Truck, Banknote, LockKeyhole,Phone } from "lucide-react";
+import { Truck, Banknote, LockKeyhole,Phone, Bell } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import Promo from "@/components/Promo";
 import ProductSlider from "@/components/ProductSlider";
-import useGetRequest from "@/hooks/useGetRequest";
+import { useProductCatergories } from "@/context/productCatergoriesContext";
+// import useGetRequest from "@/hooks/useGetRequest";
 // import { useEffect, useMemo, useState } from "react";
 import Spinner from "@/components/Spinner";
-import { ProductType, CategoryType } from "@/types";
+import { ProductType } from "@/types";
+
+
 
 function Home() {
-  const fetchCategory = useGetRequest<CategoryType[]>("browse/fetch-all-product-categories");
-  const productsFetch = useGetRequest<ProductType[]>("browse/fetch-all-products");
+  const { loading, products, categories } = useProductCatergories();
+
+  console.log(products, categories)
 
   return (
     <main className="w-full h-full">
@@ -94,13 +98,55 @@ function Home() {
 
       </header>
 
+      {/* Store Benefits */}
+      <section className="mt-6 px-8">
+            <div className="w-full h-full flex gap-4 flex-wrap">
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 flex-[1_1_18vw]">
+                <Truck size = {30}/>
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">free shipping</h5>
+                  <p className = "text-size-400 text-[#121212] font-medium">
+                    Order above $200
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 flex-[1_1_18vw]">
+                <Banknote size = {30}/>
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">money-back</h5>
+                  <p className = "text-size-400 text-[#121212] font-medium">
+                    30 days guarantee
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 flex-[1_1_18vw]">
+                <LockKeyhole size = {30}/>
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">secure payments</h5>
+                  <p className = "text-size-400 text-[#121212] font-medium">
+                    Secured by Striped
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 flex-[1_1_18vw]">
+                <Phone size = {30}/>
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">24/7 support</h5>
+                  <p className = "text-size-400 text-[#121212] font-medium">
+                    Phone and Email support
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
       {/* Content section */}
       <section className="mx-4 mt-10 lg:mx-14 min-h-screen">
         {/* Highlighted categories sort out by timespan */}
         <Section title="new arrivals" link="/store">
-          {!productsFetch.loading ? <ProductSlider 
+          {!loading ? <ProductSlider 
             autoPlay = {false}
-            contents={productsFetch.data.map((product:ProductType) =>(
+            contents={products.map((product:ProductType) =>(
               <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
                 <ProductCard product={product} tag={product.isOutOfStock}/>
               </div>
@@ -118,52 +164,39 @@ function Home() {
         <div className="mt-14">
           <Section title="shop catergories" link="store">
             <div className="grid gap-4">
-              {!fetchCategory.loading ? <div className="flex flex-col mt-8 gap-4 min-h-[42rem] w-full md:min-h-[22rem]">
-                {fetchCategory.data.length > 0 && <Link to = {`store/${fetchCategory.data[0].id}`}><div 
+              {!loading ? <div className="flex flex-col mt-8 gap-4 min-h-[42rem] w-full md:min-h-[22rem]">
+                {categories.length > 0 && <Link to = {`store/${categories[0].id}`}><div 
                   id = "category-card"
-                  style = {{backgroundImage: `url(${fetchCategory.data[0].banner})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} 
+                  style = {{backgroundImage: `url(${categories[0].banner})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} 
                   className={`w-full h-[25rem] py-4 px-6 relative rounded-md overflow-clip`}>
                     <div className="w-full h-full gap-y-5 flex">
                       <div className="w-[30%] h-fit self-center">
                             <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
-                              {fetchCategory.data[0].name}
+                              {categories[0].name}
                             </h4>
-                            {/* <Link to = {`store/${fetchCategory.data[0].id}`}>
-                              <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
-                                <p className="text-size-500 font-medium text-blue capitalize">shop</p>
-                                <ArrowRightIcon size = {24} color="#fff"/>
-                              </div>
-                            </Link> */}
                           </div>
                     </div>
                     <div id = "category-card-desc" className="absolute bg-black w-[60%] lg:w-[40%] h-full bottom-0 -right-[200%] p-4 opacity-60 z-10 flex items-center justify-center">
                       <div className="z-50">
                         <p className="text-white text-size-500 font-normal first-letter:uppercase">
-                          {fetchCategory.data[0].description}
+                          {categories[0].description}
                         </p>
                       </div>
                     </div>
                     </div></Link>}
                   <div className = "flex max-sm:flex-col flex-wrap w-full min-h-[42rem] max-sm:gap-y-4 justify-between">
                       {
-                        fetchCategory.data.length > 0 && fetchCategory.data.slice(1,5).map((category) => (
+                        categories.length > 0 && categories.slice(1,5).map((category) => (
                         <Link to = {`store/${category.id}`}>
                         <div 
                           id = "category-card"
                           style = {{backgroundImage: `url(${category.banner})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} 
-                          className="w-full lg:w-[44.5vw] md:w-[47vw] py-4 px-6 h-[20rem] relative rounded-md overflow-clip border-2">
+                          className="w-full lg:w-[44.5vw] md:w-[47vw] py-4 px-6 h-[20rem] relative rounded-md overflow-clip">
                           <div className="w-full h-full gap-y-5 flex">
                           <div className="w-[30%] h-fit self-center">
                             <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
                               {category.name}
                             </h4>
-                            {/* <Link to = {`store/${category.id}`}>
-                              <div className = "redirect-link w-fit h-fit relative flex gap-1 items-center">
-                                <p className="text-size-500 font-medium text-blue capitalize">shop</p>
-                                <ArrowRightIcon size = {24} color="#fff"/>
-                              </div>
-                            </Link>
-                          </div> */}
                         </div>
                         </div>
                     <div id = "category-card-desc" className="absolute bg-black w-[60%] lg:w-[40%] h-full bottom-0 -right-[200%] p-4 opacity-60 z-10 flex items-center justify-center">
@@ -196,9 +229,9 @@ function Home() {
           {/* Best sellers  sort out by rating*/}
           <div className="mt-14">
             <Section title="best sellers" link="store">
-              {!productsFetch.loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 z-10">
+              {!loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 z-10">
                 {
-                  productsFetch.data.map((product:ProductType) =>(
+                  products.map((product:ProductType) =>(
                     <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
                       <ProductCard product={product} tag={product.isOutOfStock}/>
                     </div>))
@@ -212,49 +245,32 @@ function Home() {
             </Section>
           </div>
 
-          {/* newsletter section */}
+          {/* Newsletter signups */}
+          <div className="mt-14 bg-gray">
+              <div className="w-full flex flex-col items-center pt-8">
+                <h3 className="text-size-600 text-text-black uppercase">
+                  newsletter
+                </h3>
+                <p className="mt-6 mb-3 text-size-500 text-[#a0a0a0]">
+                    Signup for our newletter
+                </p>
+                <form>
+                  <div className = "w-fit flex items-center p-1 border border-black focus-within:border-blue focus-within:border-2 rounded-md">
+                    <input type="text" 
+                      placeholder="Enter email address"
+                      className="w-[35vw] h-10 border-none outline-none text-text-black bg-transparent pl-2"
+                    />
+                    <Button size="small">
+                        <Bell size = {30} color = "#fff" />
+                    </Button>
+                  </div>
+                </form>
+                <p className="mt-3 text-size-500 text-[#a0a0a0]">
+                    to get latest deals and product update from theGearMates
+                </p>
+              </div>
+          </div>
 
-          {/* Store Benefits */}
-          <section className="mt-14">
-            <div className="w-full h-full flex gap-4 flex-wrap">
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-8 flex-[1_1_18vw]">
-                <Truck size = {50}/>
-                <div>
-                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">free shipping</h5>
-                  <p className = "text-size-400 text-[#121212] font-medium">
-                    Order above $200
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-8 flex-[1_1_18vw]">
-                <Banknote size = {50}/>
-                <div>
-                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">money-back</h5>
-                  <p className = "text-size-400 text-[#121212] font-medium">
-                    30 days guarantee
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-8 flex-[1_1_18vw]">
-                <LockKeyhole size = {50}/>
-                <div>
-                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">secure payments</h5>
-                  <p className = "text-size-400 text-[#121212] font-medium">
-                    Secured by Striped
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-8 flex-[1_1_18vw]">
-                <Phone size = {50}/>
-                <div>
-                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">24/7 support</h5>
-                  <p className = "text-size-400 text-[#121212] font-medium">
-                    Phone and Email support
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
         </div>
       </section>
     </main>
