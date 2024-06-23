@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import Modal from "./Modal";
@@ -28,8 +28,6 @@ export default function Navbar() {
     { to: routes.STORE, text: "Shop" },
     { to: routes.ABOUT, text: "About Us" },
   ];
-
-  
 
   return (
     <>
