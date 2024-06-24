@@ -6,7 +6,7 @@ import headphoneImg from "@/assets/images/headsets.png";
 import earpodImg from "@/assets/images/earpods.webp";
 import Button from "@/components/Button";
 import { Link } from "react-router-dom";
-import { Truck, Banknote, LockKeyhole,Phone, Bell } from "lucide-react";
+import { Truck, Banknote, LockKeyhole,Phone } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import Promo from "@/components/Promo";
 import ProductSlider from "@/components/ProductSlider";
@@ -15,6 +15,7 @@ import { useProductCatergories } from "@/context/productCatergoriesContext";
 // import { useEffect, useMemo, useState } from "react";
 import Spinner from "@/components/Spinner";
 import { ProductType } from "@/types";
+import Newsletter from "@/components/Newsletter";
 
 
 
@@ -148,7 +149,7 @@ function Home() {
             autoPlay = {false}
             contents={products.map((product:ProductType) =>(
               <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
-                <ProductCard product={product} tag={product.isOutOfStock}/>
+                <ProductCard product={product} tag={product.isOutOfStock} />
               </div>
             ))} 
           /> :
@@ -233,7 +234,7 @@ function Home() {
                 {
                   products.map((product:ProductType) =>(
                     <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
-                      <ProductCard product={product} tag={product.isOutOfStock}/>
+                      <ProductCard product={product} tag={product.isOutOfStock} />
                     </div>))
                 }
                 </div>
@@ -246,30 +247,7 @@ function Home() {
           </div>
 
           {/* Newsletter signups */}
-          <div className="mt-14 bg-gray">
-              <div className="w-full flex flex-col items-center pt-8">
-                <h3 className="text-size-600 text-text-black uppercase">
-                  newsletter
-                </h3>
-                <p className="mt-6 mb-3 text-size-500 text-[#a0a0a0]">
-                    Signup for our newletter
-                </p>
-                <form>
-                  <div className = "w-fit flex items-center p-1 border border-black focus-within:border-blue focus-within:border-2 rounded-md">
-                    <input type="text" 
-                      placeholder="Enter email address"
-                      className="w-[35vw] h-10 border-none outline-none text-text-black bg-transparent pl-2"
-                    />
-                    <Button size="small">
-                        <Bell size = {30} color = "#fff" />
-                    </Button>
-                  </div>
-                </form>
-                <p className="mt-3 text-size-500 text-[#a0a0a0]">
-                    to get latest deals and product update from theGearMates
-                </p>
-              </div>
-          </div>
+          <Newsletter />
 
         </div>
       </section>

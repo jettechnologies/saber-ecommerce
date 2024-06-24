@@ -20,6 +20,7 @@ import useGetRequest from "@/hooks/useGetRequest";
 import { CategoryTypeWithProduct, ProductType } from "@/types";
 import { useProductCatergories } from "@/context/productCatergoriesContext";
 
+
 function Store() {
   const { category } = useParams<{
     category?: string;
@@ -32,6 +33,7 @@ function Store() {
   const paths:string[] = location.pathname.split("/").filter(Boolean);
   const searchParams = new URLSearchParams(location.search);
   const search = searchParams.get('search') || '';
+
 
   const { categories, products, loading, error } = useProductCatergories();
   const categoryWithProduct = useGetRequest<CategoryTypeWithProduct[]>(`browse/fetch-one-product-category-with-products/${categoryTerm}`, {}, !!categoryTerm);
@@ -91,7 +93,7 @@ function Store() {
   return (
     <>
       <section className="w-full h-full px-8">
-        <div id = "page-banner" className="w-full h-[300px] bg-gray flex flex-col justify-center items-center gap-y-4">
+        <div id = "page-banner" className="w-full h-[300px] bg-gray flex flex-col justify-center items-center gap-y-4 px-4">
           <ul className="w-fit flex gap-2 text-size-400 font-semibold text-text-black capitalize">
             <li className="flex items-center gap-2">
               <Link to = "/">
@@ -119,8 +121,8 @@ function Store() {
           <h2 className="text-4xl lg:text-6xl font-bold text-text-black capitalize">
             Collections
           </h2>
-          <p className="text-size-500 font-medium text-text-black">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque animi illum perferendis!
+          <p className="text-size-500 font-medium text-text-black text-center">
+            Discover the latest electronics at unbeatable prices. Shop now!
           </p>
         </div>
 
@@ -134,7 +136,7 @@ function Store() {
                 <SlidersHorizontal />
                 <p className="text-text-black font-medium text-size-500">Filters</p>
               </button>
-            <div className="flex gap-x-4 items-center">
+            <div className="hidden md:flex gap-x-4 items-center">
               <label htmlFor="sort">
                 <p className="text-size-500 font-medium text-text-black">Sort by</p>
               </label>

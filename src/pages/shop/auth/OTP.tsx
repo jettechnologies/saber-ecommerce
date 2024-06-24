@@ -4,7 +4,6 @@ import { MailOpen } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useApiRequest from "@/hooks/useApiRequest";
 import Cookies from 'js-cookie';
-import { jwtDecode } from "jwt-decode";
 import { useAuth } from "@/context/authContext";
 import { formatDistanceStrict, addSeconds } from 'date-fns';
 
@@ -25,7 +24,7 @@ const OTP = () => {
     method: "POST",
   });
 
-  const { setToken, setIsLogin } = useAuth();
+  const { setToken } = useAuth();
 
     let currentOTPIndex = 0;
 
@@ -92,21 +91,23 @@ const OTP = () => {
         if(error !== null){
           return;
         }
-
-        if(response !== null && response !== undefined){   
-          console.log(response?.accessToken?.token) 
-          const decodedToken: any = jwtDecode(response?.accessToken?.token);
-          console.log(decodedToken);
-        
-          Cookies.set("auth_token", response?.accessToken?.token, {
-            expires: new Date(decodedToken?.exp * 1000)
-          })
-          
-          setToken(response?.accessToken?.token)
-          setIsLogin(true);
           navigate("/", {replace:true});
-        }
     }
+
+    // useEffect for setting the token in cookies and in state
+    useEffect(() =>{
+      if(!!response && response !== null){
+          // setting the expiration day for 30 days
+          const expires = new Date();
+          expires.setDate(expires.getDate() + 30);
+          
+          Cookies.set("auth_token", response?.accessToken?.token, {
+              expires: expires
+          });
+
+          setToken(response?.accessToken?.token);
+      }
+  }, [response, setToken]);
 
     // countdown logic
     useEffect(() => {

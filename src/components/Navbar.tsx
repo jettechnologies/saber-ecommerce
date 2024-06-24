@@ -7,12 +7,15 @@ import { routes } from "../config/router/paths";
 import menuHamburger from "../assets/icons/menuHamburger.svg";
 import menuArrowRight from "../assets/icons/menuArrowRight.svg";
 import { SearchIcon, UserIcon } from "../icons/svg";
+import { CircleAlert } from "lucide-react";
 import { useCartContext } from "@/context/cartContext";
 import { CartIcon } from "../icons/svg";
 import { useProductCatergories } from "@/context/productCatergoriesContext";
 import { useAuth } from "@/context/authContext";
 import { UserProfile } from "@/types";
 import Cookies from "js-cookie";
+import Modal2 from "./Modal2";
+import Button from "./Button";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,8 +26,9 @@ export default function Navbar() {
 
   const { cartItems } = useCartContext();
   const { categories } = useProductCatergories();
-  const { token, isLogin } = useAuth();
-  const [data, setData] = useState<UserProfile | null>(null);
+  const { token, isLogin, loading } = useAuth();
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isLogout, setIsLogout] = useState(false);
 
   const handleClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -34,6 +38,8 @@ export default function Navbar() {
     { to: routes.STORE, text: "Shop" },
     { to: routes.ABOUT, text: "About Us" },
   ];
+
+  console.log(userProfile);
 
   useEffect(() =>{
     const getUserProfile = async() =>{
@@ -48,23 +54,22 @@ export default function Navbar() {
         }
 
         const response = await res.json();
-        setData(response);
+        setUserProfile(response);
       }
       catch(err){
         console.error((err as Error).message)
       }
     }
 
-    getUserProfile();
-  }, [token]);
+    if(!loading){getUserProfile()}
+  }, [token, setUserProfile, loading]);
 
   const handleLogout = () =>{
     Cookies.remove("auth_token");
     
     navigate("/", {replace: true});
+    window.location.reload();
   }
-
-  console.log(token, isLogin)
 
   return (
     <>
@@ -153,9 +158,9 @@ export default function Navbar() {
                       Sign in
                     </li>
                   </Link>}
-                  {data && 
+                  {userProfile && 
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] border-b py-3">
-                      {data.fullname}
+                      {userProfile.fullname}
                     </li>
                   }
                   <Link to = "/" className="w-full py-3">
@@ -176,7 +181,7 @@ export default function Navbar() {
                   {isLogin && 
                     <li 
                       className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] py-3 border-t"
-                      onClick={handleLogout}
+                      onClick={() => setIsLogout(prevState => !prevState)}
                     >
                       Logout
                     </li>}
@@ -188,6 +193,37 @@ export default function Navbar() {
           </div>
         </div>
       </header>
+
+      {/* Modal2 for confirming if the user wants to logout */}
+
+      <Modal2 title = "Logout" isOpen = {isLogout} handleModalClose = {()=> setIsLogout(prevState => !prevState)}>
+        <div className="flex flex-col w-full ">
+          <div className="flex items-center gap-3">
+            {/* <MessageSquareWarning size = {35} color = "rgb(239 68 68)"/> */}
+            <CircleAlert size = {35} color = "rgb(239 68 68)" />
+            <p>
+              Are you sure u want to delete this Account ?
+            </p>
+          </div>
+          <div className="flex gap-5 mt-5 border-t border-[#f0f0f0] pt-3">
+            <Button 
+              type="white" 
+              size="medium" 
+              className="text-sm uppercase flex-1"
+              handleClick = {() => setIsLogout(prevState => !prevState)}
+            >
+              cancel
+            </Button>
+            <Button  
+              size="medium"
+              handleClick={() => handleLogout()}
+              className="text-sm uppercase flex-1"
+            >
+              logout
+            </Button>
+          </div>
+        </div>
+      </Modal2>
 
       <Modal 
         open={isMenuOpen} 

@@ -17,6 +17,11 @@ import Spinner from "@/components/Spinner";
 import { IndianRupee } from "lucide-react";
 import Button from "@/components/Button";
 import { useCartContext } from "@/context/cartContext";
+import { Heart } from "lucide-react";
+import { useAuth } from "@/context/authContext";
+// import useApiRequest from "@/hooks/useApiRequest";
+import { useCallback } from "react";
+import Notification from "@/components/Notification";
 
 function Detail() {
 
@@ -24,6 +29,9 @@ function Detail() {
   const [data, setData] = useState<ProductType>()
   const [loading, setLoading] = useState(true);
   const { addVariantsToCart, productVariant } = useCartContext();
+  const { token, isLogin } = useAuth();
+  const [message, setMessage] = useState("");
+  // const [favorites, setFavorites] = useState<FavoriteProductType[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +55,38 @@ function Detail() {
 
     fetchData();
   }, [id]);
+
+  const addProductToFav = useCallback(async (productId: number) => {
+    console.log(productId);
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    try {
+      setMessage("Adding to favorites...");
+      const response = await fetch(`https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/add-product-to-favourite/${productId}`, {
+        method: "POST",
+        headers: headers,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const result: any = await response.json();
+      console.log(result.message);
+      setMessage(result.message);
+    } catch (err) {
+      console.log(err);
+      setMessage("Failed to add to favorites.");
+    }
+  }, [token]);
+
+
+  console.log(message); 
+
+  // console.log(response, error);
 
   if(loading){
     return <div className="w-full h-full border-2">
@@ -74,32 +114,50 @@ function Detail() {
 
   return (
     <>
-      <div className="mx-4 md:mx-24">
+      <div className="mx-4 md:mx-24 relative">
         {data && (
           <div className="flex-row lg:flex gap-12">
-            <div className="mx-[-1rem] grid place-items-center">
+            <div className="mx-[-1rem] grid place-items-center w-1/2">
               {/* <ImageCarousel images={product.image} /> */}
               <img src={data.productImage} alt="product image" className="w-[60%] aspect-square object-contain"/>
             </div>
 
-            <div>
-              <div>
-                <h2 className="text-icon font-medium text-lg mt-6 mb-7 first-letter:uppercase">
-                    {data.category?.name}
-                </h2>
-                <h1 className="text-[#3C4242] font-semibold text-3xl uppercase">
-                  {data.name}
-                </h1>
-                <div className="flex items-center gap-6 mt-[2.5rem] justify-center lg:justify-start">
-                  <div className="w-[14rem]">
-                    <AddToCartBtn productId={data.id}/>
-                  </div>
-                  <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3 flex gap-1 items-center">
-                    <IndianRupee size={20} />
-                    <h1 className="font-semibold text-lg text-[#3C4242]">
-                      {data.price}
+            <div className="w-1/2">
+              <div className="flex gap-x-4">
+                  <div className="flex-1">
+                    <h2 className="text-icon font-medium text-lg mt-6 mb-7 first-letter:uppercase">
+                      {data.category?.name}
+                    </h2>
+                    <h1 className="text-[#3C4242] font-semibold text-3xl uppercase">
+                      {data.name}
                     </h1>
+                    <div className="flex items-center gap-6 mt-[2.5rem] justify-center lg:justify-start">
+                      <div className="w-[14rem]">
+                        <AddToCartBtn productId={data.id}/>
+                      </div>
+                      <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3 flex gap-1 items-center">
+                        <IndianRupee size={20} />
+                        <h1 className="font-semibold text-lg text-[#3C4242]">
+                          {data.price}
+                        </h1>
+                      </div>
+                    </div>
                   </div>
+                  <div className="w-fit h-fit mt-6 mr-6">
+                    {!isLogin ? (
+                      <Link to = "/auth/login">
+                        <div className="w-10 h-10 rounded-full shadow-md bg-gray grid place-items-center">
+                          <Heart size = {25}/>
+                        </div>
+                      </Link>
+                    ) : (
+                      <div 
+                        className="w-10 h-10 rounded-full shadow-md bg-gray grid place-items-center cursor-pointer"
+                        onClick={() => addProductToFav(data.id)}
+                      >
+                          <Heart size = {25}/>
+                      </div>
+                    )}
                 </div>
               </div>
 
@@ -189,6 +247,10 @@ function Detail() {
           </Section>
         </div>
       </div>
+
+      {message !== "" && <div className="absolute top-[5rem] left-[4rem] w-[20rem] h-[4rem] first-letter:capitalize">
+          <Notification type = "success" className="text-white" message = {message}/>
+      </div> }
     </>
   );
 }

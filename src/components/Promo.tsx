@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 const Promo = () => {
   return (
-    <div className="w-full h-full">
-        <div className="flex flex-col md:flex-row">
+    <div className="w-full h-full md:h-[25rem]">
+        <div className="flex flex-col md:flex-row h-full">
             <div className="flex-1 bg-[#A8A8A8]">
                 <img src={promoImage} alt="promo image" className="w-full h-full object-cover"/>
             </div>

@@ -95,3 +95,31 @@ export interface UserProfile {
   totalRevenue: string;
   userID: string;
 }
+
+export interface FavoriteProductType {
+  id: number;
+  createdAt: string;
+  product: {
+    id: number;
+    productID: string;
+    name: string;
+    price: string;
+    hasTax: boolean;
+    taxRate: string;
+    wholesalePrice: string;
+    minWholesaleQuantity: number;
+    productImage: string;
+    description: string;
+    stock: number;
+    restockedAT: string | null;
+    stockAdjustedAT: string | null;
+    availability: string;
+    isOutOfStock: boolean;
+    available_colors: string;
+    available_sizes: string;
+    weight: number | null;
+    purchaseCount: number;
+    createdAT: string;
+    updatedAT: string | null;
+  };
+}

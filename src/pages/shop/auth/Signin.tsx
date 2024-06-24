@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 import Notification from "@/components/Notification";
 import useApiRequest from "@/hooks/useApiRequest";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
 import { useAuth } from "@/context/authContext";
+// import { UserProfile } from "@/types";
 
 interface User{
     email: {
@@ -19,15 +19,19 @@ interface User{
     }
 }
 
+interface SigninType{
+    accesstoken: {token: string};
+}
+
 const Signin = () => {
 
     const navigate = useNavigate();
 
-    const { loading, error, response, makeRequest } = useApiRequest<{token: string}, {email:string, password: string}>({
+    const { loading, error, response, makeRequest } = useApiRequest<SigninType, {email:string, password: string}>({
         method:"POST",
     });
 
-    const { setIsLogin, setToken, token } = useAuth();
+    const { setToken } = useAuth();
 
     const [user, setUser] = useState<User>({
         email: {
@@ -58,7 +62,7 @@ const Signin = () => {
     }
 
     console.log(user)
-    const handleFormSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
+    const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -66,16 +70,15 @@ const Signin = () => {
 
         const { email, password } = user;
 
-        if(email.str === "" || password.str === "" ){
-            setValidateError({status: true, msg: "All fields are required!"});
-            return
-        }
-
-        if(!emailRegex.test(email.str)){
-            setUser({ ...user, email: { ...email, error: true } });
+        if (email.str === "" || password.str === "") {
+            setValidateError({ status: true, msg: "All fields are required!" });
             return;
         }
-        else if(!passwordRegex.test(password.str)){
+
+        if (!emailRegex.test(email.str)) {
+            setUser({ ...user, email: { ...email, error: true } });
+            return;
+        } else if (!passwordRegex.test(password.str)) {
             setUser({ ...user, password: { ...password, error: true } });
             return;
         }
@@ -83,34 +86,27 @@ const Signin = () => {
         const data = {
             email: email.str,
             password: password.str,
-        }
+        };
 
         console.log(data);
 
         await makeRequest(data, "user-auth/login");
-
-        if(response !== undefined && response !== null){
-            console.log(response);
-
-            const token = Cookies.get("auth_token");
-            if(!token){
-                const decodedToken: any = jwtDecode(response?.token);
-                console.log(decodedToken);
-              
-                Cookies.set("auth_token", response?.token, {
-                  expires: new Date(decodedToken?.exp * 1000)
-                });
-            }
-
-           if(token){setToken(token);
-            setIsLogin(true)}
-        }
-
         navigate("/", { replace: true });
-        
-    }
+    };
 
-    console.log(response?.token, token)
+    useEffect(() =>{
+        if(!!response && response !== null){
+            // setting the expiration day for 30 days
+            const expires = new Date();
+            expires.setDate(expires.getDate() + 30);
+            
+            Cookies.set("auth_token", response?.accesstoken?.token, {
+                expires: expires
+            });
+
+            setToken(response?.accesstoken?.token);
+        }
+    }, [response, setToken]);
 
     useEffect(() =>{
         let errorRemoval: ReturnType<typeof setTimeout>;
@@ -167,7 +163,7 @@ const Signin = () => {
                         <input type="checkbox" name="remember" id="remember" className="w-5 h-5 border-gray"/>
                         <p className="text-sm font-normal text-text-black">Remember me</p>
                     </div>
-                    <Link to = "/reset" className="w-fit text-sm text-blue cursor-pointer hover:-translate-y-1 duration-500 transition-all">Forgot Password ?</Link>
+                    <Link to = "/reset-password/verify-email" className="w-fit text-sm text-blue cursor-pointer hover:-translate-y-1 duration-500 transition-all">Forgot Password ?</Link>
                 </div>
                 <div className="w-full">
                     <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white ">

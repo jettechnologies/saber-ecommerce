@@ -10,8 +10,6 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
   const { quantityOfItem, incrementQuantity, decrementQuantity, removeFromCart } =
     useCartContext();
 
-    console.log(item);
-
   return (
     <div className="flex justify-around lg:grid lg:grid-cols-[7fr_repeat(5,1fr)] gap-2 lg:gap-24 ">
       {/* Product description */}
