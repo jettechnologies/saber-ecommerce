@@ -11,10 +11,10 @@ import AddToCartBtn from "@/components/addToCartBtn";
 // import Button from "@/components/Button";
 import Section from "@/components/Section";
 import Recommended from "@/components/Recommended";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ProductType } from "@/types";
 import Spinner from "@/components/Spinner";
-import { IndianRupee } from "lucide-react";
+import { IndianRupee, ShoppingBag, CircleAlert } from "lucide-react";
 import Button from "@/components/Button";
 import { useCartContext } from "@/context/cartContext";
 import { Heart } from "lucide-react";
@@ -22,6 +22,7 @@ import { useAuth } from "@/context/authContext";
 // import useApiRequest from "@/hooks/useApiRequest";
 import { useCallback } from "react";
 import Notification from "@/components/Notification";
+import Modal2 from "@/components/Modal2";
 
 function Detail() {
 
@@ -31,6 +32,8 @@ function Detail() {
   const { addVariantsToCart, productVariant } = useCartContext();
   const { token, isLogin } = useAuth();
   const [message, setMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   // const [favorites, setFavorites] = useState<FavoriteProductType[]>([])
 
   useEffect(() => {
@@ -133,7 +136,12 @@ function Detail() {
                     </h1>
                     <div className="flex items-center gap-6 mt-[2.5rem] justify-center lg:justify-start">
                       <div className="w-[14rem]">
-                        <AddToCartBtn productId={data.id}/>
+                        {isLogin ? 
+                          <AddToCartBtn productId={data.id}/>
+                          : <Button size="medium" className="flex items-center justify-evenly w-full text-size-500 text-white" handleClick={() => setIsOpen(prevState => !prevState)}>
+                              <ShoppingBag color="#fff" />
+                              Add to Cart
+                            </Button>}
                       </div>
                       <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3 flex gap-1 items-center">
                         <IndianRupee size={20} />
@@ -251,6 +259,38 @@ function Detail() {
       {message !== "" && <div className="absolute top-[5rem] left-[4rem] w-[20rem] h-[4rem] first-letter:capitalize">
           <Notification type = "success" className="text-white" message = {message}/>
       </div> }
+
+      {/* For telling guest users to login */}
+      <Modal2 isOpen={isOpen} handleModalClose={() => setIsOpen(prevState => !prevState)}>
+            <div className="flex flex-col w-full">
+                <div className="flex items-center gap-3">
+                    {/* <MessageSquareWarning size = {35} color = "rgb(239 68 68)"/> */}
+                    <CircleAlert size = {35} color = "rgb(255 201 92)" />
+                    <p>
+                        Please Login before carting!
+                    </p>
+                </div>
+                <div className="flex gap-5 mt-5 border-t border-[#f0f0f0] pt-3">
+                    {/* <Button 
+                        type="white" 
+                        size="medium" 
+                        className="text-sm uppercase flex-1"
+                        handleClick = {() => setIsDeleting(prevState => !prevState)}
+                    >
+                        no, cancel
+                    </Button> */}
+                    <Button  
+                        size="medium"
+                        handleClick={() => {
+                          navigate("/auth/login", {replace: true});
+                         }}
+                        className="text-sm uppercase flex-1"
+                    >
+                      login
+                    </Button>
+                </div>
+            </div>
+        </Modal2>
     </>
   );
 }

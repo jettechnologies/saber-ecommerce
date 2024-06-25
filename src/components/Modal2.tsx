@@ -20,10 +20,10 @@ const Modal2:React.FC<Props> = ({
         {
             isOpen && (
                 <div
-                id="authentication-modal"
-                tabIndex={-1}
-                aria-hidden={!isOpen}
-                className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-[calc(100%-1rem)] max-h-full"
+                    id="authentication-modal"
+                    tabIndex={-1}
+                    aria-hidden={!isOpen}
+                    className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-[calc(100%-1rem)] font-roboto max-h-full"
                 >
                 <div className="fixed inset-0 bg-black opacity-40 z-40"></div>
                 <div className="relative p-4 w-full max-w-md max-h-full z-50">

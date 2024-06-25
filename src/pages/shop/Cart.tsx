@@ -1,13 +1,14 @@
 import { useCartContext } from "@/context/cartContext";
 import CartItem from "@/components/CartItem";
 import { Link } from "react-router-dom";
+import Spinner from "@/components/Spinner";
 
 const Cart = () => {
-  const { cartItems, totalPrice } = useCartContext();
+  const { cartItems, totalPrice, isLoading } = useCartContext();
 
   const uniqueItemsIds = new Set();
 
-  if (cartItems.length === 0) {return (<div className=" flex flex-col items-center justify-center text-center w-auto h-[--hero-height]">
+  if (cartItems.length === 0 && !isLoading) {return (<div className=" flex flex-col items-center justify-center text-center w-auto h-[--hero-height]">
     <h1 className="text-3xl font-semibold">It seems like your cart it's empty, let's change that!</h1>
     <Link
       to="/store"
@@ -16,6 +17,10 @@ const Cart = () => {
           Shop
         </Link>
   </div>)}
+
+  if(isLoading){
+    return<div className = "w-full h-full"><Spinner /></div>
+  }
 
   return (
     <div className="flex flex-col gap-6 mt-10 min-h-screen">

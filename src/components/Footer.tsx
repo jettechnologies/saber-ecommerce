@@ -1,10 +1,93 @@
-import { Link } from "react-router-dom";
-import { Bell } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Bell, MailCheck } from "lucide-react";
 import Logo from "./Logo";
+import { useEffect, useState } from "react";
+import useApiRequest from "@/hooks/useApiRequest";
+import Spinner from "./Spinner";
+// import Button from "./Button";
+import Modal2 from "./Modal2";
+
+interface Email {
+    str: string;
+    error: boolean;
+}
 
 export default function Footer() {
+
+    const navigate = useNavigate();
+    const { response, loading, error, makeRequest } = useApiRequest<{message: string}, {email: string}>({
+        method: "POST",
+    })
+    const [email, setEmail] = useState<Email>({
+        str: "",
+        error: false,
+    });
+    const [isSubscribe, setIsSubscribe] = useState({
+        message: "",
+        status: false,
+    });
+
+    const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
+        const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+        const value = target.value;
+
+        setEmail({str: value.toLocaleLowerCase(), error: false});
+    }
+
+    const handleFormSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();
+        
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if(!emailRegex.test(email.str) || email.str === ""){
+            setEmail({...email, error: true } );
+            return;
+        }
+        const data = {
+            email: email.str,
+        }
+
+        console.log(data);
+
+        // const url = "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/newsletter";
+        const url = "browse/newsletter";
+        console.log(url)
+
+        try{
+        //     const response = await fetch(url, {
+        //         method: "POST",
+        //         headers:{
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify(data)
+        //     })
+
+        //     if (!response.ok) {
+        //         throw new Error("Network response was not ok");
+        //       }
+        
+        //       const resData = await response.json();
+        //       console.log(resData);
+        // }
+        // catch(e){
+        //     console.log((e as Error).message);
+        // }
+            await makeRequest(data, url);
+        }
+        catch(e){
+            console.log((e as Error).message);
+        }
+    }
+
+    useEffect(() =>{
+        if(response){setIsSubscribe({message: response?.message, status: true})}
+    }, [response]);
+
+    console.log(response, isSubscribe)
+
   return (
-    <footer className="bg-footer font-roboto text-white px-2 mt-10">
+    <>
+        <footer className="bg-footer font-roboto text-white px-2 mt-10">
         <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
             <div className="md:flex md:justify-between">
               <div className="mb-6 md:mb-0">
@@ -57,15 +140,16 @@ export default function Footer() {
                         Join our newsletter for the latest theGearMates deals and updates.
                     </p>
                   </div>
-                  <form>
-                      <div className = "w-fit flex items-center p-1 border border-gray focus-within:border-blue focus-within:border-2 rounded-md">
+                  <form onSubmit={handleFormSubmit}> 
+                      <div className = {`w-fit flex items-center p-1 border ${email.error ? "border-red-500" : "border-gray"} focus-within:border-blue focus-within:border-2 rounded-md`}>
                           <input type="text" 
                               placeholder="Enter email address"
-                              className="w-[20rem] h-10 border-none outline-none text-text-black bg-transparent pl-2"
+                              className="w-[20rem] h-10 border-none outline-none text-white font-roboto font-normal bg-transparent pl-2 "
+                              onChange={handleInputChange}
                           />
-                          <div className="px-4 py-2">
-                              <Bell size = {25} color = "#fff" />
-                          </div>
+                          <button type="submit"  className="px-4 py-2 h-[10] cursor-pointer">
+                              {!loading ? <Bell size = {25} color = "#fff" /> : <Spinner />}
+                          </button>
                       </div>
                   </form>
                 </div>
@@ -110,6 +194,43 @@ export default function Footer() {
           </div>
         </div>
     </footer>
+    
+    {/* Modal2 for confirming if the user wants to logout */}
 
+    <Modal2 title = "Congratulation" isOpen = {isSubscribe.status} handleModalClose = {()=> setIsSubscribe(prevState => ({
+        ...prevState,
+        status: false
+    }))}>
+        <div className="flex flex-col w-full ">
+          <div className="flex items-center gap-3">
+            {/* <MessageSquareWarning size = {35} color = "rgb(239 68 68)"/> */}
+            <MailCheck size = "25" color = "rgb(34 197 94)"/>
+            <p className="font-roboto font-normal text-text-black text-sm first-letter:capitalize">
+                {isSubscribe.message}
+            </p>
+          </div>
+          <div className="flex gap-5 mt-5 border-t border-[#f0f0f0] pt-3">
+            {/* <Button 
+              type="white" 
+              size="medium" 
+              className="text-sm uppercase flex-1"
+              handleClick = {() => setIsSubscribe(prevState => ({
+                    ...prevState,
+                    status: false
+                }))}
+            >
+              
+            </Button> */}
+            {/* <Button  
+              size="medium"
+              handleClick={() => handleLogout()}
+              className="text-sm uppercase flex-1"
+            >
+              logout
+            </Button> */}
+          </div>
+        </div>
+      </Modal2>
+    </>
   );
 }

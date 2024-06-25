@@ -11,8 +11,9 @@ import { CircleAlert } from "lucide-react";
 import { useCartContext } from "@/context/cartContext";
 import { CartIcon } from "../icons/svg";
 import { useProductCatergories } from "@/context/productCatergoriesContext";
-import { useAuth } from "@/context/authContext";
-import { UserProfile } from "@/types";
+// import { useAuth } from "@/context/authContext";
+// import { UserProfile } from "@/types";
+import { useUserProfile } from "@/context/userProfileContext";
 import Cookies from "js-cookie";
 import Modal2 from "./Modal2";
 import Button from "./Button";
@@ -26,8 +27,9 @@ export default function Navbar() {
 
   const { cartItems } = useCartContext();
   const { categories } = useProductCatergories();
-  const { token, isLogin, loading } = useAuth();
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  // const { token, isLogin, loading } = useAuth();
+  const { user, isLoading } = useUserProfile();
+  // const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLogout, setIsLogout] = useState(false);
 
   const handleClick = () => {
@@ -39,30 +41,28 @@ export default function Navbar() {
     { to: routes.ABOUT, text: "About Us" },
   ];
 
-  console.log(userProfile);
+  // useEffect(() =>{
+  //   const getUserProfile = async() =>{
+  //     try{
+  //       const res = await fetch("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/user-auth/profile", {
+  //         headers:{
+  //           Authorization: `Bearer ${token}`,
+  //         }
+  //       });
+  //       if(!res.ok){
+  //         throw new Error(`Error: ${res.status} ${res.statusText}`);
+  //       }
 
-  useEffect(() =>{
-    const getUserProfile = async() =>{
-      try{
-        const res = await fetch("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/user-auth/profile", {
-          headers:{
-            Authorization: `Bearer ${token}`,
-          }
-        });
-        if(!res.ok){
-          throw new Error(`Error: ${res.status} ${res.statusText}`);
-        }
+  //       const response = await res.json();
+  //       setUserProfile(response);
+  //     }
+  //     catch(err){
+  //       console.error((err as Error).message)
+  //     }
+  //   }
 
-        const response = await res.json();
-        setUserProfile(response);
-      }
-      catch(err){
-        console.error((err as Error).message)
-      }
-    }
-
-    if(!loading){getUserProfile()}
-  }, [token, setUserProfile, loading]);
+  //   if(!loading){getUserProfile()}
+  // }, [token, setUserProfile, loading]);
 
   const handleLogout = () =>{
     Cookies.remove("auth_token");
@@ -153,32 +153,22 @@ export default function Navbar() {
               {/* user subNav */}
               <div className="shadow-md py-2 absolute top-[2.65rem] rounded-md right-0 z-[9999px] bg-gray hidden user-sub-nav">
                 <ul className="flex flex-col px-4 py-2">
-                  {!isLogin && <Link to = "/auth/login" className="w-full py-3 border-b">
+                  {(!user) && <Link to = "/auth/login" className="w-full py-3 border-b">
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
                       Sign in
                     </li>
                   </Link>}
-                  {userProfile && 
+                  {user && 
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] border-b py-3">
-                      {userProfile.fullname}
+                      {user.fullname}
                     </li>
                   }
-                  <Link to = "/" className="w-full py-3">
-                    <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
-                      my order
-                    </li>
-                  </Link>
-                  <Link to = "/" className="w-full py-3">
+                  <Link to = "/user" className="w-full py-3">
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
                       my account
                     </li>
                   </Link>
-                  <Link to = "/" className="w-full py-3">
-                    <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
-                      my wishlist
-                    </li>
-                  </Link>
-                  {isLogin && 
+                  {user && 
                     <li 
                       className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] py-3 border-t"
                       onClick={() => setIsLogout(prevState => !prevState)}

@@ -4,34 +4,34 @@ import { ProductType } from "@/types";
 
 interface Props {
   tag?: boolean;
-  product: ProductType;
+  product: ProductType | {
+    id: number;
+    productID: string;
+    name: string;
+    price: string;
+    hasTax: boolean;
+    taxRate: string;
+    wholesalePrice: string;
+    minWholesaleQuantity: number;
+    productImage: string;
+    description: string;
+    stock: number;
+    restockedAT: string | null;
+    stockAdjustedAT: string | null;
+    availability: string;
+    isOutOfStock: boolean;
+    available_colors: string;
+    available_sizes: string;
+    weight: string | null;
+    purchaseCount: number;
+    createdAT: string;
+    updatedAT: string | null;
+    affiliateLink: string | null;
+  };
 }
 
 const ProductCard: React.FC<Props> = ({ tag, product }) => {
   const { id, name, price, productImage } = product;
-//   const { token, isLogin } = useAuth();
-//   const { response, error, makeRequest } = useApiRequest({
-//     method: "POST",
-//   });
-//   const [productId, setProductId] = useState<number>();
-//   console.log(productId)
-
-//   const addProductToFav = useCallback(async (productId: number) => {
-//     const headers: HeadersInit = {
-//       Authorization: `Bearer ${token}`,
-//     };
-
-//     try {
-//       await makeRequest("", `browse/add-product-to-favourite/${productId}`, headers);
-//       if (response) {
-//         alert(`Product ${productId} has been added to favorite`);
-//       }
-//     } catch (err) {
-//       console.log((err as Error).message);
-//     }
-//   }, [makeRequest, response, token]);
-
-//   console.log(response, error);
 
   return (
     <div className="w-full h-full shadow-lg rounded-md overflow-clip">

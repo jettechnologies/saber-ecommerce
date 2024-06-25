@@ -1,5 +1,7 @@
 import { useCartContext } from "@/context/cartContext";
 import { Items } from "../types";
+import Spinner from "./Spinner";
+import { useState, useEffect, useRef } from "react";
 // import headphoneImg from "@/assets/images/headsets.png"
 
 type CartItemProps = {
@@ -10,8 +12,21 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
   const { quantityOfItem, incrementQuantity, decrementQuantity, removeFromCart } =
     useCartContext();
 
+  const [isIncrementOrDecrement, setIsIncrementOrDecrement] = useState(false);
+  const prevItemQuantity = useRef(item.quantity);
+
+  useEffect(() =>{
+    prevItemQuantity.current = item.quantity;
+    
+    if (prevItemQuantity.current === item.quantity) {
+      setIsIncrementOrDecrement(false);
+    }
+
+  }, [item.quantity]);
+
+    console.log(item.quantity, prevItemQuantity.current);
   return (
-    <div className="flex justify-around lg:grid lg:grid-cols-[7fr_repeat(5,1fr)] gap-2 lg:gap-24 ">
+      <div className="flex justify-around lg:grid lg:grid-cols-[7fr_repeat(5,1fr)] gap-2 lg:gap-24 relative">
       {/* Product description */}
 
       <div className="flex items-center gap-5 max-w-[18rem]">
@@ -38,18 +53,28 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
       {/* Product quantity */}
       <div className="flex items-center justify-center w-[7rem]">
         <div className="flex items-center gap-2 bg-secondary rounded-2xl justify-center">
-          <button
-            className="px-2 pl-4 py-2 rounded-l-2xl hover:bg-slate-300 transition-colors"
-            onClick={() => decrementQuantity(item.id)}
+          {item?.quantity > 0 && <button
+            className={`px-2 pl-4 py-2 rounded-l-2xl hover:bg-slate-300 cursor-pointer transition-colors`}
+            onClick={() => {
+              decrementQuantity(item.id)
+              setIsIncrementOrDecrement(prevState => !prevState)
+            }}
+            disabled = {item?.quantity === 1}
           >
             -
-          </button>
-          <div className="w-[1rem] flex justify-center">
+          </button>}
+          {/* <div className="w-[1rem] flex justify-center">
             {quantityOfItem(item.product.id)}
+          </div> */}
+          <div className="w-[1rem] flex justify-center">
+            {item.quantity}
           </div>
           <button
-            className="px-2 pr-4 py-2 rounded-r-2xl hover:bg-slate-300 transition-colors"
-            onClick={() => incrementQuantity(item.id)}
+            className="px-2 pr-4 py-2 rounded-r-2xl hover:bg-slate-300 transition-colors cursor-pointer"
+            onClick={() => {
+              incrementQuantity(item.id);
+              setIsIncrementOrDecrement(prevState => !prevState)
+            }}
           >
             +
           </button>
@@ -63,7 +88,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
       {/* Subtotal */}
       <div className="flex items-center font-bold w-[5rem]">
-        <h1>${(quantityOfItem(item.product.id) * parseInt(item.price))}</h1>
+        <h1>${(item?.quantity * parseInt(item?.price))}</h1>
       </div>
 
       {/* Discard product */}
@@ -92,7 +117,13 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
           </svg>
         </button>
       </div>
+
+       {/* loading over lay */}
+        {isIncrementOrDecrement && <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+          <Spinner />
+        </div>}
     </div>
+
   );
 };
 

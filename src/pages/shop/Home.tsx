@@ -15,7 +15,7 @@ import { useProductCatergories } from "@/context/productCatergoriesContext";
 // import { useEffect, useMemo, useState } from "react";
 import Spinner from "@/components/Spinner";
 import { ProductType } from "@/types";
-import Newsletter from "@/components/Newsletter";
+// import Newsletter from "@/components/Newsletter";
 
 
 
@@ -247,7 +247,7 @@ function Home() {
           </div>
 
           {/* Newsletter signups */}
-          <Newsletter />
+          {/* <Newsletter /> */}
 
         </div>
       </section>

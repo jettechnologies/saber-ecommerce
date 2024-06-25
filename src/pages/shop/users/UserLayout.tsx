@@ -48,15 +48,28 @@ const UserLayout = () => {
                 </li>
             </ul>
         </div>
-        <div id = "side-nav" className="h-full w-[280px] lg:w-[360px]  hidden md:flex border-2 border-green-500 row-start-2 row-span-2 col-start-1 col-span-1">
+        <div id = "side-nav" className="h-full w-[280px] lg:w-[360px]  hidden md:flex border-2 border-green-500 row-start-2 row-span-2 col-start-1 col-span-1" >
             <nav className="w-full h-full border-2 border-red-500 px-2">
-                <ul className="flex flex-col">
-                    <li className="w-full py-4 border border-gray">
-                        <div className="flex gap-3">
-                            
+                <ul className="flex flex-col py-4">
+                    <li className="w-full py-4 border border-gray mb-4">
+                        <div className="flex gap-3 flex-col">
+                            <h4 className="text-size-500 lg:text-size-600 text-text-black font-semibold capitalize">
+                                Transaction management
+                            </h4>
+                            <hr className="mb-2 border-[#c0c0c0]"/>
+                            <Link to = "/user/orders" className="text-sm capitalize font-normal text-black">my orders</Link>
                         </div>
                     </li>
-                    <li className=""></li>
+                    <li className="mt-4">
+                        <div className="flex gap-3 flex-col">
+                            <h4 className="text-size-500 lg:text-size-600 text-text-black font-semibold capitalize">
+                                Account
+                            </h4>
+                            <hr className="mb-2 border-[#c0c0c0]"/>
+                            <Link to = "/user/profile" className="text-sm capitalize font-normal text-black">Personal information</Link>
+                            <Link to = "/user/wishlist" className="text-sm capitalize font-normal text-black">my wish</Link>
+                        </div>
+                    </li>
                     <li className=""></li>
                 </ul>
             </nav>
