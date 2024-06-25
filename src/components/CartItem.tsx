@@ -9,7 +9,7 @@ type CartItemProps = {
 };
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
-  const { quantityOfItem, incrementQuantity, decrementQuantity, removeFromCart } =
+  const { incrementQuantity, decrementQuantity, removeFromCart } =
     useCartContext();
 
   const [isIncrementOrDecrement, setIsIncrementOrDecrement] = useState(false);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import Modal from "./Modal";
@@ -28,7 +28,7 @@ export default function Navbar() {
   const { cartItems } = useCartContext();
   const { categories } = useProductCatergories();
   // const { token, isLogin, loading } = useAuth();
-  const { user, isLoading } = useUserProfile();
+  const { user } = useUserProfile();
   // const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLogout, setIsLogout] = useState(false);
 

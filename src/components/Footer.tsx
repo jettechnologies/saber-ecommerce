@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Bell, MailCheck } from "lucide-react";
 import Logo from "./Logo";
 import { useEffect, useState } from "react";
@@ -14,8 +14,7 @@ interface Email {
 
 export default function Footer() {
 
-    const navigate = useNavigate();
-    const { response, loading, error, makeRequest } = useApiRequest<{message: string}, {email: string}>({
+    const { response, loading, makeRequest } = useApiRequest<{message: string}, {email: string}>({
         method: "POST",
     })
     const [email, setEmail] = useState<Email>({
