@@ -82,6 +82,7 @@ export default function Navbar() {
           </div>
 
           <Logo />
+          {/* <img loading = "lazy" width={120} height = {120} src={logo} alt="Logo image"/> */}
 
           <div className="hidden lg:flex justify-center">
             <ul className="flex gap-5">

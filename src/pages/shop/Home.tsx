@@ -148,7 +148,7 @@ function Home() {
           {!loading ? <ProductSlider 
             autoPlay = {false}
             contents={products.map((product:ProductType) =>(
-              <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
+              <div className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
                 <ProductCard product={product} tag={product.isOutOfStock} />
               </div>
             ))} 
@@ -233,7 +233,7 @@ function Home() {
               {!loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 z-10">
                 {
                   products.map((product:ProductType) =>(
-                    <div className="w-[43.7vw] md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
+                    <div className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
                       <ProductCard product={product} tag={product.isOutOfStock} />
                     </div>))
                 }
