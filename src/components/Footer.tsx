@@ -86,15 +86,15 @@ export default function Footer() {
 
   return (
     <>
-        <footer className="bg-footer font-roboto text-white px-2 mt-10">
+    <footer className="bg-footer font-roboto text-white px-2 mt-10">
         <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-            <div className="md:flex md:justify-between">
+            <div className="md:flex md:justify-between md:flex-wrap">
               <div className="mb-6 md:mb-0">
                   <Link to = "/" className="flex items-center">
                       <Logo />
                   </Link>
               </div>
-              <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+              <div className="min-w-full md:min-w-[25rem] justify-between flex mb-8">
                   <div>
                       <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Main nav</h2>
                       <ul className="text-gray-500 dark:text-gray-400 font-medium">
@@ -132,9 +132,9 @@ export default function Footer() {
                       </ul>
                   </div>
               </div>
-              <div className="px-8">
+              <div className="md:px-8 max-md:mx-auto">
                 <div className="w-full flex flex-col items-center">
-                  <div>
+                  <div className="max-sm:hidden">
                     <p className="mb-3 text-size-500 text-[#a0a0a0] text-center">
                         Join our newsletter for the latest theGearMates deals and updates.
                     </p>

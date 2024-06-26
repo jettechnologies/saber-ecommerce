@@ -22,9 +22,6 @@ const Newsletter = () => {
                     </Button>
                 </div>
             </form>
-            {/* <p className="mt-3 text-size-500 text-[#a0a0a0] text-center">
-                to get latest deals and product update from theGearMates
-            </p> */}
         </div>
     </div>
   )

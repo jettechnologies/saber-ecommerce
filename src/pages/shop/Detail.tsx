@@ -120,12 +120,12 @@ function Detail() {
       <div className="mx-4 md:mx-24 relative">
         {data && (
           <div className="flex-row lg:flex gap-12">
-            <div className="mx-[-1rem] grid place-items-center w-1/2">
+            <div className="grid place-items-center w-full lg:w-1/2">
               {/* <ImageCarousel images={product.image} /> */}
-              <img src={data.productImage} alt="product image" className="w-[60%] aspect-square object-contain"/>
+              <img src={data.productImage} alt="product image" className="w-[60%] aspect-[9/16] md:aspect-square object-contain"/>
             </div>
 
-            <div className="w-1/2">
+            <div className="w-full lg:w-1/2">
               <div className="flex gap-x-4">
                   <div className="flex-1">
                     <h2 className="text-icon font-medium text-lg mt-6 mb-7 first-letter:uppercase">
@@ -134,16 +134,16 @@ function Detail() {
                     <h1 className="text-[#3C4242] font-semibold text-3xl uppercase">
                       {data.name}
                     </h1>
-                    <div className="flex items-center gap-6 mt-[2.5rem] justify-center lg:justify-start">
-                      <div className="w-[14rem]">
+                    <div className="flex flex-col md:flex-row md:items-center gap-6 mt-[2.5rem] justify-center lg:justify-start">
+                      <div className="w-full md:w-[16rem] xl:w-[25rem] max-sm:order-2">
                         {isLogin ? 
                           <AddToCartBtn productId={data.id}/>
-                          : <Button size="medium" className="flex items-center justify-evenly w-full text-size-500 text-white" handleClick={() => setIsOpen(prevState => !prevState)}>
+                          : <Button size="medium" className="flex items-center justify-center gap-x-6 w-full text-size-500 text-white" handleClick={() => setIsOpen(prevState => !prevState)}>
                               <ShoppingBag color="#fff" />
                               Add to Cart
                             </Button>}
                       </div>
-                      <div className="border-[#3C4242] border-[1px] rounded-lg px-10 py-3 flex gap-1 items-center">
+                      <div className="border-[#3C4242] border-[1px] max-sm:order-1 rounded-lg px-10 py-3 w-fit flex gap-1 items-center">
                         <IndianRupee size={20} />
                         <h1 className="font-semibold text-lg text-[#3C4242]">
                           {data.price}
@@ -186,7 +186,7 @@ function Detail() {
                   <h4 className="text-size-500 text-text-black font-semibold uppercase mb-4">
                     Select size
                   </h4>
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 flex-wrap">
                     {data.available_sizes.split(",").map((size, index) =>(<div key = {index} className="w-full h-full">
                       <Button 
                         size="medium" 
@@ -202,7 +202,7 @@ function Detail() {
                   <h4 className="text-size-500 text-text-black font-semibold uppercase mb-4">
                     Select color
                   </h4>
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 flex-wrap">
                     {data.available_colors.split(",").map((color, index) =>(<div key = {index} className="w-fit h-fit">
                       <Button 
                         size="medium" 

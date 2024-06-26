@@ -28,10 +28,10 @@ function AddToCartBtn({
   },[cartItems, productId])
 
   return (
-    <Button size="medium" className="flex items-center justify-evenly w-full text-size-500 text-white" handleClick={handleClick}>
+    // would have to disable the button until i fnd a way around removing from cart from the add to cart button
+    <Button disabled = {isInCart} size="medium" className="flex items-center justify-center gap-x-6 w-full text-size-500 text-white" handleClick={handleClick}>
         <ShoppingBag color="#fff" />
-        {isInCart ? "Remove from Cart" : "Add to Cart"}
-        {/* Add to Cart */}
+        {isInCart ? "Item added to cart" : "Add to Cart"}
     </Button>
   );
 }

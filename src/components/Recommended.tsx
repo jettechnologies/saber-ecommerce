@@ -32,7 +32,7 @@ const Recommended:React.FC<RecommendedProps> = ({ categoryId, productId }) => {
   return (
     <div className="flex flex-wrap gap-4">
       {recommendedProducts.map((product) => (
-        <div key = {product.id} className="w-[45%] lg:w-[30%] h-[20rem]">
+        <div key = {product.id} className="w-full md:w-[48%] lg:w-[30%] h-[20rem]">
           <ProductCard product={product}/>
         </div>
       ))}

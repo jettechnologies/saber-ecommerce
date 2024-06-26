@@ -39,34 +39,42 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   // Define API endpoints for both guest and users
   const API_ADD_TO_CART = isLogin 
-    ? "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/add/"
-    : "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/guest-add-product-to-cart/";
+    && "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/add/"
+    // : "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/guest-add-product-to-cart/";
   const API_QUANTITY_INCREMENT = isLogin 
-    ? `https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/increase-quantity/`
-    : "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/guest-increase-quantity/";
+    && `https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/increase-quantity/`
+    // : "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/guest-increase-quantity/";
     const API_QUANTITY_DECREMENT = isLogin 
-    ? "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/decrease-quantity/"
-    : "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/guest-decrease-quantity/";
+    && "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/decrease-quantity/"
+    // : "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/guest-decrease-quantity/";
   const API_REMOVE_FROM_CART = isLogin 
-    ? "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/remove-item-from-cart/"
-    : "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/guest-remove-item-from-cart/";
+    && "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/remove-item-from-cart/"
+    // : "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/guest-remove-item-from-cart/";
 
-  const getCartInfo = useCallback(async (isLogin: boolean, token: string, cartId?: number): Promise<CartType | undefined> => {
-    const endpoint = isLogin 
-      ? `https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/fetch-cart/`
-      : (cartId)
-        ? `https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-guest-cart/${cartId}`
-        : '';
+  const getCartInfo = useCallback(async (token: string): Promise<CartType | undefined> => {
+    // async (isLogin: boolean, token: string, cartId?: number)
+    // const endpoint = isLogin 
+    //   ? `https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/fetch-cart/`
+    //   : (cartId)
+    //     ? `https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/fetch-guest-cart/${cartId}`
+    //     : '';
 
-    if (!isLogin && !cartId) {
-      console.error('cartId is required for guest users');
-      return;
-    }
+    const endpoint = `https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/cart/fetch-cart/`;
+
+    // if (!isLogin && !cartId) {
+    //   console.error('cartId is required for guest users');
+    //   return;
+    // }
+
+    // const headers = {
+    //   "Content-Type": "application/json",
+    //   ...(isLogin && { Authorization: `Bearer ${token}` }),
+    // };
 
     const headers = {
       "Content-Type": "application/json",
-      ...(isLogin && { Authorization: `Bearer ${token}` }),
-    };
+      Authorization: `Bearer ${token}`,
+    }
 
     try {
       const res = await fetch(endpoint, {
@@ -90,36 +98,50 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   }, []);
 
-  useEffect(() => {
-    const fetchCartAndCartId = async () => {
-      if (!isLogin) {
-        const localStorageLabel: string | null = window.localStorage.getItem("cart_id");
-        if (localStorageLabel !== null) {
-          try {
-            const localStorageData = JSON.parse(localStorageLabel) as number;
-            const cart = await getCartInfo(isLogin, token, localStorageData);
-            console.log(cart)
-            if (cart) setCartItems(cart.items);
-            setCartId(localStorageData);
-          } catch (error) {
-            console.error("Failed to parse session storage label:", error);
-          }
-        }
-      } else {
-        try {
-          const cart = await getCartInfo(isLogin, token);
-          console.log(cart)
-          if (cart) setCartItems(cart.items);
-        } catch (error) {
-          console.error("Failed to parse session storage label:", error);
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCartAndCartId = async () => {
+  //     if (!isLogin) {
+  //       const localStorageLabel: string | null = window.localStorage.getItem("cart_id");
+  //       if (localStorageLabel !== null) {
+  //         try {
+  //           const localStorageData = JSON.parse(localStorageLabel) as number;
+  //           const cart = await getCartInfo(isLogin, token, localStorageData);
+  //           console.log(cart)
+  //           if (cart) setCartItems(cart.items);
+  //           setCartId(localStorageData);
+  //         } catch (error) {
+  //           console.error("Failed to parse session storage label:", error);
+  //         }
+  //       }
+  //     } else {
+  //       try {
+  //         const cart = await getCartInfo(isLogin, token);
+  //         console.log(cart)
+  //         if (cart) setCartItems(cart.items);
+  //       } catch (error) {
+  //         console.error("Failed to parse session storage label:", error);
+  //       }
+  //     }
+  //   };
 
-    if (!loading) {
-      fetchCartAndCartId();
+  //   if (!loading) {
+  //     fetchCartAndCartId();
+  //   }
+  // }, [getCartInfo, isLogin, token, loading]);
+
+  useEffect(() =>{
+    const fetchCart = async() =>{
+      try {
+        const cart = await getCartInfo(token);
+        console.log(cart)
+        if (cart) setCartItems(cart.items);
+      } catch (error) {
+        console.error("Failed to parse cookie storage value !", error);
+      }
     }
-  }, [getCartInfo, isLogin, token, loading]);
+
+    if(!loading) fetchCart();
+  }, [token, loading, getCartInfo]);
 
   const addVariantsToCart = useCallback((name: keyof Variant, value: string) => {
     setProductVariant((prevState) => ({
@@ -170,6 +192,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       if(!isLogin){
         setCartId(resData.id)
         setItem(resData.id);
+        console.log("running")
       }
 
       setCartItems(resData.items);
@@ -299,7 +322,12 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   }, [cartItems, isLogin, API_QUANTITY_DECREMENT, cartId, token, setItem, removeFromCart]);
 
-  const totalPrice = useMemo(() => cartItems.reduce((total, item) => total + parseFloat(item.price), 0), [cartItems]);
+  const totalPrice = useMemo(() => {
+    return cartItems.reduce((total, item) => {
+      const itemPrice = (parseFloat(item.price) * item.quantity);
+      return total + (isNaN(itemPrice) ? 0 : itemPrice);
+    }, 0);
+  }, [cartItems]);
 
   const value: CartContextType = useMemo(() => ({
     cartItems,
