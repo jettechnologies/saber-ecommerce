@@ -105,9 +105,9 @@ function Home() {
               <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 flex-[1_1_18vw]">
                 <Truck size = {30}/>
                 <div>
-                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">free shipping</h5>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">handles logistics</h5>
                   <p className = "text-size-400 text-[#121212] font-medium">
-                    Order above $200
+                    powered by Shiprock
                   </p>
                 </div>
               </div>
@@ -125,7 +125,7 @@ function Home() {
                 <div>
                   <h5 className="text-size-500 font-semibold text-[#121212] capitalize">secure payments</h5>
                   <p className = "text-size-400 text-[#121212] font-medium">
-                    Secured by Striped
+                    Secured by Ravorpay, payUmoney and cashfree
                   </p>
                 </div>
               </div>

@@ -48,11 +48,11 @@ export default function Modal({
 
       {/* Modal */}
       <div
-        className={twMerge(`transition-all duration-200 inset-0 fixed ${modalPosition()} bg-white max-w-screen-sm border-2 border-black`, className)}
+        className={twMerge(`transition-all duration-200 inset-0 fixed ${modalPosition()} bg-white max-w-screen-sm`, className)}
       >
         <div className="grid grid-cols-[16%_68%_16%] py-7 px-2 justify-center place-items-center border-b-[1px]">
           <div className="w-full" />
-          <div onClick={onClose}>
+          <div className="w-[11rem] h-[2rem]">
             <Logo />
           </div>
           <button onClick={onClose}>

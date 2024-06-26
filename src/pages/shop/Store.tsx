@@ -17,9 +17,15 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "@/components/Spinner";
 import Button from "@/components/Button";
 import useGetRequest from "@/hooks/useGetRequest";
-import { CategoryTypeWithProduct, ProductType } from "@/types";
+import useSearchQuery from "@/hooks/useSearchQuery"
+import { CategoryTypeWithProduct, Product } from "@/types";
 import { useProductCatergories } from "@/context/productCatergoriesContext";
 
+
+interface SearchTermType{
+  data: Product[];
+  total: number;
+}
 
 function Store() {
   const { category } = useParams<{
@@ -45,13 +51,15 @@ function Store() {
     })
   );
 
-  const { data: searchResults, loading: searchLoading, error: searchError } = useGetRequest<ProductType[]>(
+  const { data: searchResults, loading: searchLoading, error: searchError } = useSearchQuery<SearchTermType>(
     `browse/search-product?keyword=${search}`,
     {}, // Empty options object
     !!search // Only fetch if search is not empty
   );
 
-  console.log(searchError, searchLoading, searchResults);
+
+  // console.log(searchError, searchLoading, searchResults);
+  console.log(searchError)
 
   // state to handle filtering would have to make it possible that it accepts the whole filter value of sort and price differences
   const [filter, setFilter] = useState("");
@@ -77,18 +85,68 @@ function Store() {
 
   const [values, setValues] = useState([MIN, MAX]);
 
-  if (loading) {
+  if (loading || searchLoading) {
     return <div className="w-full min-h-screen">
       <Spinner />
     </div>;
   }
 
-  if(error){
+  if(error || searchError){
     return <div className="w-full min-h-screen">
       <h5>{error}</h5>
     </div>;
   }
-  // console.log(filter)
+
+  // different render for different views
+
+const renderProductList = (products: any[]) => (
+  <div className="flex flex-wrap justify-between gap-4">
+      {products.map(product => (
+          <div className="w-full md:w-[44.5vw] lg:w-[22.5vw] h-[23rem] z-20" key={product.id}>
+              <ProductCard product={product} />
+          </div>
+      ))}
+  </div>
+);
+
+const renderNoProductsMessage = () => (
+  <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-screen">
+      <h1>
+          The product you tried to reach does not exist, please search another one.
+      </h1>
+      <Link
+          to="/store"
+          className="w-full lg:w-[50%] mt-6 flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
+      >
+          <Button size="large" className="text-size-500 w-full h-full">Shop</Button>
+      </Link>
+  </div>
+);
+// the content component for displaying the right thing
+  const Content = () => {
+    if (categoryTerm !== "") {
+      if (categoryWithProduct.data[0]?.products && categoryWithProduct.data[0]?.products.length > 0) {
+          return renderProductList(categoryWithProduct.data[0].products);
+      } else if (categoryWithProduct.data[0]?.products.length === 0 || categoryWithProduct.error) {
+          return renderNoProductsMessage();
+      }
+    } else if (search !== "") {
+        if (searchResults && Object.entries(searchResults).length > 0 && searchResults.data.length > 0) {
+            return renderProductList(searchResults.data);
+        } else if ((searchResults && searchResults.data.length === 0) || searchError) {
+            return renderNoProductsMessage();
+        }
+    } else {
+        if (products.length > 0) {
+          return renderProductList(products);
+        } else if (products.length === 0 || error) {
+            return renderNoProductsMessage();
+        }
+    }
+
+  };
+
+  console.log(searchError)
 
   return (
     <>
@@ -122,7 +180,7 @@ function Store() {
             Collections
           </h2>
           <p className="text-size-500 font-medium text-text-black text-center">
-            Discover the latest electronics at unbeatable prices. Shop now!
+            Discover the latest smart device accessories at unbeatable prices. Shop now!
           </p>
         </div>
 
@@ -150,52 +208,7 @@ function Store() {
             {/* exte */}
 
             <div className="w-full">
-              {categoryTerm === "" ?(products.length > 0 ? <div className="flex flex-wrap justify-between gap-4">
-                      {
-                        products.map(product => (
-                          <div className="w-full md:w-[44.5vw] lg:w-[22.5vw] h-[23rem] z-20" key={product.id}>
-                            <ProductCard product={product}/>
-                          </div>
-                        ))
-                      }
-                    </div>
-                  : (products.length === 0 || error) &&
-                      <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-">
-                        <h1>
-                          The product you tried to reach does not exist, please search another
-                          one.
-                        </h1>
-                        <Link
-                          to="/store"
-                          className="w-full lg:w-[50%] mt-6 flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
-                        >
-                          <Button size = "large" className="text-size-500 w-full h-full">Shop</Button>
-                        </Link>
-                    </div>
-                ): (
-                  (categoryWithProduct.data[0]?.products && categoryWithProduct.data[0]?.products.length > 0 )? <div className="flex flex-wrap justify-between gap-4">
-                      {
-                        categoryWithProduct.data[0]?.products.map(product => (
-                          <div className="w-full md:w-[44.5vw] lg:w-[22.5vw] h-[23rem] z-20" key={product.id}>
-                            <ProductCard product={product}/>
-                          </div>
-                        ))
-                      }
-                    </div>
-                  : (categoryWithProduct.data[0]?.products.length === 0 || categoryWithProduct.error) &&
-                      <div className="flex flex-col items-center justify-center text-center mx-4 lg:mx-24 min-h-">
-                        <h1>
-                          The product you tried to reach does not exist, please search another
-                          one.
-                        </h1>
-                        <Link
-                          to="/store"
-                          className="w-full lg:w-[50%] mt-6 flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
-                        >
-                          <Button size = "large" className="text-size-500 w-full h-full">Shop</Button>
-                        </Link>
-                    </div>
-                ) }
+              {Content()}
             </div>
         </div>
 

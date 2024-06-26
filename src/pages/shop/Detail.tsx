@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import Icon from "@/components/Icon";
 import creditCard from "@/assets/icons/creditCard.svg";
 import star from "@/assets/icons/star.svg";
-import truck from "@/assets/icons/truck.svg";
 import repeat from "@/assets/icons/repeat.svg";
 import AddToCartBtn from "@/components/addToCartBtn";
 // import Button from "@/components/Button";
@@ -230,12 +229,12 @@ function Detail() {
                   <Icon iconLink={star} />
                   <h2 className="text-icon font-medium text-md">Fit for You</h2>
                 </div>
-                <div className="flex items-center gap-3">
+                {/* <div className="flex items-center gap-3">
                   <Icon iconLink={truck} />
                   <h2 className="text-icon font-medium text-md">
                     Free Shipping
                   </h2>
-                </div>
+                </div> */}
                 <div className="flex items-center gap-3">
                   <Icon iconLink={repeat} />
                   <h2 className="text-icon font-medium text-md">
@@ -271,14 +270,6 @@ function Detail() {
                     </p>
                 </div>
                 <div className="flex gap-5 mt-5 border-t border-[#f0f0f0] pt-3">
-                    {/* <Button 
-                        type="white" 
-                        size="medium" 
-                        className="text-sm uppercase flex-1"
-                        handleClick = {() => setIsDeleting(prevState => !prevState)}
-                    >
-                        no, cancel
-                    </Button> */}
                     <Button  
                         size="medium"
                         handleClick={() => {

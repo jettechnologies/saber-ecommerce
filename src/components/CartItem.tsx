@@ -2,7 +2,7 @@ import { useCartContext } from "@/context/cartContext";
 import { Items } from "../types";
 import Spinner from "./Spinner";
 import { useState, useEffect, useRef } from "react";
-// import headphoneImg from "@/assets/images/headsets.png"
+import { IndianRupee } from "lucide-react";
 
 type CartItemProps = {
   item: Items;
@@ -46,7 +46,10 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
       {/* Product price */}
       <div className="hidden lg:flex font-bold w-[5rem]">
         <div className="flex justify-center items-center">
-          <h1>${item.price}</h1>
+          <div className="flex gap-x-2">
+            <IndianRupee size = {20}/>
+            <h1>{item.price}</h1>
+          </div>
         </div>
       </div>
 
@@ -88,7 +91,10 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
       {/* Subtotal */}
       <div className="flex items-center font-bold w-[5rem]">
-        <h1>${(item?.quantity * parseInt(item?.price))}</h1>
+        <div className="flex gap-x-2">
+          <IndianRupee size={20} />
+          <h1>{(item?.quantity * parseInt(item?.price))}</h1>
+        </div>
       </div>
 
       {/* Discard product */}

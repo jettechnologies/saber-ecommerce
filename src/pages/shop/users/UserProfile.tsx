@@ -24,7 +24,7 @@ const UserProfile = () => {
     <div className="border-2 border-red-500 w-full h-full px-8 pt-8 lg:px-16">
       <div className="flex justify-between py-3 border-b-2 border-gray">
         <h2 className="text-szie-500 lg:text-size-600 xl:text-3xl font-semibold capitalize">
-          welcome, tom john
+          welcome, {user?.fullname}
         </h2>
           <Button size="small" className="font-medium text-size-400 lg:text-size-500 capitalize text-white">
             delete account
