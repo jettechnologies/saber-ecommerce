@@ -11,11 +11,11 @@ interface Props{
     id:string;
     name: string;
     isMultiple?:boolean;
-    value?:string;
+    // value?:string;
     handleInputChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void
 }
 
-const Select:React.FC<Props> = ({select, className, value, isMultiple, id, name, defaultText, handleInputChange}) => {
+const Select:React.FC<Props> = ({select, className, isMultiple, id, name, defaultText, handleInputChange}) => {
 
   return (
     <select 
