@@ -107,7 +107,7 @@ function Home() {
                 <div>
                   <h5 className="text-size-500 font-semibold text-[#121212] capitalize">handles logistics</h5>
                   <p className = "text-size-400 text-[#121212] font-medium">
-                    powered by Shiprock
+                    powered by Shiprocket
                   </p>
                 </div>
               </div>
@@ -125,7 +125,7 @@ function Home() {
                 <div>
                   <h5 className="text-size-500 font-semibold text-[#121212] capitalize">secure payments</h5>
                   <p className = "text-size-400 text-[#121212] font-medium">
-                    Secured by Ravorpay, payUmoney and cashfree
+                    Secured by ravorblaze, payUmoney and cashfree
                   </p>
                 </div>
               </div>
@@ -185,9 +185,9 @@ function Home() {
                       </div>
                     </div>
                     </div></Link>}
-                  <div className = "flex max-sm:flex-col flex-wrap w-full min-h-[42rem] max-sm:gap-y-4 justify-between">
+                  <div className = "flex max-sm:flex-col flex-wrap w-full min-h-[42rem] gap-y-4 justify-between">
                       {
-                        categories.length > 0 && categories.slice(1,5).map((category) => (
+                        categories.length > 0 && categories.slice(1).map((category) => (
                         <Link to = {`store/${category.id}`}>
                         <div 
                           id = "category-card"

@@ -90,8 +90,12 @@ const Signin = () => {
 
         console.log(data);
 
-        await makeRequest(data, "user-auth/login");
-        navigate("/", { replace: true });
+        try{
+            await makeRequest(data, "user-auth/login");
+        }
+        catch(e){
+            console.log((e as Error).message)
+        }
     };
 
     useEffect(() =>{
@@ -105,8 +109,10 @@ const Signin = () => {
             });
 
             setToken(response?.accesstoken?.token);
+            navigate("/", { replace: true });
+
         }
-    }, [response, setToken]);
+    }, [response, setToken, navigate]);
 
     useEffect(() =>{
         let errorRemoval: ReturnType<typeof setTimeout>;

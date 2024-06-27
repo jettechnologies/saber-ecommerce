@@ -22,7 +22,7 @@ const Select:React.FC<Props> = ({select, className, value, isMultiple, id, name,
       name={name} 
       id={id} 
       multiple = {isMultiple}
-      value={value}
+      // value={value}
       className={twMerge("py-2 px-4 rounded-md text-size-400 font-normal font-roboto text-text-black capitalize cursor-pointer", className)}
       onChange={handleInputChange}
     >

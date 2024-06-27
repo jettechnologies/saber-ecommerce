@@ -100,8 +100,8 @@ const UserLayout = () => {
 
   return (
     <>
-        <section className="grid grid-rows-[auto_1fr] grid-cols-1 md:grid-cols-[auto_1fr] border-2 border-black w-full min-h-screen mt-4 md:gap-3">
-        <div className="w-full p-10 border-2 border-red-500 col-start-1 col-span-2 row-start-1 row-end-2 flex justify-between">
+        <section className="grid grid-rows-[auto_1fr] grid-cols-1 md:grid-cols-[auto_1fr] w-full min-h-screen md:gap-3">
+        <div className="w-full p-10 border-b border-[#c0c0c0] col-start-1 col-span-2 row-start-1 row-end-2 flex justify-between">
             <ul className="w-fit flex gap-2 text-size-500 font-semibold text-text-black capitalize">
                 <li className="flex items-center gap-2">
                 <Link to = "/">
@@ -143,10 +143,10 @@ const UserLayout = () => {
                 </label>
             </div>
         </div>
-        <div id = "side-nav" className="h-full w-[280px] lg:w-[360px]  hidden md:flex border-2 border-green-500 row-start-2 row-span-2 col-start-1 col-span-1" >
-            <nav className="w-full h-full border-2 border-red-500 px-2">
+        <div id = "side-nav" className="h-full w-[280px] lg:w-[360px] border-r border-[#c0c0c0] hidden md:flex row-start-2 row-span-2 col-start-1 col-span-1" >
+            <nav className="w-full h-full px-6">
                 <ul className="flex flex-col py-4">
-                    <li className="w-full py-4 border border-gray mb-4">
+                    <li className="w-full py-4  mb-4">
                         <div className="flex gap-3 flex-col">
                             <h4 className="text-size-500 lg:text-size-600 text-text-black font-semibold capitalize">
                                 Transaction management
@@ -169,13 +169,13 @@ const UserLayout = () => {
                 </ul>
             </nav>
         </div>
-        <div className="border-2 border-black row-start-2 row-span-2 md:col-start-2 col-span-1 max-sm:mt-3">
+        <div className="row-start-2 row-span-2 md:col-start-2 col-span-1 max-sm:mt-3 min-h-full">
             <Outlet />
         </div>
 
     </section>
 
-    {/* For telling guest users to login */}
+    {/* For showing success message or error message */}
     <Modal2 isOpen={isOpen} handleModalClose={() => setIsOpen(prevState => !prevState)}>
         <div className="flex flex-col w-full">
             <div className="flex items-center gap-3">

@@ -25,7 +25,7 @@ const Wishlist = () => {
       <div className="px-6 pb-4 border-b border-[#c0c0c0] mb-8">
         <h4 className="text-sm lg:text-size-600 font-semibold uppercase">my wishlist</h4>
       </div>
-        <div className="flex justify-around flex-wrap w-full h-full gap-8">
+        <div className="flex justify-around flex-wrap w-full gap-8">
           {
             user && user.favourites.length > 0 ? user.favourites.map(favourite => (
               <div className="w-full md:w-[30.5vw] lg:w-[25vw] xl:w-[29vw] h-[23rem]" key = {favourite.id}>

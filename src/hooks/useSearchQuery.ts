@@ -37,7 +37,6 @@ const useSearchQuery = <T>(url: string, options?: UseSearchQueryOptions, fetchFl
         console.log(result)
         setData(result);
       } catch (err) {
-        console.log((err as Error));
         setError((err as Error).message);
       } finally {
         setLoading(false);

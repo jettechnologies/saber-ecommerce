@@ -2,11 +2,14 @@ import Button from "@/components/Button";
 import { Link } from "react-router-dom";
 import { useUserProfile } from "@/context/userProfileContext";
 import Spinner from "@/components/Spinner";
-import { IndianRupee } from "lucide-react";
+import { IndianRupee, CircleAlert } from "lucide-react";
+import Modal2 from "@/components/Modal2";
+import { useState } from "react";
 
 const UserProfile = () => {
 
   const {isLoading, user, error } = useUserProfile();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   if(isLoading){
     return <div className="w-full h-ful">
@@ -20,13 +23,23 @@ const UserProfile = () => {
     </div>
   }
 
+  // const deleteProfile = useCallback(() =>{
+  //   const url = "profile-mgt/delete-user-account";
+
+  // }, []);
+
   return (
-    <div className="border-2 border-red-500 w-full h-full px-8 pt-8 lg:px-16">
+    <>
+      <div className="w-full h-full px-8 pt-8 lg:px-16">
       <div className="flex justify-between py-3 border-b-2 border-gray">
         <h2 className="text-szie-500 lg:text-size-600 xl:text-3xl font-semibold capitalize">
           welcome, {user?.fullname}
         </h2>
-          <Button size="small" className="font-medium text-size-400 lg:text-size-500 capitalize text-white">
+          <Button 
+            size="small" 
+            handleClick={() => setIsDeleting(prevState => !prevState)}
+            className="font-medium text-size-400 lg:text-size-500 capitalize text-white"
+          >
             delete account
           </Button>
       </div>
@@ -39,7 +52,7 @@ const UserProfile = () => {
               change password
             </Link>
             <Link to = "/user/edit-account" className = "text-size-500 lg:text-[17px] font-medium capitalize text-text-black">
-              edit
+              edit profile
             </Link>
           </div>
         </div>
@@ -71,7 +84,28 @@ const UserProfile = () => {
         </div>
       </div>
     </div>
+      {/* modal 2 for success mesage or error message */}
+    <Modal2 isOpen = {isDeleting} handleModalClose = {()=> setIsDeleting(prevState => !prevState)}>
+    <div className="flex flex-col w-full ">
+    <div className="flex items-center gap-3">
+      {/* <MessageSquareWarning size = {35} color = "rgb(239 68 68)"/> */}
+      <CircleAlert size = {35} color = "rgb(239 68 68)" />
+      <p>
+        Are you sure you want to delete this account
+      </p>
+    </div>
+    <div className="mt-5 border-t border-[#f0f0f0] pt-3">
+      <Button  
+          size="medium"
+          className="text-sm uppercase w-full"
+        >
+          Continue to profile
+      </Button>
+    </div>
+    </div>
+    </Modal2>
+    </>
   )
 }
 
-export default UserProfile
+export default UserProfile;
