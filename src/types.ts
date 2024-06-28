@@ -68,6 +68,7 @@ export interface CartType {
   items: Items[];
 }
 
+// data type for userProfile
 export interface UserProfile {
   DOB: string | null;
   LGA_of_Home_Address: string | null;
@@ -154,4 +155,64 @@ export interface FavoriteProductType {
   id: number;
   createdAt: string;
   product: Product;
+}
+
+// user type for the user object in the order object
+interface User {
+  id: number;
+  userID: string;
+  email: string;
+  role: string;
+  DOB: string | null;
+  age: number | null;
+  password: string;
+  mobile: string;
+  fullname: string;
+  cityOfResidence: string;
+  UpdatedAt: string;
+  RegisteredAt: string;
+  home_address: string;
+  profile_picture: string;
+  LGA_of_Home_Address: string | null;
+  gender: string;
+  Nationality: string | null;
+  totalRevenue: string;
+  isLoggedIn: boolean;
+  isRegistered: boolean;
+  isVerified: boolean;
+  reset_link_exptime: string | null;
+  password_reset_link: string | null;
+}
+
+interface OrderItem {
+  product: Product;
+  quantity: number;
+  price: string;
+  id: number;
+}
+
+interface Order {
+  orderID: string;
+  subTotal: number;
+  shippinFee: string;
+  total: number;
+  isPaid: boolean;
+  createdAT: string;
+  trackingID: string;
+  status: string;
+  weight: number;
+  user: User;
+  items: OrderItem[];
+  name: string | null;
+  mobile: string | null;
+  billing_address: string | null;
+  email: string | null;
+  discount: number | null;
+  IsCouponCodeApplied: boolean;
+  orderType: string | null;
+  paymentMethod: string | null;
+  updatedAT: string | null;
+  dropoffpincode: string | null;
+  pickuppincode: string | null;
+  id: number;
 }

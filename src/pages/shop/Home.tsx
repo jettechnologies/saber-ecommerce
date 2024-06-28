@@ -125,7 +125,7 @@ function Home() {
                 <div>
                   <h5 className="text-size-500 font-semibold text-[#121212] capitalize">secure payments</h5>
                   <p className = "text-size-400 text-[#121212] font-medium">
-                    Secured by ravorblaze, payUmoney and cashfree
+                    Secured by ravorpay, payUmoney and cashfree
                   </p>
                 </div>
               </div>

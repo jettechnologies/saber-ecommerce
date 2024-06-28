@@ -202,7 +202,7 @@ console.log(response, feedback)
     </div>
 
     {/* modal 2 for success mesage or error message */}
-    <Modal2 title = "Logout" isOpen = {feedback.status} handleModalClose = {()=> setFeedBack({...feedback, status: !feedback.status})}>
+    <Modal2 isOpen = {feedback.status} handleModalClose = {()=> setFeedBack({...feedback, status: !feedback.status})}>
         <div className="flex flex-col w-full ">
           <div className="flex items-center gap-3">
             {/* <MessageSquareWarning size = {35} color = "rgb(239 68 68)"/> */}

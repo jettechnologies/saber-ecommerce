@@ -37,8 +37,6 @@ function App() {
         </Route>
         <Route path="/product/:id" element={<Detail />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/success" element={<Success />} />
         {/* Protected users routes */}
         <Route element = {<ProtectedRoutes />}>
           <Route path="/user"  element = {<UserLayout />}>
@@ -49,6 +47,8 @@ function App() {
           </Route>
           <Route path="/user/edit-account" element = {<EditAccount />} />
           <Route path="/user/reset-password" element = {<ResetUserPassword />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/success" element={<Success />} />
         </Route>
         <Route path = "/terms-and-condition" element = {<Terms />} />
         <Route path = "/refund-policy" element = {<ReturnPolicy />} />

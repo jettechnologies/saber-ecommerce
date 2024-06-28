@@ -1,10 +1,12 @@
 import React from 'react'
 import { X } from 'lucide-react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props{
     isOpen?: boolean;
     handleModalClose?: () => void;
     children?: React.ReactNode;
+    className?: string;
     title?: string;
 }
 
@@ -12,6 +14,7 @@ const Modal2:React.FC<Props> = ({
     isOpen,
     handleModalClose,
     children,
+    className,
     title,
 }) => {
 
@@ -26,7 +29,7 @@ const Modal2:React.FC<Props> = ({
                     className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-[calc(100%-1rem)] font-roboto max-h-full"
                 >
                 <div className="fixed inset-0 bg-black opacity-40 z-40"></div>
-                <div className="relative p-4 w-full max-w-md max-h-full z-50">
+                <div className={twMerge("relative p-4 w-full max-w-md max-h-full z-50", className)}>
                     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                             <h3 className="text-xl font-semibold text-text-black dark:text-white first-letter:uppercase">

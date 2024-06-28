@@ -25,7 +25,7 @@ const Button:React.FC<Props> = ({children, type = "black", size = "medium", clas
 
 return (
   <button 
-  disabled = {disabled && disabled}
+    disabled = {disabled && disabled}
     className={twMerge("rounded-md font-semibold font-roboto cursor-pointer", sizeClassNames[size], typeClassNames[type], className)}
     onClick={handleClick}
   >
