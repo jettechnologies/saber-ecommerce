@@ -191,7 +191,7 @@ interface OrderItem {
   id: number;
 }
 
-interface Order {
+export interface Order {
   orderID: string;
   subTotal: number;
   shippinFee: string;

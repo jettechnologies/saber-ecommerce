@@ -13,6 +13,18 @@ import { BadgeCheck } from "lucide-react";
 import CopyToClipboard from "@/components/CopyToClipBoard";
 import Modal2 from "@/components/Modal2";
 
+interface OrderType{
+    orderType : string,
+    promoCode: string,
+    name: string,
+    mobile: string,
+    billing_address: string,
+    email: string,
+    dropOffPinCode: string,
+    pickUppinCode: string,
+}
+
+
 const Checkout = () => {
 
 
@@ -24,7 +36,7 @@ const Checkout = () => {
 
   const { user } = useUserProfile();
   // const { token } = useAuth();
-  const [order, setOrder] = useState({
+  const [order, setOrder] = useState<OrderType>({
     orderType : "",
     promoCode: "",
     name: "",
