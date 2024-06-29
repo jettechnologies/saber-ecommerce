@@ -24,7 +24,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
   }, [item.quantity]);
 
-    console.log(item.quantity, prevItemQuantity.current);
+    console.log(item?.product.name)
   return (
       <div className="flex justify-around lg:grid lg:grid-cols-[7fr_repeat(5,1fr)] gap-2 lg:gap-24 relative">
       {/* Product description */}
@@ -33,22 +33,22 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
         <img
           className="h-[6rem] w-[6rem] rounded-lg"
           src={item.product?.productImage}
-          alt={`Image of  ${item.product?.name}`}
+          alt={`Image of  ${item?.product?.name}`}
         />
-        <div className="hidden lg:flex flex-col gap-1">
-          <h1 className="font-semibold line-clamp-2">{item.product?.name}</h1>
+        <div className="hidden md:flex flex-col gap-1">
+          <h1 className="font-semibold line-clamp-2">{item?.product?.name}</h1>
           <h3 className="font-semibold text-icon">
-            {item.product?.category?.name}
+            {item?.product?.category?.name}
           </h3>
         </div>
       </div>
 
       {/* Product price */}
-      <div className="hidden lg:flex font-bold w-[5rem]">
+      <div className="hidden md:flex font-bold w-[5rem]">
         <div className="flex justify-center items-center">
           <div className="flex gap-x-2">
             <IndianRupee size = {20}/>
-            <h1>{item.price}</h1>
+            <h1>{item?.price}</h1>
           </div>
         </div>
       </div>

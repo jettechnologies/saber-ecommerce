@@ -31,6 +31,7 @@ export default function Navbar() {
   const { user } = useUserProfile();
   // const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLogout, setIsLogout] = useState(false);
+  console.log(cartItems, categories, user);
 
   const handleClick = () => {
     setIsMenuOpen(!isMenuOpen);

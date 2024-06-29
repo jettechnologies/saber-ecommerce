@@ -118,7 +118,20 @@ const Checkout = () => {
         body: JSON.stringify(data),
       });
   
-      if (!res.ok) throw new Error("Request not sent, status code: " + res.status);
+      // if (!res.ok) {
+      //   console.log(res.body)
+      //   throw new Error("Request not sent, status code: " + res.status)
+      // }
+
+      if (!res.ok) {
+        if (res.status === 404) {
+          const errorResponse = await res.json();
+          console.error("Error 404:", errorResponse);
+          throw new Error(`${errorResponse.message || "Resource not found"}`);
+        }
+        console.log(res.body);
+        throw new Error("Request not sent, status code: " + res.status);
+      }
   
       const response = await res.json();
       console.log(response);
@@ -363,12 +376,12 @@ const Checkout = () => {
                         <p className="text-sm text-[#c0c0c0]">
                           Qty: {order.quantity}
                         </p>
-                        {order.product.available_colors && <p className="text-sm text-[#c0c0c0]">
+                        {/* {order.product.available_colors && <p className="text-sm text-[#c0c0c0]">
                           {order.product.available_colors}
-                        </p>}
-                        {order.product.available_sizes && <p className="text-sm text-[#c0c0c0]">
+                        </p>} */}
+                        {/* {order.product.available_sizes && <p className="text-sm text-[#c0c0c0]">
                           {order.product.available_sizes}
-                        </p>}
+                        </p>} */}
                       </div>
                       <div className="flex gap-x-3 mt-2">
                         <IndianRupee size = {20} />
@@ -531,7 +544,7 @@ const Checkout = () => {
                 : 
                 response && <BadgeCheck size = {35} color = "rgb(34 197 94 )"/>}
               {/* message */}
-            {error !== null ? <p className="text-base font-normal">Error while placing order</p> : response &&<p className="font-normal text-base">
+            {error !== null ? <p className="text-base font-normal first-letter:uppercase">{error}</p> : response &&<p className="font-normal text-base">
               Your order has been placed successfully 
                {response?.order.discount ? <span className = "font-semibold ml-1">{`with ${response?.order.discount}% discount applied`}</span> : ""}
               , Please Proceed to make Payment

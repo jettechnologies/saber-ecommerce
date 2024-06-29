@@ -121,18 +121,18 @@ export default function Footer() {
                       </ul>
                   </div>
               </div>
-              <div className="md:px-8 max-md:mx-auto">
-                <div className="w-full flex flex-col items-center">
+              <div className="md:px-8 max-md:mx-auto flex-1">
+                <div className="flex flex-col">
                   <div className="max-sm:hidden">
                     <p className="mb-3 text-size-500 text-[#a0a0a0] text-center">
                         Join our newsletter.
                     </p>
                   </div>
                   <form onSubmit={handleFormSubmit}> 
-                      <div className = {`w-fit flex items-center p-1 border ${email.error ? "border-red-500" : "border-gray"} focus-within:border-blue focus-within:border-2 rounded-md`}>
+                      <div className = {`w-full flex p-1 border ${email.error ? "border-red-500" : "border-gray"} focus-within:border-blue focus-within:border-2 rounded-md`}>
                           <input type="text" 
                               placeholder="Enter email address"
-                              className="w-[20rem] h-10 border-none outline-none text-white font-roboto font-normal bg-transparent pl-2 "
+                              className="w-full h-10 border-none outline-none text-white font-roboto font-normal bg-transparent pl-2 "
                               onChange={handleInputChange}
                           />
                           <button type="submit"  className="px-4 py-2 h-[10] cursor-pointer">

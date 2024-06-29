@@ -191,7 +191,7 @@ const renderNoProductsMessage = () => (
           </p>
         </div>
           :
-          <div id = "page-banner" className="w-full h-[300px] bg-gray flex flex-col justify-center items-center gap-y-4 px-4">
+          <div id = "page-banner" className="w-full h-[300px] bg-gray flex flex-col justify-center items-center gap-y-4 px-4 border-2">
             <ul className="w-fit flex gap-2 text-size-400 font-semibold text-text-black capitalize">
               <li className="flex items-center gap-2">
                 <Link to = "/">

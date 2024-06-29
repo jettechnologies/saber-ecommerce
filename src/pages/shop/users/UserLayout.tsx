@@ -116,7 +116,7 @@ const UserLayout = () => {
                     <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
                 </li>
             </ul>
-            <div id="edit_user_div" className="w-[3rem] h-[3rem] rounded-full relative">
+            {user && <div id="edit_user_div" className="w-[3rem] h-[3rem] rounded-full relative">
                 {user?.profile_picture ? (
                     <Image 
                         src={user?.profile_picture} 
@@ -141,7 +141,7 @@ const UserLayout = () => {
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
                 </label>
-            </div>
+            </div>}
         </div>
         <div id = "side-nav" className="h-full w-[280px] lg:w-[360px] border-r border-[#c0c0c0] hidden md:flex row-start-2 row-span-2 col-start-1 col-span-1" >
             <nav className="w-full h-full px-6">

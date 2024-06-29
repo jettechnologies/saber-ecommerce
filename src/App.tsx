@@ -16,6 +16,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import VerifyEmail from "./pages/shop/auth/VerifyEmail";
 import ResetOTP from "./pages/shop/auth/ResetOTP";
 import ResetPassword from "./pages/shop/auth/ResetPassword";
+import PaymentGateway from "./pages/shop/PaymentGateway";
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
           <Route path="/user/edit-account" element = {<EditAccount />} />
           <Route path="/user/reset-password" element = {<ResetUserPassword />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path = "/payment-gateway" element = {<PaymentGateway />} />
           <Route path="/success" element={<Success />} />
         </Route>
         <Route path = "/terms-and-condition" element = {<Terms />} />
