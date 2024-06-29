@@ -390,7 +390,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [productVariant, setProductVariant] = useState<Variant>({ color: "", size: "" });
   const [isLoading, setIsLoading] = useState(true);
   const { setItem } = useLocalStorage("cart_id");
-  const [cartId, setCartId] = useState<number | null>(null);
+  // const [cartId, setCartId] = useState<number | null>(null);
   const { token, isLogin, loading } = useAuth();
 
   // Define API endpoints for both guest and users
@@ -477,7 +477,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
       const resData = await response.json();
       if (!isLogin) {
-        setCartId(resData.id);
+        // setCartId(resData.id);
         setItem(resData.id);
       }
 
@@ -537,7 +537,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         }
 
         const resData = await response.json();
-        setCartId(resData.id);
+        // setCartId(resData.id);
         setItem(resData.id);
         setCartItems(resData.items);
         console.log("Quantity incremented successfully");
@@ -569,7 +569,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         }
 
         const resData = await response.json();
-        setCartId(resData.id);
+        // setCartId(resData.id);
         setItem(resData.id);
         setCartItems(resData.items);
         console.log("Quantity decremented successfully");
