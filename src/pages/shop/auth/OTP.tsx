@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useApiRequest from "@/hooks/useApiRequest";
 import Cookies from 'js-cookie';
 import { useAuth } from "@/context/authContext";
-import { formatDistanceStrict, addSeconds } from 'date-fns';
+import { differenceInSeconds, addSeconds } from 'date-fns';
 
 interface OTPResponseType{
   accessToken: {
@@ -62,11 +62,35 @@ const OTP = () => {
     }, [activeOTPIndex]);
 
     // function for updating the value of the human reabable timer
+    // useEffect(() => {
+    //   const endTime = addSeconds(new Date(), countdown);
+    //   const formatted = formatDistanceStrict(new Date(), endTime);
+    //   setFormattedTime(formatted);
+    // }, [countdown]);
+
     useEffect(() => {
       const endTime = addSeconds(new Date(), countdown);
-      const formatted = formatDistanceStrict(new Date(), endTime);
-      setFormattedTime(formatted);
+  
+      const updateTimer = () => {
+        const now = new Date();
+        const secondsLeft = differenceInSeconds(endTime, now);
+  
+        if (secondsLeft >= 0) {
+          const minutes = Math.floor(secondsLeft / 60);
+          const seconds = secondsLeft % 60;
+          setFormattedTime(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
+        } else {
+          setFormattedTime("0:00");
+          clearInterval(intervalId);
+        }
+      };
+  
+      updateTimer(); // Initial call to set the time immediately
+      const intervalId = setInterval(updateTimer, 1000);
+  
+      return () => clearInterval(intervalId);
     }, [countdown]);
+  
 
     const handleFormSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
       e.preventDefault();
@@ -116,7 +140,6 @@ const OTP = () => {
         setIsResend(true)
         return
       }
-  
       // Set interval to decrease countdown by 1 every second
       const intervalId = setInterval(() => {
         setCountdown(prevCountdown => prevCountdown - 1);
@@ -130,7 +153,7 @@ const OTP = () => {
     <div className="w-full">
         <FormContainer>
             <form onSubmit={handleFormSubmit} className="bg-white rounded-md shadow-2xl p-5 mt-6">
-                <div className="flex flex-col gap-y-4 items-center justify-center mb-8">
+                <div className="flex flex-col gap-y-4 items-center justify-center mb-6">
                     <div className="w-[96px] grid place-items-center bg-[#d6d5d5] aspect-square rounded-full shadow-sm">
                         <MailOpen size={60} strokeWidth={1}/>
                     </div>
@@ -142,8 +165,8 @@ const OTP = () => {
                         </span>
                     </p>
                 </div>
-                <div>
-                  <div>Countdown: {formattedTime}</div>
+                <div className="w-full mb-5 flex justify-center">
+                  <div className="mx-auto">{formattedTime}</div>
                 </div>
                 <div className="flex gap-1 md:gap-3 xl:gap-5 justify-center mb-8 py-2">
                     {otp.map((_, index) => {

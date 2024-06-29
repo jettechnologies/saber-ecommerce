@@ -2,7 +2,7 @@
 
 const ReturnPolicy = () => {
   return (
-    <div className="w-full min-h-screen font-medium text-[#484848] pt-8 px-20">
+    <div className="w-full min-h-screen font-medium text-[#484848] pt-8 lg:px-20 px-5">
       <h2 className="text-3xl font-bold uppercase text-center text-gray-900 mb-10">Return Policy</h2>
       <p className="text-base mb-8">
         At Gearmates, we are committed to ensuring your satisfaction with our products. If for any reason you are not completely satisfied with your purchase, we are here to help.

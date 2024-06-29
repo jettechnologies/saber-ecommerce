@@ -164,11 +164,11 @@ const Signin = () => {
                     </div>
                     {user.password.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>
-                <div className="flex w-full h-fit p-2 mb-3 justify-between">
-                    <div className="flex gap-2">
+                <div className="flex w-full h-fit p-2 mb-3">
+                    {/* <div className="flex gap-2">
                         <input type="checkbox" name="remember" id="remember" className="w-5 h-5 border-gray"/>
                         <p className="text-sm font-normal text-text-black">Remember me</p>
-                    </div>
+                    </div> */}
                     <Link to = "/reset-password/verify-email" className="w-fit text-sm text-blue cursor-pointer hover:-translate-y-1 duration-500 transition-all">Forgot Password ?</Link>
                 </div>
                 <div className="w-full">

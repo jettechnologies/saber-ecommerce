@@ -63,32 +63,6 @@ const ResetOTP = () => {
       }
 
       console.log(data);
-    
-      // for the signup page to enable resend
-    //   const url = `admin-auth/verify-reset-password-token`;
-    //   const headers: Headers = {
-    //     'Content-type': 'application/json',
-    //     "Accept": "application/json",
-    //   }
-      
-    //   try {
-    //     setLoading(true);
-    //     const response = await easyHttp.post(url, headers, data);
-    //     setResponse(response)
-
-    //     setResError(null);
-    //   } catch (e: any) {
-    //     setResError(e.message);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    //   if(resError !== null){
-    //     return;
-    //   }
-
-    // //   would use either params or state to pass the value
-    //   navigate(link, {replace: true, state:{response: response}});
-    //   console.log(response);
     }
 
   return (

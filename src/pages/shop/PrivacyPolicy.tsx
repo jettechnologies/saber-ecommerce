@@ -1,7 +1,7 @@
 
 const PrivacyPolicy = () => {
   return (
-    <div className="w-full min-h-[--hero-height] font-medium text-[#484848] pt-8 px-20">
+    <div className="w-full min-h-[--hero-height] font-medium text-[#484848] pt-8 lg:px-20 px-5">
         <h2 className="text-3xl font-bold uppercase text-center text-text-black mb-10">privacy policy</h2>
         <p className="text-size-500">
         Welcome to TheGearMates, 

@@ -1,7 +1,7 @@
 
 const Terms = () => {
   return (
-    <div className="w-full min-h-screen font-medium text-[#484848] pt-8 px-20">
+    <div className="w-full min-h-screen font-medium text-[#484848] pt-8 lg:px-20 md:px-12 px-5">
       <h2 className="text-3xl font-bold uppercase text-center text-gray-900 mb-10">Terms and Conditions</h2>
       <p className="text-base mb-8">
         Welcome to Gearmates! These terms and conditions outline the rules and regulations for the use of Gearmates' Website and our services.

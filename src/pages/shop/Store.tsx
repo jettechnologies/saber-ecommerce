@@ -148,50 +148,59 @@ const renderNoProductsMessage = () => (
 
   return (
     <>
-      <section className="w-full h-full px-8">
+      <section className="w-full h-full px-8 mt-2">
         {(categoryTerm !== "" && categoryWithProduct.data) ? <div 
-          style = {{
-            background: `url(${categoryWithProduct?.data[0]?.banner}) rgb(243 245 247)`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
+          // style = {{
+          //   background: `url(${categoryWithProduct?.data[0]?.banner}) rgb(243 245 247)`,
+          //   backgroundSize: "cover",
+          //   backgroundPosition: "center",
+          //   backgroundRepeat: "no-repeat",
+          // }}
           id = "page-banner" 
-          className="w-full h-[300px] flex flex-col justify-center items-center gap-y-4 px-4"
+          className="w-full h-[365px] grid text-[#cccccc] relative"
         >
-          <ul className="w-fit flex gap-2 text-size-400 font-semibold text-text-black capitalize">
-            <li className="flex items-center gap-2">
-              <Link to = "/">
-                home
-              </Link>
-              <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
-            </li>
-            <li className="flex items-center gap-2">
-              <Link to = "/store">
-                Shop
-              </Link>
-              <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
-            </li>
-            {
-              paths.slice(1).map((path, index) =>(
-                <li className="flex items-center gap-2" key = {index}>
-                  <Link to = {`/store/${path}`}>
-                    {path}
-                  </Link>
-                  <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
-                </li>
-              ))
-            }
-          </ul>
-          <h2 className="text-4xl lg:text-6xl font-bold text-text-black capitalize">
-            {categoryWithProduct.data[0]?.name}
-          </h2>
-          <p className="text-size-500 font-medium text-center first-letter:uppercase text-text-black">
-            {categoryWithProduct.data[0]?.description}
-          </p>
+          <div className="w-full absolute inset-0">
+            <img 
+              src={categoryWithProduct?.data[0]?.banner} 
+              alt={`image of ${categoryWithProduct?.data[0]?.banner}`} 
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="z-30 text-center flex flex-col justify-center items-center gap-y-4 px-4 py-6">
+            <ul className="w-fit flex gap-2 text-size-400 font-semibold capitalize">
+              <li className="flex items-center gap-2">
+                <Link to = "/">
+                  home
+                </Link>
+                <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
+              </li>
+              <li className="flex items-center gap-2">
+                <Link to = "/store">
+                  Shop
+                </Link>
+                <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
+              </li>
+              {
+                paths.slice(1).map((path, index) =>(
+                  <li className="flex items-center gap-2" key = {index}>
+                    <Link to = {`/store/${path}`}>
+                      {path}
+                    </Link>
+                    <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
+                  </li>
+                ))
+              }
+            </ul>
+            <h2 className="text-4xl lg:text-6xl font-bold capitalize">
+              {categoryWithProduct.data[0]?.name}
+            </h2>
+            <p className="text-size-500 font-medium text-center first-letter:uppercase">
+              {categoryWithProduct.data[0]?.description}
+            </p>
+          </div>
         </div>
           :
-          <div id = "page-banner" className="w-full h-[300px] bg-gray flex flex-col justify-center items-center gap-y-4 px-4 border-2">
+          <div id = "page-banner" className="w-full h-[300px] bg-gray flex flex-col justify-center items-center gap-y-4 px-4">
             <ul className="w-fit flex gap-2 text-size-400 font-semibold text-text-black capitalize">
               <li className="flex items-center gap-2">
                 <Link to = "/">
