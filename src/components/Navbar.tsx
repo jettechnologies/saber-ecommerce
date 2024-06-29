@@ -193,7 +193,7 @@ export default function Navbar() {
             {/* <MessageSquareWarning size = {35} color = "rgb(239 68 68)"/> */}
             <CircleAlert size = {35} color = "rgb(239 68 68)" />
             <p>
-              Are you sure u want to delete this Account ?
+              Are you sure u want to log out ?
             </p>
           </div>
           <div className="flex gap-5 mt-5 border-t border-[#f0f0f0] pt-3">

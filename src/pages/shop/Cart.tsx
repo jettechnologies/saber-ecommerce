@@ -54,7 +54,9 @@ const Cart = () => {
 
   return (
     <div className="flex flex-col gap-6 mt-10 min-h-screen">
-      {cartItems.map((item) => {
+      {cartItems
+      .sort((a, b) => b.quantity - a.quantity)
+      .map((item) => {
         if (!uniqueItemsIds.has(item.id)) {
           uniqueItemsIds.add(item.id);
           return (

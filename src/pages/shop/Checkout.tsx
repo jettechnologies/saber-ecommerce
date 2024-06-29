@@ -3,13 +3,13 @@ import { IndianRupee, Truck, Warehouse } from "lucide-react";
 // import razorpay_icon from "@/assets/icons/razorpay-icon.svg";
 // import payumoney_icon from "@/assets/icons/payumoney-icon.png";
 import Carrousel from "@/components/Carrousel";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useUserProfile } from "@/context/userProfileContext";
-// import { useAuth } from "@/context/authContext";
-import { useLocation } from "react-router-dom";
+import { useAuth } from "@/context/authContext";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Order } from "@/types";
 import Button from "@/components/Button";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, CircleAlert } from "lucide-react";
 import CopyToClipboard from "@/components/CopyToClipBoard";
 import Modal2 from "@/components/Modal2";
 
@@ -32,10 +32,10 @@ const Checkout = () => {
   const location = useLocation();
   const orderData:Order = location.state.order;
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { user } = useUserProfile();
-  // const { token } = useAuth();
+  const { token } = useAuth();
   const [order, setOrder] = useState<OrderType>({
     orderType : "",
     promoCode: "",
@@ -47,7 +47,9 @@ const Checkout = () => {
     pickUppinCode: `${import.meta.env.VITE_POSTAL_CODE}`,
   });
 
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [response, setResponse] = useState<{message:string; order:Order} | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() =>{
@@ -75,6 +77,7 @@ const Checkout = () => {
     setOrder({ ...order, [name]: value.trim()});     
   }
 
+
   const orderCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   
@@ -90,44 +93,61 @@ const Checkout = () => {
     };
 
     console.log(data);
-
-    setModalOpen(prevState => !prevState);
     
-    // const orderId = orderData.id;
+    const orderId = orderData.id;
   
-    // if (!orderId) {
-    //   console.error("Order ID is missing");
-    //   return;
-    // }
+    if (!orderId) {
+      console.error("Order ID is missing");
+      return;
+    }
 
-    // console.log(orderId)
+    console.log(orderId)
   
-    // const url = `${import.meta.env.VITE_PRODUCT_LIST_API}order/confirm-order/${orderId}`;
+    const url = `${import.meta.env.VITE_PRODUCT_LIST_API}order/confirm-order/${orderId}`;
   
-    // try {
-    //   setLoading(true);
+    try {
+      setLoading(true);
       
-    //   const res = await fetch(url, {
-    //     method: "POST",
-    //     headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json',
-    //       'Authorization': `Bearer ${token}`,
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
   
-    //   if (!res.ok) throw new Error("Request not sent, status code: " + res.status);
+      if (!res.ok) throw new Error("Request not sent, status code: " + res.status);
   
-    //   const response = await res.json();
-    //   console.log(response);
-    //   // navigate("/success", {replace:true, state:{order: orderData}});
-    // } catch (err) {
-    //   console.log((err as Error).message);
-    // } finally {
-    //   setLoading(false);
-    // }
+      const response = await res.json();
+      console.log(response);
+      setResponse(response);
+      setModalOpen(prevState => !prevState);
+      // navigate("/success", {replace:true, state:{order: orderData}});
+    } catch (err) {
+      console.log((err as Error).message);
+      setError((err as Error).message); 
+      console.log("it reachecs here");
+      setModalOpen(prevState => !prevState);
+
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const newTotal = useMemo(() => {
+    if (response && response?.order.discount) {
+      // const discount = response?.order.discount && response?.order.discount
+      const discountAmount = (orderData.total * response?.order.discount) / 100;
+      const discountedTotal = (orderData.total - discountAmount).toFixed(2);
+  
+      return parseFloat(discountedTotal); // Convert string to number for further calculations
+    }
+  
+    return orderData.total; // Return original total if no discount is applied
+  }, [response, orderData]);
+  
   
 
   return (
@@ -263,7 +283,7 @@ const Checkout = () => {
               <div className="w-full">
                 <h3 className="text-size-500 text-text-black font-medium uppercase mb-6">3. Postal Code</h3>
                 <div>
-                  {order.orderType === "door_delivery" ?<div className="flex gap-x-4 ">
+                  {order.orderType === "door_delivery" ?<div className="flex flex-col lg:flex-row gap-4 ">
                     <div className="w-full">
                       <label
                         htmlFor="dropOffCode"
@@ -336,7 +356,7 @@ const Checkout = () => {
                   <li className="flex gap-x-3 py-3 border-b border-[#c0c0c0]">
                     <img src={order.product.productImage} alt="image icon" className="w-16 h-16 rounded-md object-cover"/>
                     <div className="w-">
-                      <p className="text-size-400 lg:text-size-500 font-normal text-text-black">
+                      <p className="text-size-400 lg:text-size-500 font-normal text-text-black first-letter:uppercase">
                         {order.product.name}
                       </p>
                       <div className="flex gap-x-2 capitalize mt-2 text-sm lg:text-size-500">
@@ -399,7 +419,7 @@ const Checkout = () => {
                         </p>
                       </div>
                   </div>
-                  <div className="flex w-full justify-between items-center">
+                  {/* <div className="flex w-full justify-between items-center">
                     <p className="text-text-black capitalize font-normal text-sm">discount:</p>
                       <div className="flex gap-x-3 mt-2">
                         <IndianRupee size = {20} />
@@ -407,7 +427,7 @@ const Checkout = () => {
                           {orderData.discount ? orderData.discount : "0.00"}
                         </p>
                       </div>
-                  </div>
+                  </div> */}
               </div>
               <hr className="my-4 bg-[#c0c0c0]" />
               <div>
@@ -425,16 +445,16 @@ const Checkout = () => {
                   className="uppercase font-medium text-size-500 w-full mt-4 px-6 py-3 bg-[#141718] text-white font-roboto rounded-md cursor-pointer"
                   form="order_checkout_form"
                 >
-                  {/* <p className="text-white">{loading ? "Loading..." : "place order"}</p> */}
+                  <p className="text-white">{loading ? "Loading..." : "place order"}</p>
 
-                  <p className="text-white">place order</p>
+                  {/* <p className="text-white">place order</p> */}
                 </button>
               </div>
             </div>
           </div>  
         </div>
         {/* mobile checkout block */}
-        <div className="hidden w-full h-40 md:h-48 fixed bottom-0 left-0 z-10 bg-white max-[780px]:block p-4 overflow-y-scroll">
+        <div className="hidden w-full max-[780px]:h-[14rem] shadow-md fixed bottom-0 left-0 z-10 bg-white max-[780px]:block p-4 overflow-y-scroll">
           <div className="w-full overflow-auto mb-4">
             <label
               htmlFor="promo_code"
@@ -447,7 +467,7 @@ const Checkout = () => {
               placeholder="Eg SMART_30"
               id="promo_code"
               name="promoCode"
-              // onChange={handleInputChange}
+              onChange={handleInputChange}
               className="mt-3 border border-[#c0c0c0] w-full p-3 font-roboto text-size-400 font-normal first-letter:uppercase rounded-md"
             />
           </div>
@@ -470,7 +490,7 @@ const Checkout = () => {
                     </p>
                   </div>
               </div>
-              <div className="flex w-full justify-between items-center">
+              {/* <div className="flex w-full justify-between items-center">
                 <p className="text-text-black capitalize font-normal text-sm">discount:</p>
                   <div className="flex gap-x-3 mt-2">
                     <IndianRupee size = {20} />
@@ -478,7 +498,7 @@ const Checkout = () => {
                       {orderData.discount ? orderData.discount : "0.00"}
                     </p>
                   </div>
-              </div>
+              </div> */}
           </div>
           <hr className="my-4 bg-[#c0c0c0]" />
           <div>
@@ -496,8 +516,8 @@ const Checkout = () => {
               className="uppercase font-medium text-size-500 w-full mt-4 px-6 py-3 bg-[#141718] text-white font-roboto rounded-md cursor-pointer"
               form="order_checkout_form"
             >
-              {/* <p className="text-white">{loading ? "Loading..." : "place order"}</p> */}
-              <p className="text-white">place order</p>
+              <p className="text-white">{loading ? "Loading..." : "place order"}</p>
+              {/* <p className="text-white">place order</p> */}
             </button>
           </div>
         </div>
@@ -506,23 +526,41 @@ const Checkout = () => {
       <Modal2 title="Order confirmation" isOpen = {modalOpen} handleModalClose = {()=> setModalOpen(prevState => !prevState)}>
         <div className="flex flex-col w-full ">
           <div className="flex items-center gap-3">
-              <BadgeCheck size = {35} color = "rgb(34 197 94 )"/>
-            <p>
-              Your order has been successfully placed
-            </p>
+            {/* icons */}
+              {error !== null ? <CircleAlert size = {35} color = "rgb(239 68 68)" /> 
+                : 
+                response && <BadgeCheck size = {35} color = "rgb(34 197 94 )"/>}
+              {/* message */}
+            {error !== null ? <p className="text-base font-normal">Error while placing order</p> : response &&<p className="font-normal text-base">
+              Your order has been placed successfully 
+               {response?.order.discount ? <span className = "font-semibold ml-1">{`with ${response?.order.discount}% discount applied`}</span> : ""}
+              , Please Proceed to make Payment
+            </p>}
           </div>
+          {/* button */}
           <div className="mt-5 border-t border-[#f0f0f0] pt-3">
-            <Button  
+            {error !== null ? <Button  
+                size="medium"
+                handleClick={() => {
+                  setModalOpen(prevState => !prevState);
+                  setError(null);
+                }}
+                className="text-sm uppercase w-full"
+              >
+                Place order again
+              </Button>
+              : 
+              response && <Button  
               size="medium"
-              // handleClick={() => {
-              //   navigate("/user", {replace: true});
-              // }}
+              handleClick={() => {
+                navigate("/success", {replace:true, state:{order: response?.order}});
+              }}
               className="text-sm text-white uppercase w-full flex gap-x-2 justify-center"
             > 
               <p>pay now</p>
               <IndianRupee size = {20} />
-              <p>{orderData.total}</p>
-            </Button>
+              <p>{newTotal ? newTotal : response?.order.total}</p>
+            </Button>}
           </div>
         </div>
       </Modal2> 

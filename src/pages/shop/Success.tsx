@@ -1,4 +1,5 @@
 import thankYou from "@/assets/images/thank-you.webp";
+import { Link } from "react-router-dom";
 
 const Success = () => {
   return (
@@ -13,8 +14,8 @@ const Success = () => {
         free to reach out.
       </p>
 
-      <a
-        href="mailto:francoaguirretrabajo@gmail.com"
+      <Link
+        to = "/"
         className="w-full lg:w-[50%] mt-6 bg-main flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-110 transition-transform"
       >
         <button className="flex items-center gap-2">
@@ -35,7 +36,7 @@ const Success = () => {
             <path d="M3 7l9 6l9 -6"></path>
           </svg>
         </button>
-      </a>
+      </Link>
     </div>
   );
 };

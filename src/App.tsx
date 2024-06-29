@@ -23,8 +23,9 @@ function App() {
   return (
     <>
     <Routes>
-      <Route element = {<Layout />}>
-        <Route path="/" element={<Home />} />
+      <Route path="/" element = {<Layout />}>
+        <Route index element={<Home />} />
+        {/* <Route element={<Home />} /> */}
         <Route path={routes.ABOUT} element={<AboutUs />} />
         <Route path="/store/:category?" element={<Store />} />
         <Route path="/auth/login" element = {<Signin />}/>

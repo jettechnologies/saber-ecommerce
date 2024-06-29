@@ -256,6 +256,10 @@ input[type = "number"] {
   @apply rounded-md
 }
 
+form input{
+  @apply rounded-md;
+}
+
 /* customizing the product description scrollbar */
 /* #product-desc::-webkit-scrollbar{
   width:12px;

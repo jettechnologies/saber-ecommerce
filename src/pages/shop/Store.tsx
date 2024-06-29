@@ -59,7 +59,7 @@ function Store() {
 
 
   // console.log(searchError, searchLoading, searchResults);
-  console.log(searchError)
+  console.log(categoryWithProduct);
 
   // state to handle filtering would have to make it possible that it accepts the whole filter value of sort and price differences
   const [filter, setFilter] = useState("");
@@ -146,12 +146,19 @@ const renderNoProductsMessage = () => (
 
   };
 
-  console.log(searchError)
-
   return (
     <>
       <section className="w-full h-full px-8">
-        <div id = "page-banner" className="w-full h-[300px] bg-gray flex flex-col justify-center items-center gap-y-4 px-4">
+        {(categoryTerm !== "" && categoryWithProduct.data) ? <div 
+          style = {{
+            background: `url(${categoryWithProduct?.data[0]?.banner}) rgb(243 245 247)`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+          id = "page-banner" 
+          className="w-full h-[300px] flex flex-col justify-center items-center gap-y-4 px-4"
+        >
           <ul className="w-fit flex gap-2 text-size-400 font-semibold text-text-black capitalize">
             <li className="flex items-center gap-2">
               <Link to = "/">
@@ -177,12 +184,46 @@ const renderNoProductsMessage = () => (
             }
           </ul>
           <h2 className="text-4xl lg:text-6xl font-bold text-text-black capitalize">
-            Collections
+            {categoryWithProduct.data[0]?.name}
           </h2>
-          <p className="text-size-500 font-medium text-text-black text-center">
-            Discover the latest smart device accessories at unbeatable prices. Shop now!
+          <p className="text-size-500 font-medium text-center first-letter:uppercase text-text-black">
+            {categoryWithProduct.data[0]?.description}
           </p>
         </div>
+          :
+          <div id = "page-banner" className="w-full h-[300px] bg-gray flex flex-col justify-center items-center gap-y-4 px-4">
+            <ul className="w-fit flex gap-2 text-size-400 font-semibold text-text-black capitalize">
+              <li className="flex items-center gap-2">
+                <Link to = "/">
+                  home
+                </Link>
+                <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
+              </li>
+              <li className="flex items-center gap-2">
+                <Link to = "/store">
+                  Shop
+                </Link>
+                <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
+              </li>
+              {
+                paths.slice(1).map((path, index) =>(
+                  <li className="flex items-center gap-2" key = {index}>
+                    <Link to = {`/store/${path}`}>
+                      {path}
+                    </Link>
+                    <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
+                  </li>
+                ))
+              }
+            </ul>
+            <h2 className="text-4xl lg:text-6xl font-bold text-text-black capitalize">
+              Collections
+            </h2>
+            <p className="text-size-500 font-medium text-text-black text-center">
+              Discover the latest smart device accessories at unbeatable prices. Shop now!
+            </p>
+          </div>
+        }
 
         <div className="border-b border-black py-8">
           <div className="flex justify-between w-full items-center">
