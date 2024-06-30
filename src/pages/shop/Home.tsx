@@ -50,6 +50,8 @@ function Home() {
 
   const { loading:fetchingCoupon, data:coupons, error } = useGetRequest<PromoCode[] | []>("browse/get-coupons", {headers: headers});
 
+  console.log(fetchingCoupon, error);
+
   const { loading, products, categories } = useProductCatergories();
   const [fetchActiveCoupon, setFetchActiveCoupon] = useState(false);
   const [remainingTime, setRemainingTime] = useState<number>(0);
