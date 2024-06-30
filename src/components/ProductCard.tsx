@@ -1,14 +1,24 @@
 import { IndianRupee } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Product, ProductType } from "@/types";
+import { twMerge } from "tailwind-merge";
 
 interface Props {
-  tag?: boolean;
+  tag?: {
+    type: "success" | "warning" | "neutral";
+    msg: string;
+  };
   product: ProductType | Product;
 }
 
 const ProductCard: React.FC<Props> = ({ tag, product }) => {
   const { id, name, price, productImage } = product;
+
+  const typeClassNames = {
+    neutral: "bg-gray",
+    warning: "bg-yellow",
+    success: "bg-green-500"
+  }
 
   return (
     <div className="w-full h-full shadow-lg rounded-md overflow-clip">
@@ -25,8 +35,8 @@ const ProductCard: React.FC<Props> = ({ tag, product }) => {
           >
             <div className="flex justify-between w-full pt-3 px-3 absolute top-0 left-0 z-80">
               {tag && (
-                <div className="p-2 rounded-md text-base uppercase font-semibold bg-gray shadow-md">
-                  <p>out of stock</p>
+                <div className={twMerge("p-2 rounded-md text-base capitalize font-medium shadow-md", typeClassNames[tag?.type])}>
+                  <p>{tag.msg}</p>
                 </div>
               )}
               {/* {!isLogin ? (

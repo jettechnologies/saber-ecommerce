@@ -17,6 +17,7 @@ import VerifyEmail from "./pages/shop/auth/VerifyEmail";
 import ResetOTP from "./pages/shop/auth/ResetOTP";
 import ResetPassword from "./pages/shop/auth/ResetPassword";
 import PaymentGateway from "./pages/shop/PaymentGateway";
+import TrackOrder from "./pages/shop/TrackOrder";
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         </Route>
         <Route path="/product/:id" element={<Detail />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path = "/order/track" element = {<TrackOrder />} />
         {/* Protected users routes */}
         <Route element = {<ProtectedRoutes />}>
           <Route path="/user"  element = {<UserLayout />}>

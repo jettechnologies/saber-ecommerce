@@ -114,18 +114,18 @@ const UserProfile = () => {
 
   return (
     <>
-      <div className="w-full h-full px-8 pt-8 lg:px-16">
+    <div className="w-full h-full px-8 pt-8 lg:px-16">
       <div className="flex justify-between py-3 border-b-2 border-gray">
         <h2 className="text-szie-500 lg:text-size-600 xl:text-3xl font-semibold capitalize">
           welcome, {user?.fullname}
         </h2>
-          <Button 
+          {/* <Button 
             size="small" 
             handleClick={() => setIsDeleting(prevState => !prevState)}
             className="font-medium text-size-400 lg:text-size-500 capitalize text-white"
           >
             delete account
-          </Button>
+          </Button> */}
       </div>
       <div className="mt-8 rounded-b-md shadow-sm">
         {/* card header */}

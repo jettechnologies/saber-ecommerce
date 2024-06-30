@@ -11,7 +11,7 @@ import { CircleAlert } from "lucide-react";
 import { useCartContext } from "@/context/cartContext";
 import { CartIcon } from "../icons/svg";
 import { useProductCatergories } from "@/context/productCatergoriesContext";
-// import { useAuth } from "@/context/authContext";
+import { useAuth } from "@/context/authContext";
 // import { UserProfile } from "@/types";
 import { useUserProfile } from "@/context/userProfileContext";
 import Cookies from "js-cookie";
@@ -21,17 +21,15 @@ import Button from "./Button";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
+  const { token, loading } = useAuth();
   const location = useLocation();
   const currentUrl = location.pathname;
   const navigate = useNavigate();
 
   const { cartItems } = useCartContext();
   const { categories } = useProductCatergories();
-  // const { token, isLogin, loading } = useAuth();
   const { user } = useUserProfile();
-  // const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLogout, setIsLogout] = useState(false);
-  console.log(cartItems, categories, user);
 
   const handleClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -41,29 +39,6 @@ export default function Navbar() {
     { to: routes.STORE, text: "Shop" },
     { to: routes.ABOUT, text: "About Us" },
   ];
-
-  // useEffect(() =>{
-  //   const getUserProfile = async() =>{
-  //     try{
-  //       const res = await fetch("https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/user-auth/profile", {
-  //         headers:{
-  //           Authorization: `Bearer ${token}`,
-  //         }
-  //       });
-  //       if(!res.ok){
-  //         throw new Error(`Error: ${res.status} ${res.statusText}`);
-  //       }
-
-  //       const response = await res.json();
-  //       setUserProfile(response);
-  //     }
-  //     catch(err){
-  //       console.error((err as Error).message)
-  //     }
-  //   }
-
-  //   if(!loading){getUserProfile()}
-  // }, [token, setUserProfile, loading]);
 
   const handleLogout = () =>{
     Cookies.remove("auth_token");
@@ -120,7 +95,15 @@ export default function Navbar() {
                 >
                   <h1>About</h1>
                 </Link>
-              </li>
+                </li>
+                {(token && !loading) && <li className="p-2">
+                  <Link
+                      to={"/order/track"}
+                      className={`flex gap-3 text-size-500 font-semibold items-center capitalize`}
+                    >
+                  <h1>track order</h1>
+                </Link>
+              </li>}
             </ul>
           </div>
 
@@ -237,6 +220,15 @@ export default function Navbar() {
               </div>
             </Link>
           ))}
+         {(token && !loading) && <Link
+            to={"/order/track"}
+            className={`flex w-full justify-between text-xl font-bold items-center capitalize`}
+          >
+            <h1>track order</h1>
+            <div className="flex justify-end">
+                <img src={menuArrowRight} alt={"icon image"} />
+              </div>
+          </Link>}
         </div>
       </Modal>
     </>

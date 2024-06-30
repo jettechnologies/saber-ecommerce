@@ -29,7 +29,10 @@ const Wishlist = () => {
           {
             user && user.favourites.length > 0 ? user.favourites.map(favourite => (
               <div className="w-full md:w-[30.5vw] lg:w-[25vw] xl:w-[29vw] h-[23rem]" key = {favourite.id}>
-                <ProductCard product={favourite.product} tag={favourite.product.isOutOfStock} />
+                <ProductCard product={favourite.product} tag={{
+                  type: "neutral",
+                  msg: favourite?.product?.isOutOfStock ? "out of stock" : "",
+                }}/>
               </div>
             )) : <div className="w-full h-full grid place-items-center">
               <h2 className="text-size-600 text-text-black font-bold uppercase text-center">No item in your wishlist....</h2>

@@ -90,20 +90,9 @@ const useApiRequest = <R, T>({ method = 'POST' }: ApiRequestOptions<T>): ApiResp
         body: JSON.stringify(body),
       });
       if (!res.ok) {
-        // if(res.status === 400){
-        //   const errorResponse = await res.json();
-        //   console.error("Error 404:", errorResponse);
-        //   throw new Error(`${errorResponse.message || "Resource not found"}`);
-        // }
-        // else if(res.status === 404){
-        //   const errorResponse = await res.json();
-        //   console.error("Error 404:", errorResponse);
-        //   throw new Error(`${errorResponse.message || "Resource not found"}`);
-        // }
         const errorResponse = await res.json();
         console.error(errorResponse);
         throw new Error(`${errorResponse.message || "Resource not found"}`);
-        // throw new Error((data as any).message || 'Something went wrong');
       }
 
       const data: R = await res.json();

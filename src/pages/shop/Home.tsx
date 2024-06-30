@@ -12,17 +12,99 @@ import Promo from "@/components/Promo";
 import ProductSlider from "@/components/ProductSlider";
 import { useProductCatergories } from "@/context/productCatergoriesContext";
 // import useGetRequest from "@/hooks/useGetRequest";
-// import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Spinner from "@/components/Spinner";
 import { ProductType } from "@/types";
+import useGetRequest from "@/hooks/useGetRequest";
+import { useAuth } from "@/context/authContext";  
+import banner_one from "@/assets/images/banners/banner1.webp";
+import banner_two from "@/assets/images/banners/banner2.webp";
+import banner_three from "@/assets/images/banners/banner3.webp";
+// import { timeToSeconds, formatTimeDays, formatTimeWeeks } from "@/utils/dateFormatting";
+import { differenceInSeconds, formatDuration, intervalToDuration } from 'date-fns';
 // import Newsletter from "@/components/Newsletter";
 
-
+interface PromoCode {
+  id: number;
+  OneTime_discountCode: string;
+  createdAT: string;
+  DiscountDuration_days: number;
+  DiscountDuration_weeks: number;
+  percentageOff: string;
+  expires_in: string;
+  updatedAT: string;
+  isExpired: boolean;
+}
 
 function Home() {
-  const { loading, products, categories } = useProductCatergories();
 
-  console.log(products, categories)
+  const { token } = useAuth();
+
+  const headers = useMemo(() => {
+    if(token){
+      return {
+        'Authorization': `Bearer ${token}`,
+      }
+    }
+  }, [token]);
+
+  const { loading:fetchingCoupon, data:coupons, error } = useGetRequest<PromoCode[] | []>("browse/get-coupons", {headers: headers});
+
+  const { loading, products, categories } = useProductCatergories();
+  const [fetchActiveCoupon, setFetchActiveCoupon] = useState(false);
+  const [remainingTime, setRemainingTime] = useState<number>(0);
+  const [formattedTime, setFormattedTime] = useState<string>("");
+
+  const activeCoupon = useMemo(() => {
+    if (coupons.length > 0) {
+      const sortedCoupons = [...coupons].sort((a, b) => new Date(a.createdAT).getTime() - new Date(b.createdAT).getTime());
+      return sortedCoupons[0];
+    }
+    return null;
+  }, [coupons]);
+
+
+  const calculateRemainingTime = (expiresIn: string): number => {
+    const now = new Date();
+    const expirationDate = new Date(expiresIn);
+    return differenceInSeconds(expirationDate, now);
+  };
+  
+  const formatTime = (seconds: number): string => {
+    const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
+    return formatDuration(duration, { format: ['days', 'hours', 'minutes', 'seconds'] });
+  };
+
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+
+    if (activeCoupon && activeCoupon.expires_in) {
+      setFetchActiveCoupon(true);
+      const seconds = calculateRemainingTime(activeCoupon.expires_in);
+      setRemainingTime(seconds);
+
+      intervalId = setInterval(() => {
+        setRemainingTime((prevTime) => {
+          const newTime = prevTime - 1;
+          if (newTime <= 0) {
+            clearInterval(intervalId);
+            return 0;
+          }
+          return newTime;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(intervalId)
+      setFetchActiveCoupon(false);
+    };
+  }, [activeCoupon]);
+
+  useEffect(() => {
+    setFormattedTime(formatTime(remainingTime));
+  }, [remainingTime]);
 
   return (
     <main className="w-full h-full">
@@ -149,7 +231,10 @@ function Home() {
             autoPlay = {false}
             contents={products.map((product:ProductType) =>(
               <div className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
-                <ProductCard product={product} tag={product.isOutOfStock} />
+                <ProductCard product={product}  tag={{
+                  type: "neutral",
+                  msg: product?.isOutOfStock ? "out of stock" : "",
+                }} />
               </div>
             ))} 
           /> :
@@ -224,7 +309,25 @@ function Home() {
           {/* Discont sales or Newletter */}
           <section className="mt-14">
             {/* remember to add a state in the global store that would enable the store owner to either turn a promo or a newletter on */}
-            <Promo />
+            {activeCoupon ? <Promo formattedTime = {formattedTime} currentCoupon={activeCoupon}/> :
+              fetchActiveCoupon && (<div className="w-full h-full border-2">
+                <Carrousel 
+                hasArrows = {true}
+                autoPlayInterval={3500}
+                content= {[
+                  <div className="">
+                    <img src={banner_one} alt="banner image" />
+                  </div>,
+                  <div className="">
+                    <img src={banner_two} alt="banner image" />
+                  </div>,
+                  <div className="">
+                    <img src={banner_three} alt="banner image" />
+                  </div>
+                ]}
+              />
+              </div>)
+            }
           </section>
 
           {/* Best sellers  sort out by rating*/}
@@ -234,7 +337,10 @@ function Home() {
                 {
                   products.map((product:ProductType) =>(
                     <div className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
-                      <ProductCard product={product} tag={product.isOutOfStock} />
+                      <ProductCard product={product} tag={{
+                        type: "neutral",
+                        msg: product?.isOutOfStock ? "out of stock" : "",
+                      }} />
                     </div>))
                 }
                 </div>

@@ -1,7 +1,4 @@
 import { IndianRupee, Truck, Warehouse } from "lucide-react";
-// import cashfree_icon from "@/assets/icons/cashfree-icon.svg";
-// import razorpay_icon from "@/assets/icons/razorpay-icon.svg";
-// import payumoney_icon from "@/assets/icons/payumoney-icon.png";
 import Carrousel from "@/components/Carrousel";
 import { useEffect, useState, useMemo } from "react";
 import { useUserProfile } from "@/context/userProfileContext";
@@ -137,7 +134,7 @@ const Checkout = () => {
       console.log(response);
       setResponse(response);
       setModalOpen(prevState => !prevState);
-      // navigate("/success", {replace:true, state:{order: orderData}});
+      navigate("/payment-gateway", {replace:true, state:{order: orderData}});
     } catch (err) {
       console.log((err as Error).message);
       setError((err as Error).message); 

@@ -1,8 +1,42 @@
 import Button from "./Button";
 import promoImage from "../assets/images/promotion-card.png";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const Promo = () => {
+interface PromoCode {
+  id: number;
+  OneTime_discountCode: string;
+  createdAT: string;
+  DiscountDuration_days: number;
+  DiscountDuration_weeks: number;
+  percentageOff: string;
+  expires_in: string;
+  updatedAT: string;
+  isExpired: boolean;
+}
+
+interface Prop{
+  formattedTime: string;
+  currentCoupon: PromoCode;
+}
+
+const Promo = ({formattedTime, currentCoupon}: Prop) => {
+
+  const [timeArray, setTimeArray] = useState<string[]>([]);
+
+  const splitFormattedTime = (formattedTime: string): string[] => {
+    const regex = /(\d+ \w+)/g;
+    return formattedTime.match(regex) || [];
+  };
+
+  useEffect(() =>{
+    if(formattedTime){
+      setTimeArray(splitFormattedTime(formattedTime));
+    }
+  }, [formattedTime]);
+
+  // console.log(timeArray[0].split("")[0]);
+
   return (
     <div className="w-full h-full md:h-[25rem]">
         <div className="flex flex-col md:flex-row h-full">
@@ -16,7 +50,7 @@ const Promo = () => {
                 Promotion
               </p>
               <h2 className="text-4xl font-bold text-[#121212]">
-                Hurry up! 40% OFF
+                Hurry up! {currentCoupon.percentageOff}% OFF
               </h2>
               <p className="text-base font-medium text-[#121212]">Thousands of high tech are waiting for you</p>
             </div>
@@ -26,7 +60,8 @@ const Promo = () => {
                 <div className="w-fit">
                   <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
                     <p className="text-3xl font-[500]">
-                      02
+                      {/* {timeArray.length > 0 && timeArray[0].split(/\s+/)[0]} */}
+                      {timeArray[0]}
                     </p>
                   </div>
                   <p className = "text-xs font-medium text-center">
@@ -36,7 +71,8 @@ const Promo = () => {
                 <div className="w-fit">
                   <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
                     <p className="text-3xl font-[500]">
-                      12
+                      {/* {timeArray.length > 0 && timeArray[1].split(/\s+/)[0]} */}
+                      {timeArray[1]}
                     </p>
                   </div>
                   <p className = "text-xs font-medium text-center">
@@ -46,7 +82,8 @@ const Promo = () => {
                 <div className="w-fit">
                   <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
                     <p className="text-3xl font-[500]">
-                      45
+                      {/* {timeArray.length > 0 && timeArray[2].split(/\s+/)[0]} */}
+                      {timeArray[2]}
                     </p>
                   </div>
                   <p className = "text-xs font-medium text-center">
@@ -56,7 +93,8 @@ const Promo = () => {
                 <div className="w-fit">
                   <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
                     <p className="text-3xl font-[500]">
-                      05
+                      {/* {timeArray.length > 0 && timeArray[3].split(/\s+/)[0]} */}
+                      {timeArray[3]}
                     </p>
                   </div>
                   <p className = "text-xs font-medium text-center">
