@@ -4,6 +4,7 @@ import { useAuth } from "@/context/authContext";
 import ProductCard from "@/components/ProductCard";
 import { Link } from "react-router-dom";
 import Spinner from "@/components/Spinner";
+// import OrderCard from "@/components/OrderCard";
 
 const Orders = () => {
 
@@ -49,6 +50,7 @@ const Orders = () => {
                   type: order?.status === "processing" ? "warning" : "success",
                   msg: order?.status
                 }} />
+                {/* <OrderCard order = {order}/> */}
               </div>
             )) 
           }

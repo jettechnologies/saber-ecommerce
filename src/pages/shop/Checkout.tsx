@@ -134,7 +134,6 @@ const Checkout = () => {
       console.log(response);
       setResponse(response);
       setModalOpen(prevState => !prevState);
-      navigate("/payment-gateway", {replace:true, state:{order: orderData}});
     } catch (err) {
       console.log((err as Error).message);
       setError((err as Error).message); 
@@ -563,13 +562,14 @@ const Checkout = () => {
               response && <Button  
               size="medium"
               handleClick={() => {
-                navigate("/success", {replace:true, state:{order: response?.order}});
+                navigate("/payment-gateway", {replace:true, state:{order: orderData}});
               }}
               className="text-sm text-white uppercase w-full flex gap-x-2 justify-center"
             > 
               <p>pay now</p>
               <IndianRupee size = {20} />
               <p>{newTotal ? newTotal : response?.order.total}</p>
+              {/* <p>{response?.order.total}</p> */}
             </Button>}
           </div>
         </div>

@@ -50,57 +50,19 @@ const Promo = ({formattedTime, currentCoupon}: Prop) => {
                 Promotion
               </p>
               <h2 className="text-4xl font-bold text-[#121212]">
-                Hurry up! {currentCoupon.percentageOff}% OFF
+                Hurry up! apply <span className="text-size-700 text-blue">{currentCoupon.OneTime_discountCode}</span> to get {currentCoupon.percentageOff}% OFF
               </h2>
-              <p className="text-base font-medium text-[#121212]">Thousands of high tech are waiting for you</p>
             </div>
             <div className="space-y-3 text-[#121212]">
               <p className="text-base font-medium">Offer expires in:</p>
               <div className="flex gap-4">
-                <div className="w-fit">
-                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
-                    <p className="text-3xl font-[500]">
-                      {/* {timeArray.length > 0 && timeArray[0].split(/\s+/)[0]} */}
-                      {timeArray[0]}
+                {timeArray && timeArray.length > 0 && timeArray.map(time =>(
+                  <div className="w-fit p-2 rounded-md bg-white">
+                    <p className="text-size-500 text-text-black font-medium">
+                      {time}
                     </p>
                   </div>
-                  <p className = "text-xs font-medium text-center">
-                    Days
-                  </p>
-                </div>
-                <div className="w-fit">
-                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
-                    <p className="text-3xl font-[500]">
-                      {/* {timeArray.length > 0 && timeArray[1].split(/\s+/)[0]} */}
-                      {timeArray[1]}
-                    </p>
-                  </div>
-                  <p className = "text-xs font-medium text-center">
-                    Hours
-                  </p>
-                </div>
-                <div className="w-fit">
-                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
-                    <p className="text-3xl font-[500]">
-                      {/* {timeArray.length > 0 && timeArray[2].split(/\s+/)[0]} */}
-                      {timeArray[2]}
-                    </p>
-                  </div>
-                  <p className = "text-xs font-medium text-center">
-                    Minutes
-                  </p>
-                </div>
-                <div className="w-fit">
-                  <div className="flex h-[60px] w-[60px] items-center justify-center bg-white">
-                    <p className="text-3xl font-[500]">
-                      {/* {timeArray.length > 0 && timeArray[3].split(/\s+/)[0]} */}
-                      {timeArray[3]}
-                    </p>
-                  </div>
-                  <p className = "text-xs font-medium text-center">
-                    Seconds
-                  </p>
-                </div>
+                ))}
               </div>
             </div>
             <Link to = "/store">

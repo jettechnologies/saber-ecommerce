@@ -86,7 +86,7 @@ const TrackOrder = () => {
                             className="text-size-600 font-normal text-text-black border-none bg-gray h-full w-full px-4 focus-within:outline-none focus:outline-none"
                         />
                         <button
-                            className="text-size-600 font-semibold h-full w-[30%] px-6 uppercase bg-black text-white"
+                            className="text-size-500 lg:text-size-600 font-semibold h-full w-[30%] px-6 uppercase bg-black text-white"
                         >
                            {loading ? "Loading..." : "track"}
                         </button>
