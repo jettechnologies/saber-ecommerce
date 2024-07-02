@@ -153,13 +153,20 @@ export default function Navbar() {
                       my account
                     </li>
                   </Link>
-                  {user && 
+                  
+                  {user && <>
+                    <Link to = "/user/orders" className="w-full py-3 md:hidden">
+                    <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
+                      my orders
+                    </li>
+                    </Link>
                     <li 
                       className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] py-3 border-t"
                       onClick={() => setIsLogout(prevState => !prevState)}
                     >
                       Logout
-                    </li>}
+                    </li>
+                  </>}
                 </ul>
               </div>
 
