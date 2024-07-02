@@ -13,7 +13,7 @@ const OrderCard = ({
     console.log(order)
 
   return (
-    <div className="w-full p-4 bg-gray rounded-md shadow-md">
+    <div className="w-full h-full p-4 bg-gray rounded-md shadow-md">
     <div className="flex items-center justify-between mb-4 flex-wrap">
         <div className="w-fit">
             <h5 className="text-text-black font-bold text-md lg:text-xl">Order Id</h5>
