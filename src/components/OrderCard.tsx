@@ -1,47 +1,85 @@
-import {Order} from "@/types";
+import { Order } from "@/types";
+import { IndianRupee } from "lucide-react";
+// import CopyToClipboard from "@/components/CopyToClipBoard"
 
-interface Props{
-    order:Order;
+interface Props {
+    order: Order
 }
 
 const OrderCard = ({
-    order,
-}: Props) => {
+    order
+}:Props) => {
 
     console.log(order)
+
   return (
-    
-    <div  className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-        <div className="flex w-full justify-between">
-            <h3 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+    <div className="w-full p-4 bg-gray rounded-md shadow-md">
+    <div className="flex items-center justify-between mb-4 flex-wrap">
+        <div className="w-fit">
+            <h5 className="text-text-black font-bold text-md lg:text-xl">Order Id</h5>
+            <p className="text-sm font-medium text-blue">
                 {order.orderID}
-            </h3>
-            <p className="text-text-black text-size-500 font-medium">
+            </p>
+        </div>
+        <div className="w-fit">
+            <h5 className="text-text-black font-bold text-md lg:text-xl">Tracking Id</h5>
+            <p className="text-sm font-medium text-blue">
                 {order.trackingID}
             </p>
         </div>
-       {order?.items.length > 0 && order?.items.map(item => (
-        <div key = {item.id} className="w-full min-h-48 p-10 flex gap-5 flex-wrap">
-            {/* <p className="text-text-black text-size-500 font-medium">
-                name:{item?.quantity}
-            </p> */}
-            <p className="text-text-black text-size-500 font-medium">
-                quantity: {item?.quantity}
-            </p>
-            <p className="text-text-black text-size-500 font-medium">
-                cost: {item?.price}
-            </p>
+   </div>
+   <div className="w-full flex justify-between">
+    <div>
+        <h5 className="text-text-black font-bold text-md lg:text-xl">Total amount</h5>
+        <div className="flex gap-2 mt-2">
+            <IndianRupee size = {20}/>
+            <p className = "text-text-black text-md font-normal">{order.total}</p>
         </div>
-       ))}
-        <p className="text-text-black text-size-500 font-medium">
-            status: {order?.status}
+    </div>
+    <div>
+        <h5 className="text-text-black font-bold text-md lg:text-xl space-y-5">Status</h5>
+        {/* <div className="flex gap-2">
+            <IndianRupee size = {20}/>
+            
+        </div> */}
+        <p 
+            className = {`mt-2 capitalize ${order.status === "processing" ? "text-yellow" : (order.status === "shipped" || order.status ==="delivered") ? "text-green-500" : "text-text-black"} text-md font-normal`}
+        >
+            {order.status}
         </p>
     </div>
+   </div>
+   {/* <hr className="my-2 bg-gray" /> */}
+   <div className="flow-root mt-6">
+        <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
+            {
+                order && order.items.length > 0 && order.items.map(item => (
+                <li className="py-3 sm:py-4">
+                    <div className="flex items-center">
+                        <div className="flex-shrink-0">
+                            <img className="w-10 h-10 rounded-md" src={item?.product?.productImage} alt="Neil image" />
+                        </div>
+                        <div className="flex-1 min-w-0 ms-4">
+                            <p className="text-md font-medium text-gray-900 truncate dark:text-white first-letter:uppercase">
+                               {item?.product?.name}
+                            </p>
+                            {/* <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                {item?.product?.cat}
+                            </p> */}
+                        </div>
+                        <div className="flex gap-2 mt-2">
+                            <IndianRupee size = {20}/>
+                            <p className = "text-text-black text-md font-normal">{item?.product?.price}</p>
+                        </div>
+                    </div>
+                </li>
+                ))
+            }
+        </ul>
+   </div>
+</div>
 
   )
 }
 
 export default OrderCard
-
-{/* <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisi  </h5>
-        <p className="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p> */}

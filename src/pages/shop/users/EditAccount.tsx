@@ -114,7 +114,7 @@ console.log(response, feedback)
 
   return (
     <>
-      <div className="w-full h-full px-8 pt-8">
+    <div className="w-full h-full px-8 pt-8">
       <section className="bg-white dark:bg-gray-900">
         <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16">
             <h2 className="mb-4 text-xl font-bold text-text-black dark:text-white">Update profile</h2>

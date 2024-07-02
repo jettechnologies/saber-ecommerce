@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from "@/context/authContext";
 
 interface UseGetRequestOptions {
   headers?: HeadersInit;
@@ -11,6 +12,7 @@ type UseGetRequestResponse<T> = {
 };
 
 const useGetRequest = <T>(url: string, options?: UseGetRequestOptions, fetchFlag = true): UseGetRequestResponse<T> => {
+  const { loading:authLoading } = useAuth();
   const [data, setData] = useState<T | []>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -41,8 +43,10 @@ const useGetRequest = <T>(url: string, options?: UseGetRequestOptions, fetchFlag
       }
     };
 
-    fetchData();
-  }, [url, options?.headers, fetchFlag]);
+    if (!authLoading) {
+      fetchData();
+    }
+  }, [url, options?.headers, authLoading, fetchFlag]);
 
   return { data, error, loading };
 };

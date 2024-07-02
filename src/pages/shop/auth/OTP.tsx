@@ -61,13 +61,7 @@ const OTP = () => {
       inputRef.current?.focus();
     }, [activeOTPIndex]);
 
-    // function for updating the value of the human reabable timer
-    // useEffect(() => {
-    //   const endTime = addSeconds(new Date(), countdown);
-    //   const formatted = formatDistanceStrict(new Date(), endTime);
-    //   setFormattedTime(formatted);
-    // }, [countdown]);
-
+    // function to format the countdown in a proper way
     useEffect(() => {
       const endTime = addSeconds(new Date(), countdown);
   
