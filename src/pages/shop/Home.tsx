@@ -48,7 +48,7 @@ function Home() {
     }
   }, [token]);
 
-  const { loading:fetchingCoupon, data:coupons, error } = useGetRequest<PromoCode[] | []>("browse/get-coupons", {headers: headers});
+  const { data:coupons } = useGetRequest<PromoCode[] | []>("browse/get-coupons", {headers: headers});
 
   const { loading, products, categories } = useProductCatergories();
   const [fetchActiveCoupon, setFetchActiveCoupon] = useState(false);
