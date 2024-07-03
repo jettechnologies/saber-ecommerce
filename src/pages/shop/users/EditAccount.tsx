@@ -42,8 +42,11 @@ const EditAccount = () => {
       cityOfResidence: originalData?.cityOfResidence || "",
     };
   };
-  const reducedInfo:ProfileType = mapData(currentUser);
-  const [profile, setProfile] = useState<ProfileType>(reducedInfo);
+  // const reducedInfo:ProfileType = mapData(currentUser);
+  // console.log(currentUser, reducedInfo);
+  const [profile, setProfile] = useState<ProfileType>(() => mapData(currentUser));
+
+  console.log(profile)
 
   // to update the profile incase the currentuser object changes
   useEffect(() => {
