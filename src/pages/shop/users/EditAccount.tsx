@@ -222,7 +222,7 @@ console.log(response, feedback)
             {feedback.type === "success" ?<Button  
               size="medium"
               handleClick={() => {
-                navigate("/user", {replace: true});
+                navigate("/user", {replace: true, state: {reload:true}});
               }}
               className="text-sm uppercase w-full"
             >

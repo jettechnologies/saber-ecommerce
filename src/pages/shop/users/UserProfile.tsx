@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useUserProfile } from "@/context/userProfileContext";
 import Spinner from "@/components/Spinner";
 import { IndianRupee, CircleAlert, LockKeyhole, Info } from "lucide-react";
@@ -12,6 +12,10 @@ import Notification from "@/components/Notification";
 
 const UserProfile = () => {
 
+  const location = useLocation();
+  // const {reload} = location.state;
+  // console.log(reload);
+
   const {isLoading, user, error } = useUserProfile();
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -23,7 +27,17 @@ const UserProfile = () => {
     error: {msg:"", status: false},
   });
 
-  console.log(user)
+  console.log(user);
+
+  // useEffect to force a reload
+  useEffect(() =>{
+    if(location.state?.reload){
+        window.location.reload();
+        console.log("reload is working")
+        
+    }
+  },[location.state]);
+
 
   const deleteProfile = useCallback(async() =>{
     const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/i;

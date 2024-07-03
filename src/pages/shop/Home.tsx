@@ -50,8 +50,6 @@ function Home() {
 
   const { loading:fetchingCoupon, data:coupons, error } = useGetRequest<PromoCode[] | []>("browse/get-coupons", {headers: headers});
 
-  console.log(fetchingCoupon, error);
-
   const { loading, products, categories } = useProductCatergories();
   const [fetchActiveCoupon, setFetchActiveCoupon] = useState(false);
   const [remainingTime, setRemainingTime] = useState<number>(0);
@@ -250,64 +248,50 @@ function Home() {
         {/* Shop catergories */}
         {/* grid grid-rows-5 md:grid-rows-[30vh_30vh_30vh_30vh] md:grid-cols-2 */}
         <div className="mt-14">
-          <Section title="shop catergories" link="store">
-            <div className="grid gap-4">
-              {!loading ? <div className="flex flex-col mt-8 gap-4 min-h-[42rem] w-full md:min-h-[22rem]">
-                {/* {categories.length > 0 && <Link to = {`store/${categories[0].id}`}><div 
-                  id = "category-card"
-                  style = {{backgroundImage: `url(${categories[0].banner})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} 
-                  className={`w-full h-[25rem] py-4 px-6 relative rounded-md overflow-clip`}>
-                    <div className="w-full h-full gap-y-5 flex">
-                      <div className="w-[30%] h-fit self-center">
-                            <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
-                              {categories[0].name}
-                            </h4>
-                          </div>
-                    </div>
-                    <div id = "category-card-desc" className="absolute bg-black w-[60%] lg:w-[40%] h-full bottom-0 -right-[200%] p-4 opacity-60 z-10 flex items-center justify-center">
-                      <div className="z-50">
-                        <p className="text-white text-size-500 font-normal first-letter:uppercase">
-                          {categories[0].description}
-                        </p>
+        <Section title="shop categories" link="store">
+          <div className="grid gap-4">
+            {!loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8 min-h-[42rem]">
+                {categories.length > 0 && categories.map((category) => (
+                  <Link key={category.id} to={`store/${category.id}`}>
+                    <div
+                      id="category-card"
+                      style={{
+                        backgroundImage: `url(${category.banner})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat"
+                      }}
+                      className="w-full py-4 px-6 h-[20rem] relative rounded-md overflow-clip"
+                    >
+                      <div className="w-full h-full flex flex-col justify-center">
+                        <div className="w-[70%] h-fit self-center">
+                          <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
+                            {category.name}
+                          </h4>
+                        </div>
+                      </div>
+                      <div
+                        id="category-card-desc"
+                        className="absolute bg-black w-full h-full bottom-0 -right-[200%] p-4 z-10 flex items-center justify-center"
+                      >
+                        <div className="z-50 mx-auto">
+                          <p className="text-white text-size-400 font-normal first-letter:uppercase">
+                            {category.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                    </div></Link>} */}
-                  <div className = "flex max-sm:flex-col flex-wrap w-full min-h-[42rem] gap-y-4 justify-between">
-                      {
-                        categories.length > 0 && categories.map((category) => (
-                        <Link to = {`store/${category.id}`}>
-                        <div 
-                          id = "category-card"
-                          style = {{backgroundImage: `url(${category.banner})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} 
-                          className="w-full lg:w-[44.5vw] md:w-[47vw] py-4 px-6 h-[20rem] relative rounded-md overflow-clip">
-                          <div className="w-full h-full gap-y-5 flex">
-                          <div className="w-[30%] h-fit self-center">
-                            <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
-                              {category.name}
-                            </h4>
-                        </div>
-                        </div>
-                    <div id = "category-card-desc" className="absolute bg-black w-[60%] lg:w-[40%] h-full bottom-0 -right-[200%] p-4 opacity-60 z-10 flex items-center justify-center">
-                      <div className="z-50 mx-auto">
-                        <p className="text-white text-size-400 font-normal first-letter:uppercase">
-                          {category.description}
-                        </p>
-                      </div>
-                    </div>
-                    </div>
-                    </Link>
-                      ))
-                    }
-                    </div>
-                </div>
-                :
-                <div className="w-full h-[25rem]">
-                  <Spinner />
-                </div>
-              }
-            </div>
-          </Section>
-
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="w-full h-[25rem]">
+                <Spinner />
+              </div>
+            )}
+          </div>
+        </Section>
           {/* Discont sales or Newletter */}
           <section className="mt-14">
             {/* remember to add a state in the global store that would enable the store owner to either turn a promo or a newletter on */}
