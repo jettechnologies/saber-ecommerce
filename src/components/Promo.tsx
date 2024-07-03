@@ -35,17 +35,16 @@ const Promo = ({formattedTime, currentCoupon}: Prop) => {
     }
   }, [formattedTime]);
 
-  // console.log(timeArray[0].split("")[0]);
 
   return (
-    <div className="w-full h-full md:h-[25rem]">
-        <div className="flex flex-col md:flex-row h-full">
-            <div className="flex-1 bg-[#A8A8A8]">
+    <div className="w-full h-full md:h-[50rem] lg:h-[25rem]">
+        <div className="flex flex-col lg:flex-row h-full">
+            <div className="flex-1 bg-[#A8A8A8] h-1/2">
                 <img src={promoImage} alt="promo image" className="w-full h-full object-cover"/>
             </div>
             <div className="flex-1 bg-[#ffdd99]">
-                <div className="w-full max-w-[720px] space-y-6 p-8">
-                <div className="space-y-4">
+              <div className="w-full max-w-[720px] space-y-6 p-8">
+              <div className="space-y-4">
               <p className="text-blue text-base font-semibold">
                 Promotion
               </p>
@@ -55,7 +54,7 @@ const Promo = ({formattedTime, currentCoupon}: Prop) => {
             </div>
             <div className="space-y-3 text-[#121212]">
               <p className="text-base font-medium">Offer expires in:</p>
-              <div className="flex gap-4">
+              <div className="flex gap-4 flex-wrap">
                 {timeArray && timeArray.length > 0 && timeArray.map(time =>(
                   <div className="w-fit p-2 rounded-md bg-white">
                     <p className="text-size-500 text-text-black font-medium">

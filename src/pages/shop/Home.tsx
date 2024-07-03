@@ -253,7 +253,7 @@ function Home() {
           <Section title="shop catergories" link="store">
             <div className="grid gap-4">
               {!loading ? <div className="flex flex-col mt-8 gap-4 min-h-[42rem] w-full md:min-h-[22rem]">
-                {categories.length > 0 && <Link to = {`store/${categories[0].id}`}><div 
+                {/* {categories.length > 0 && <Link to = {`store/${categories[0].id}`}><div 
                   id = "category-card"
                   style = {{backgroundImage: `url(${categories[0].banner})`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} 
                   className={`w-full h-[25rem] py-4 px-6 relative rounded-md overflow-clip`}>
@@ -271,10 +271,10 @@ function Home() {
                         </p>
                       </div>
                     </div>
-                    </div></Link>}
+                    </div></Link>} */}
                   <div className = "flex max-sm:flex-col flex-wrap w-full min-h-[42rem] gap-y-4 justify-between">
                       {
-                        categories.length > 0 && categories.slice(1).map((category) => (
+                        categories.length > 0 && categories.map((category) => (
                         <Link to = {`store/${category.id}`}>
                         <div 
                           id = "category-card"
@@ -335,10 +335,10 @@ function Home() {
           {/* Best sellers  sort out by rating*/}
           <div className="mt-14">
             <Section title="best sellers" link="store">
-              {!loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-5 mt-8 z-10">
+              {!loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-6 mt-8 z-10">
                 {
                   products.map((product:ProductType) =>(
-                    <div className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
+                    <div className="w-full md:w-[46.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
                       <ProductCard product={product} tag={{
                         type: "neutral",
                         msg: product?.isOutOfStock ? "out of stock" : "",

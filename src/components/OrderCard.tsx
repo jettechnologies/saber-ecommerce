@@ -50,8 +50,8 @@ const OrderCard = ({
     </div>
    </div>
    {/* <hr className="my-2 bg-gray" /> */}
-   <div className="flow-root mt-6">
-        <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
+   <div className={`flow-root mt-6 h-[5rem] ${order.items.length > 1 && "overflow-y-scroll"}  border border-[#c0c0c0]`}>
+        <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700 overflow-auto">
             {
                 order && order.items.length > 0 && order.items.map(item => (
                 <li className="py-3 sm:py-4">

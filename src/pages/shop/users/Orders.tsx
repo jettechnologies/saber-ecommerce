@@ -46,7 +46,7 @@ const Orders = () => {
 
           {
             orders && orders.length> 0 && orders.map(order => (
-              <div className="max-[1024px]:w-full min-[1026px]:w-[25rem] xl:w-[29vw] h-[23rem]" key = {order?.id}>
+              <div className="max-[1024px]:w-full min-[1026px]:w-[25rem] xl:w-[29vw] h-full" key = {order?.id}>
                 {/* <ProductCard product={order?.items[0].product} tag={{
                   type: order?.status === "processing" ? "warning" : "success",
                   msg: order?.status
