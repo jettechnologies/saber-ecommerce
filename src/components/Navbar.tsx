@@ -21,6 +21,7 @@ import Button from "./Button";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
+  const [isActive, setIsActive] = useState(false);
   const { token, loading } = useAuth();
   const location = useLocation();
   const currentUrl = location.pathname;
@@ -123,7 +124,7 @@ export default function Navbar() {
               } p-2 rounded-lg relative`}
             >
               <CartIcon className="w-5 h-5 text-white"/>
-              {cartItems.length >0 && <div className="absolute top-0 right-0 w-5 h-5 rounded-full flex items-center justify-center bg-black text-white">
+              {cartItems.length > 0 && <div className="absolute top-0 right-0 w-5 h-5 rounded-full flex items-center justify-center bg-black text-white">
                 <p className="text-size-400 font-normal ">{cartItems.length}</p>
               </div>}
             </Link>
@@ -132,11 +133,12 @@ export default function Navbar() {
                 currentUrl.includes("/auth/login")
                   && "bg-gray"
               } p-2 rounded-lg cursor-pointer user-icon `}
+              onClick={() =>setIsActive(prevState => !prevState)}
             >
               <UserIcon className="w-5 h-5 "/>
 
               {/* user subNav */}
-              <div className="shadow-md py-2 absolute top-[2.65rem] rounded-md right-0 z-[9999px] bg-gray hidden user-sub-nav">
+              <div className={`shadow-md py-2 absolute top-[2.65rem] rounded-md right-0 z-[9999px] bg-gray ${isActive ? "block" : "hidden"} user-sub-nav`}>
                 <ul className="flex flex-col px-4 py-2">
                   {(!user) && <Link to = "/auth/login" className="w-full py-3 border-b">
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
@@ -156,9 +158,14 @@ export default function Navbar() {
                   
                   {user && <>
                     <Link to = "/user/orders" className="w-full py-3 md:hidden">
-                    <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
-                      my orders
-                    </li>
+                      <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
+                        my orders
+                      </li>
+                    </Link>
+                    <Link to = "/user/orders" className="w-full py-3 md:hidden">
+                      <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
+                        my 
+                      </li>
                     </Link>
                     <li 
                       className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] py-3 border-t"

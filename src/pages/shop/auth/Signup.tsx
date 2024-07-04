@@ -99,11 +99,14 @@ const formSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
   
     // makeRequest("user-auth/register", data);
     await makeRequest(data, "user-auth/register");
-    if(error !== null){return}
-
-    navigate("/auth/otp", { replace: true, state: { email: user.email.str} });
 
 }
+
+useEffect(() =>{
+    if(response && response!== null){
+        navigate("/auth/otp", { replace: true, state: { email: user.email.str} });
+    }
+}, [response, navigate, user.email.str]);
 
 useEffect(() =>{
     let errorRemoval: ReturnType<typeof setTimeout>;
@@ -125,6 +128,7 @@ console.log(response, error, user);
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Sign up</h1>
                 <p className="text-md font-normal text-blue mb-8">Create a new account</p>
                 {validateError.status && <Notification message = {validateError.msg} type = "danger" className="text-white mb-4"/>}
+                {error && <Notification message = {error} type = "danger" className="text-white mb-4"/>}
                 <div>
                     <div className={`flex items-center ${user.name.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
                         <User size = {20}/>

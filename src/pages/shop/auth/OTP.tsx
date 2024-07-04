@@ -106,15 +106,12 @@ const OTP = () => {
       const headers: HeadersInit | undefined = isResend ? { "email": clientEmail } : undefined;
 
       await makeRequest(data, url, headers);
-        if(error !== null){
-          return;
-        }
-          navigate("/", {replace:true});
+
     }
 
     // useEffect for setting the token in cookies and in state
     useEffect(() =>{
-      if(!!response && response !== null){
+      if(response && response !== null){
           // setting the expiration day for 30 days
           const expires = new Date();
           expires.setDate(expires.getDate() + 30);
@@ -124,8 +121,9 @@ const OTP = () => {
           });
 
           setToken(response?.accessToken?.token);
+          navigate("/", {replace:true});
       }
-  }, [response, setToken]);
+  }, [response, setToken, navigate]);
 
     // countdown logic
     useEffect(() => {
@@ -154,7 +152,7 @@ const OTP = () => {
                     <p className="font-semibold text-size-400 text-blue w-[80%] text-center">
                         Please verify your account by entering the 4 digit code sent to
                         <br />
-                        <span className="text-black text-size-500 capitalize">
+                        <span className="text-black text-size-500 first-letter:uppercase">
                           {clientEmail}
                         </span>
                     </p>

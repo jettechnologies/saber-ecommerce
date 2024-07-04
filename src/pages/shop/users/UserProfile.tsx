@@ -160,7 +160,7 @@ const UserProfile = () => {
               <li className="text-size-500 font-normal capitalize">
                 name: {user.fullname}
               </li>
-              <li className="text-size-500 font-normal capitalize">
+              <li className="text-size-500 font-normal first-letter:uppercase">
                 email: {user.email}
               </li>
               <li className="text-size-500 font-normal capitalize">
