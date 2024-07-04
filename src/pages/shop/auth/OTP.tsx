@@ -6,6 +6,7 @@ import useApiRequest from "@/hooks/useApiRequest";
 import Cookies from 'js-cookie';
 import { useAuth } from "@/context/authContext";
 import { differenceInSeconds, addSeconds } from 'date-fns';
+import Notification from "@/components/Notification";
 
 interface OTPResponseType{
   accessToken: {
@@ -145,6 +146,7 @@ const OTP = () => {
     <div className="w-full">
         <FormContainer>
             <form onSubmit={handleFormSubmit} className="bg-white rounded-md shadow-2xl p-5 mt-6">
+              {error && <Notification type="danger" message={error} />}
                 <div className="flex flex-col gap-y-4 items-center justify-center mb-6">
                     <div className="w-[96px] grid place-items-center bg-[#d6d5d5] aspect-square rounded-full shadow-sm">
                         <MailOpen size={60} strokeWidth={1}/>
