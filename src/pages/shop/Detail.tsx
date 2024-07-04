@@ -91,7 +91,7 @@ function Detail() {
   // console.log(response, error);
 
   if(loading){
-    return <div className="w-full h-full border-2">
+    return <div className="w-full h-full">
       <Spinner />
     </div>
   }
@@ -119,9 +119,9 @@ function Detail() {
       <div className="mx-4 md:mx-24 relative">
         {data && (
           <div className="flex-row lg:flex gap-12">
-            <div className="grid place-items-center w-full lg:w-1/2">
+            <div className="w-full lg:w-1/2">
               {/* <ImageCarousel images={product.image} /> */}
-              <img src={data.productImage} alt="product image" className="w-[60%] aspect-[9/16] md:aspect-square object-contain"/>
+              <img src={data.productImage} alt="product image" className="w-full h-full object-cover"/>
             </div>
 
             <div className="w-full lg:w-1/2">

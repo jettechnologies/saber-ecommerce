@@ -6,9 +6,11 @@ import { IndianRupee } from "lucide-react";
 import Button from "@/components/Button";
 import { useAuth } from "@/context/authContext";
 import { Order } from "@/types";
+import { useState } from "react";
 
 const Cart = () => {
   const { cartItems, totalPrice, isLoading } = useCartContext();
+  const [loading, setLoading] = useState(false);
 
   const uniqueItemsIds = new Set();
 
@@ -32,6 +34,7 @@ const Cart = () => {
     const url = "cart/checkout";
     
     try{
+      setLoading(true);
       const res = await fetch(`${import.meta.env.VITE_PRODUCT_LIST_API}${url}`,{
         method: "POST",
         headers:{
@@ -48,6 +51,9 @@ const Cart = () => {
     }
     catch(err){
       console.log((err as Error).message);
+    }
+    finally{
+      setLoading(false);
     }
 
   };
@@ -96,7 +102,7 @@ const Cart = () => {
           handleClick={checkoutProduct}
           className="w-full mt-6 bg-text-black flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
         >
-          Checkout
+          {loading ? "Loading...": "Checkout"}
         </Button>
       </div>
     </div>

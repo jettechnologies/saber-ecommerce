@@ -9,6 +9,7 @@ import Button from "@/components/Button";
 import { BadgeCheck, CircleAlert } from "lucide-react";
 import CopyToClipboard from "@/components/CopyToClipBoard";
 import Modal2 from "@/components/Modal2";
+import { useCartContext } from "@/context/cartContext";
 
 interface OrderType{
     orderType : string,
@@ -29,10 +30,13 @@ const Checkout = () => {
   const location = useLocation();
   const orderData:Order = location.state.order;
 
+  console.log(orderData);
+
   const navigate = useNavigate();
 
   const { user } = useUserProfile();
   const { token } = useAuth();
+  const { deletingCart } = useCartContext();
   const [order, setOrder] = useState<OrderType>({
     orderType : "",
     promoCode: "",
@@ -563,6 +567,7 @@ const Checkout = () => {
               size="medium"
               handleClick={() => {
                 navigate("/payment-gateway", {replace:true, state:{order: orderData}});
+                deletingCart();
               }}
               className="text-sm text-white uppercase w-full flex gap-x-2 justify-center"
             > 
