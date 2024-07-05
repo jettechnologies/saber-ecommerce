@@ -35,6 +35,7 @@ const useGetRequest = <T>(url: string, options?: UseGetRequestOptions, fetchFlag
         }
 
         const result: [T, number] = await response.json();
+        console.log(result)
         setData(result[0]);
       } catch (err) {
         setError((err as Error).message);

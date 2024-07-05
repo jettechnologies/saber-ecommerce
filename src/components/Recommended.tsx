@@ -22,7 +22,7 @@ const Recommended:React.FC<RecommendedProps> = ({ categoryId, productId }) => {
       </div>)
   }
 
-  if(recommendedProducts.length === 0){
+  if(recommendedProducts && recommendedProducts.length === 0){
     return(
       <div className="w-full h-full text-center">
         <p className="text-size-400 text-text-black font-normal">No similar product available</p>

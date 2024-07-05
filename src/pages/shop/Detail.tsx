@@ -119,7 +119,7 @@ function Detail() {
       <div className="mx-4 md:mx-24 relative">
         {data && (
           <div className="flex-row lg:flex gap-12">
-            <div className="w-full lg:w-1/2">
+            <div className="w-full lg:w-1/2 py-4">
               {/* <ImageCarousel images={product.image} /> */}
               <img src={data.productImage} alt="product image" className="w-full h-full object-cover"/>
             </div>
@@ -249,7 +249,7 @@ function Detail() {
         <div className="mt-16">
           <Section title="Similar Products">
             <div className="mt-4">
-              <Recommended productId={data.id} categoryId = {data.category.id} />
+              <Recommended productId={data.id} categoryId = {data?.category?.id} />
             </div>
           </Section>
         </div>

@@ -55,8 +55,8 @@ const Promo = ({formattedTime, currentCoupon}: Prop) => {
             <div className="space-y-3 text-[#121212]">
               <p className="text-base font-medium">Offer expires in:</p>
               <div className="flex gap-4 flex-wrap">
-                {timeArray && timeArray.length > 0 && timeArray.map(time =>(
-                  <div className="w-fit p-2 rounded-md bg-white">
+                {timeArray && timeArray.length > 0 && timeArray.map((time, index) =>(
+                  <div key = {index} className="w-fit p-2 rounded-md bg-white">
                     <p className="text-size-500 text-text-black font-medium">
                       {time}
                     </p>
