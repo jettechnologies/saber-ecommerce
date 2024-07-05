@@ -24,7 +24,7 @@ const PaymentGateway = () => {
   const orderData:Order = location.state.order;
   const { token, loading:authLoading } = useAuth();
 
-  console.log(orderData);
+  console.log(orderData, authLoading);
 
   const [selectedGateway, setSelectedGateway] = useState<PaymentGatewayType>();
   const [selectedGateways, setselectedGateways] = useState<GatewayResponse[]>([]);
