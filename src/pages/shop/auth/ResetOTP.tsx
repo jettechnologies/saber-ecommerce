@@ -1,47 +1,44 @@
 import React,{ useState, useRef, useEffect,  } from "react";
 import FormContainer from "@/components/FormContainer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MailOpen } from "lucide-react";
 
-const ResetOTP = () => {
-
-    const location = useLocation();
+const ResetOtp = () => {
+  const location = useLocation();
   const clientEmail = location.state?.email || "";
-  // const endpoint = location.state?.endpoint || "";
-//   const link = location.state?.link || "";
-//   const navigate = useNavigate();
-
-    let currentOTPIndex = 0;
+  // const link = location.state?.link || "";
+  const navigate = useNavigate();
 
     const [otp, setOtp] = useState(new Array(4).fill(""));
     const [activeOTPIndex, setActiveOTPIndex] = useState(0);
-    const [error, setError] = useState(false);
-
-    // const [loading, setLoading] = useState(false);
-    // const [resError, setResError] = useState<string | null>(null);
-    // const [response, setResponse] = useState<string | null>(null)
-    // const [countdown, setCountdown] = useState(2 * 60);
-    // const [isResend, setIsResend] = useState(false);
+    const [error, setError] = useState({
+      msg:"",
+      status: false,
+    });
+    const [loading, setLoading] = useState(false);
+    // const [response, setResponse] = useState<string | null>(null);
   
     const inputRef = useRef<HTMLInputElement>(null);
   
     const handleOnChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = target;
-      const newOTP: string[] = [...otp];
-      newOTP[currentOTPIndex] = value.substring(value.length - 1);
+      const newOtp: string[] = [...otp];
+      newOtp[activeOTPIndex] = value.substring(value.length - 1);
   
-      if (!value) setActiveOTPIndex(currentOTPIndex - 1);
-      else setActiveOTPIndex(currentOTPIndex + 1);
+      if (!value) setActiveOTPIndex(activeOTPIndex - 1);
+      else setActiveOTPIndex(activeOTPIndex + 1);
   
-      setOtp(newOTP);
+      setOtp(newOtp);
     };
   
-    const handleOnKeyDown = (
-      e: React.KeyboardEvent<HTMLInputElement>,
-      index: number
-    ) => {
-      currentOTPIndex = index;
-      if (e.key === "Backspace") setActiveOTPIndex(currentOTPIndex - 1);
+    const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+      if (e.key === "Backspace" || e.key === "Delete") {
+        e.preventDefault();
+        const newOtp: string[] = [...otp];
+        newOtp[index] = "";
+        setOtp(newOtp);
+        setActiveOTPIndex(index > 0 ? index - 1 : 0);
+      }
     };
   
     useEffect(() => {
@@ -54,19 +51,75 @@ const ResetOTP = () => {
       const otpString = otp.map(otp => otp.toString()).join("");
 
       if(otpString === "" || otpString.length !== 4){
-        setError(prevError => !prevError);
+        setError({
+          msg: "Please enter a valid otp",
+          status: true
+        });
         return
       }
       
+      console.log(otpString, typeof otpString)
+
       const data = {
         otp: otpString,
       }
 
-      console.log(data);
+      console.log(data)
+    
+      // for the signup page to enable resend
+      const url = "user-auth/verify-reset-password-token";
+      const headers: HeadersInit = {
+        'Content-type': 'application/json',
+        "Accept": "application/json",
+      }
+      
+      try {
+        setLoading(true)
+        const res = await fetch(`${import.meta.env.VITE_PRODUCT_LIST_API}${url}`,{
+          method: "POST",
+          headers,
+          body: JSON.stringify(data),
+        });
+
+        const response = await res.json();
+
+        if(!res.ok){
+          throw new Error(response.messge);
+        }
+
+        navigate("/reset-password", { replace: true, state: {response} });
+
+        console.log(response);
+
+      } catch (err) {
+        console.log((err as Error).message)
+        setError({
+          msg: (err as Error).message,
+          status: true
+        })
+      }
+      finally{
+        setLoading(false);
+      } 
     }
 
-  return (
-    <div className="w-full">
+    useEffect(() =>{
+      let errorRemoval: ReturnType<typeof setTimeout>;
+  
+      if(error){
+         errorRemoval =  setTimeout(() =>{
+              setError({
+                msg: "",
+                status: false
+              });
+          }, 2000)
+      }
+  
+      return() => clearTimeout(errorRemoval)
+  }, [error]);
+
+    return (
+        <div className="w-full">
             <FormContainer>
                 <form className="bg-white rounded-md shadow-2xl p-5 mt-6" onSubmit={handleFormSubmit}>
                     <div className="flex flex-col gap-y-4 items-center justify-center mb-8">
@@ -74,9 +127,9 @@ const ResetOTP = () => {
                             <MailOpen size={60} strokeWidth={1}/>
                         </div>
                         <p className="font-semibold text-size-400 text-blue w-[80%] text-center">
-                            Please verify your account by entering the 4 digit code sent to
+                            Please verify your account by entering the 6 digit code sent to
                             <br />
-                            <span className="text-black text-size-500 capitalize">
+                            <span className="text-black text-size-500 first-letter:uppercase">
                               {clientEmail}
                             </span>
                         </p>
@@ -90,7 +143,7 @@ const ResetOTP = () => {
                                 ref={activeOTPIndex === index ? inputRef : null}
                                 type="number"
                                 className={
-                                    `w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none ${error ? "border-red-500" : "border-[#d0d0d0]"} focus-within:border-blue text-gray-400 transition`
+                                    `w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none ${error.status ? "border-red-500" : "border-[#d0d0d0]"} focus-within:border-blue text-gray-400 transition`
                                 }
                                 onChange={handleOnChange}
                                 onKeyDown={(e) => handleOnKeyDown(e, index)}
@@ -100,34 +153,21 @@ const ResetOTP = () => {
                           );
                       })}
                       </div>
-                      {error && (
-                        <p className="text-red-500 text-size-400 font-normal m-2 text-center">Please enter the valid OTP sent to your mail</p>
+                      {error.status && (
+                        <p className="text-red-500 text-size-400 font-normal m-2 text-center">{error.msg}</p>
                       )}
                     </div>
-                    {/* {!isResend ? <div className="w-full">
+                    <div className="w-full">
                         <button disabled = {loading} type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
                           {loading ? "Loading..." : "Verify account"}
                         </button>
-                      </div>
-                      : <div className="w-full">
-                        <button disabled = {loading} type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
-                          {loading ? "Loading..." : "Resend OTP"}
-                        </button>
-                      </div>
-                    } */}
-                    {/* <div className="w-full">
-                        <button disabled = {loading} type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
-                          {loading ? "Loading..." : "Verify account"}
-                        </button>
-                    </div> */}
-                    {/* <div>
-                      <h1>Timer Countdown</h1>
-                      <div>Countdown: {countdown}</div>
-                    </div> */}
+                    </div>
                 </form>
             </FormContainer>
         </div>
-  )
+      )
+
 }
 
-export default ResetOTP
+
+export default ResetOtp;

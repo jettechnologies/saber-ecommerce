@@ -44,12 +44,6 @@ const PaymentGateway = () => {
     const fetchSelectedGateways = async() =>{
       setLoadingSelectedGateways(true);
       const url = `${import.meta.env.VITE_PRODUCT_LIST_API}payment-gateway-config/payment-config`;
-      // const headers:HeadersInit = {
-      //   'Accept': 'application/json',
-      //   'Content-Type': 'application/json',
-      //   'Authorization': `Bearer ${token}`,
-      // }
-
       try{
         const res = await fetch(url);
         const response = await res.json();

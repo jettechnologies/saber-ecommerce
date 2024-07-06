@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 import { useState, useEffect } from "react";
 import { useUserProfile } from "@/context/userProfileContext";
 import { UserProfile } from '@/types';
-// import { validateObject } from "@/utils/inputValidation";
+import { validateObject } from "@/utils/inputValidation";
 import { useNavigate } from "react-router-dom";
 import Modal2 from "@/components/Modal2";
 import useApiRequest from "@/hooks/useApiRequest";
@@ -17,11 +17,36 @@ interface ProfileType{
   gender: string;
   home_address: string;
   cityOfResidence: string;
+  Nationality: string;
 }
+
+const Nationalities: {key:string; value:string}[] = [
+  { "key": "united states", "value": "United States" },
+  { "key": "china", "value": "China" },
+  { "key": "india", "value": "India" },
+  { "key": "brazil", "value": "Brazil" },
+  { "key": "russia", "value": "Russia" },
+  { "key": "nigeria", "value": "Nigeria" },
+  { "key": "japan", "value": "Japan" },
+  { "key": "germany", "value": "Germany" },
+  { "key": "united kingdom", "value": "United Kingdom" },
+  { "key": "france", "value": "France" },
+  { "key": "egypt", "value": "Egypt" },
+  { "key": "south africa", "value": "South Africa" },
+  { "key": "australia", "value": "Australia" },
+  { "key": "canada", "value": "Canada" },
+  { "key": "mexico", "value": "Mexico" },
+  { "key": "saudi arabia", "value": "Saudi Arabia" },
+  { "key": "argentina", "value": "Argentina" },
+  { "key": "italy", "value": "Italy" },
+  { "key": "spain", "value": "Spain" },
+  { "key": "indonesia", "value": "Indonesia" }
+]
 
 const EditAccount = () => {
 
-  const { user:currentUser } = useUserProfile();
+  const { user:currentUser, updateUserProfile } = useUserProfile();
+  console.log(currentUser)
   const navigate = useNavigate();
   const { token } = useAuth();
   const { response, error, loading, makeRequest } = useApiRequest<UserProfile, ProfileType>({
@@ -40,6 +65,7 @@ const EditAccount = () => {
       gender: originalData?.gender || "",
       home_address: originalData?.home_address || "",
       cityOfResidence: originalData?.cityOfResidence || "",
+      Nationality: originalData?.Nationality || "",
     };
   };
   // const reducedInfo:ProfileType = mapData(currentUser);
@@ -64,12 +90,12 @@ const EditAccount = () => {
 const updateProfile = async(e:React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
-  // try {
-  //   validateObject(profile);
-  // } catch (error) {
-  //   console.log("All fields need to be filled");
-  //   return;
-  // }
+  try {
+    validateObject(profile);
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 
   const data = {
     fullname: profile.fullname.trim(),
@@ -78,6 +104,7 @@ const updateProfile = async(e:React.FormEvent<HTMLFormElement>) => {
     gender: profile.gender,
     home_address: profile.home_address,
     cityOfResidence: profile.cityOfResidence,
+    Nationality: profile.Nationality,
   }
   const url = "profile-mgt/edit-user-profile";
   const headers:HeadersInit = {
@@ -112,6 +139,20 @@ useEffect(() =>{
     });
   }
 }, [response, error]);
+
+// function to update the user state in the goobal context
+const handleUpdateProfile = () =>{
+  if(!currentUser) return;
+
+  const changes = Object.entries(profile).filter(([key, value]) => currentUser[key as keyof UserProfile] !== value);
+
+  changes.forEach(([key, value]) => {
+    console.log(key, value)
+    updateUserProfile(key, value);
+  });
+
+  navigate("/user", {replace: true, state: {reload:true}});
+}
 
 console.log(response, feedback)
 
@@ -170,6 +211,19 @@ console.log(response, feedback)
                       </div>
                     </div>
                     <div>
+                        <label htmlFor="nationality" className="block mb-2 text-sm font-medium text-text-black dark:text-white">Gender</label>
+                        <div className="w-full h-full">
+                          <Select 
+                            id = "nationality" 
+                            name="Nationality" 
+                            value={profile.Nationality}
+                            className="w-full border border-[#c0c0c0]" 
+                            defaultText="nationality"
+                            handleInputChange={handleInputChange} 
+                            select={Nationalities}/>
+                      </div>
+                    </div>
+                    <div className="sm:col-span-2">
                         <label htmlFor="home_address" className="block mb-2 text-sm font-medium text-text-black dark:text-white">Home address</label>
                         <input 
                           type="text" 
@@ -221,9 +275,7 @@ console.log(response, feedback)
           <div className="mt-5 border-t border-[#f0f0f0] pt-3">
             {feedback.type === "success" ?<Button  
               size="medium"
-              handleClick={() => {
-                navigate("/user", {replace: true, state: {reload:true}});
-              }}
+              handleClick={handleUpdateProfile}
               className="text-sm uppercase w-full"
             >
               Continue to profile

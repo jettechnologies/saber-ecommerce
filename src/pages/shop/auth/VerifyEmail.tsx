@@ -1,7 +1,7 @@
-import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { CircleUserRoundIcon } from "lucide-react";
-// import useApiRequest from "@/hooks/useApiRequest";
+import useApiRequest from "@/hooks/useApiRequest";
 import FormContainer from "@/components/FormContainer";
 import { Mail, Info } from "lucide-react";
 
@@ -13,7 +13,12 @@ interface Email{
 
 const VerifyEmail = () => {
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
+    const { response:verifyEmailResponse,loading , error:fetchError, makeRequest } = useApiRequest({
+        method: "POST" 
+    });
+
+    console.log(fetchError);
 
     const [email, setEmail] = useState<Email>({
         str: "",
@@ -44,26 +49,25 @@ const VerifyEmail = () => {
             email: email.str,
         }
 
-        console.log(data);
+        const headers: HeadersInit = {
+            "Accept": "application/json",
+        };
+        const url = "user-auth/send-password-reset-token";
 
-        const url = "admin-auth/send-password-reset-token";
-        console.log(url)
-        // const headers: HeadersInit = {
-        //     "Accept": "application/json",
-        // }
-
-        // try{
-        //     await makeRequest(data, "user-auth/login");
-            
-        //     navigate("/reset-password/otp", { replace: true, state: { email: email.str, link : "/reset-password"} });
-        //     console.log(response, resError)
-        // }
-        // catch(e: any){
-        //     console.log(e.message)
-        // }
-
-        
+        try{
+            await makeRequest(data, url, headers);
+        }
+        catch(e){
+            console.log((e as Error).message)
+        }
     }
+
+    useEffect(() =>{
+        if(verifyEmailResponse && verifyEmailResponse!== null){
+            navigate("/reset-password/otp", { replace: true, state: { email: email.str, link: "/reset-password" } });
+            console.log(verifyEmailResponse)
+        }
+    }, [verifyEmailResponse, navigate, email.str]);
 
   return (
     <>
@@ -91,11 +95,11 @@ const VerifyEmail = () => {
                     </div>
                     {email.error && <p className="text-red-500 text-size-400 font-normal m-2">Enter a correct email format</p>}
                 </div>
-                {/* <div className="w-full">
+                <div className="w-full">
                 <button disabled = {loading} type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
                       {loading ? "Loading..." : "Verify email"}
                     </button>
-                </div> */}
+                </div>
             </form>
         </FormContainer>
     </>

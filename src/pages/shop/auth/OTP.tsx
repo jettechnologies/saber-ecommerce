@@ -21,16 +21,18 @@ const OTP = () => {
   const navigate = useNavigate();
   const clientEmail:string = location.state?.email ?? "";
 
-  const { response, error, loading, makeRequest } = useApiRequest<OTPResponseType, {otp: string}>({
+  const { response, error:fetchError, loading, makeRequest } = useApiRequest<OTPResponseType, {otp: string}>({
     method: "POST",
   });
 
   const { setToken } = useAuth();
 
-    let currentOTPIndex = 0;
-
     const [otp, setOtp] = useState(new Array(4).fill(""));
     const [activeOTPIndex, setActiveOTPIndex] = useState(0);
+    const [error, setError] = useState({
+      msg: "",
+      status: false
+    })
     const [validateError, setValidateError] = useState(false);
     const [countdown, setCountdown] = useState(2 * 60);
     const [isResend, setIsResend] = useState(false);
@@ -40,22 +42,23 @@ const OTP = () => {
   
     const handleOnChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = target;
-      const newOTP: string[] = [...otp];
-      newOTP[currentOTPIndex] = value.substring(value.length - 1);
+      const newOtp: string[] = [...otp];
+      newOtp[activeOTPIndex] = value.substring(value.length - 1);
   
-      if (!value) setActiveOTPIndex(currentOTPIndex - 1);
-      else setActiveOTPIndex(currentOTPIndex + 1);
+      if (!value) setActiveOTPIndex(activeOTPIndex - 1);
+      else setActiveOTPIndex(activeOTPIndex + 1);
   
-      setOtp(newOTP);
-      console.log(otp)
+      setOtp(newOtp);
     };
   
-    const handleOnKeyDown = (
-      e: React.KeyboardEvent<HTMLInputElement>,
-      index: number
-    ) => {
-      currentOTPIndex = index;
-      if (e.key === "Backspace") setActiveOTPIndex(currentOTPIndex - 1);
+    const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+      if (e.key === "Backspace" || e.key === "Delete") {
+        e.preventDefault();
+        const newOtp: string[] = [...otp];
+        newOtp[index] = "";
+        setOtp(newOtp);
+        setActiveOTPIndex(index > 0 ? index - 1 : 0);
+      }
     };
   
     useEffect(() => {
@@ -106,7 +109,13 @@ const OTP = () => {
       const url = isResend ? 'user-auth/resend-otp' : 'user-auth/verify-email';
       const headers: HeadersInit | undefined = isResend ? { "email": clientEmail } : undefined;
 
-      await makeRequest(data, url, headers);
+      try{
+        await makeRequest(data, url, headers);
+        navigate("/auth/login", { replace: true });
+      }
+      catch(err){
+        console.log((err as Error).message)
+      }
 
     }
 
@@ -142,11 +151,38 @@ const OTP = () => {
       return () => clearInterval(intervalId);
     }, [countdown]);
 
+
+    // useEffect hook to get the local error state been saved
+    useEffect(() =>{
+      if(fetchError){
+        setError({
+          msg: fetchError,
+          status: true
+        })
+      }
+    }, [fetchError])
+
+    useEffect(() =>{
+      let errorRemoval: ReturnType<typeof setTimeout>;
+  
+      if(error){
+         errorRemoval =  setTimeout(() =>{
+              setError({
+                msg: "",
+                status: false
+              });
+          }, 2000)
+      }
+  
+      return() => clearTimeout(errorRemoval)
+  }, [error]);
+
   return (
     <div className="w-full">
         <FormContainer>
             <form onSubmit={handleFormSubmit} className="bg-white rounded-md shadow-2xl p-5 mt-6">
-              {error && <Notification type="danger" message={error} />}
+              {error.status && <Notification type="danger" message={error.msg} />}
+
                 <div className="flex flex-col gap-y-4 items-center justify-center mb-6">
                     <div className="w-[96px] grid place-items-center bg-[#d6d5d5] aspect-square rounded-full shadow-sm">
                         <MailOpen size={60} strokeWidth={1}/>

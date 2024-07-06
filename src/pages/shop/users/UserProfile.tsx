@@ -167,13 +167,13 @@ const UserProfile = () => {
                 phone number: {user.mobile}
               </li>
               <li className="text-size-500 font-normal capitalize">
-                birthday: {user?.DOB && user?.DOB}
-              </li>
-              <li className="text-size-500 font-normal capitalize">
                 nationality: {user?.Nationality && user?.Nationality}
               </li>
               <li className="text-size-500 font-normal capitalize">
                 home address: {user?.home_address && user?.home_address}
+              </li>
+              <li className="text-size-500 font-normal capitalize">
+                city of residence: {user?.cityOfResidence && user?.cityOfResidence}
               </li>
               <li className="text-size-500 font-normal capitalize flex gap-3">
                 amount spent: <span className="flex gap-x-2"><IndianRupee size={20}/> {user?.totalRevenue && user?.totalRevenue}</span>

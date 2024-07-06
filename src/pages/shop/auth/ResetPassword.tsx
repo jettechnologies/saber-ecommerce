@@ -1,7 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import FormContainer from "@/components/FormContainer";
 import { LockKeyhole, Info, CircleUserRoundIcon } from "lucide-react";
 import { useState, useEffect } from "react";
+import useApiRequest from "@/hooks/useApiRequest";
 import Notification from "@/components/Notification";
 
 interface Reset{
@@ -13,14 +14,19 @@ interface Reset{
       error: boolean},  
 }
 
-interface Error{
+interface ErrorType{
   status: boolean;
   msg: string;
 }
 
 const ResetPassword = () => {
 
+  const location = useLocation();
     const navigate = useNavigate();
+    const response = location.state?.response ?? "";
+    const { response:success, loading, error:fetchError, makeRequest } = useApiRequest({
+      method: "PATCH",
+    })
 
     const [reset, setReset] = useState<Reset>({
         password: {
@@ -33,7 +39,7 @@ const ResetPassword = () => {
         },
     });
 
-    const [error, setError] = useState<Error>({
+    const [error, setError] = useState<ErrorType>({
       status: false,
       msg : ""
     });
@@ -42,10 +48,10 @@ const ResetPassword = () => {
         const target = e.target as HTMLInputElement | HTMLTextAreaElement;
         const { name, value } = target;
 
-        setReset({ ...reset, [name]: {str: value.toLocaleLowerCase(), error: false} });
+        setReset({ ...reset, [name]: {str: value.trim(), error: false} });
     }
 
-    const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) =>{
+    const handleFormSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
 
         const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/i;
@@ -69,15 +75,47 @@ const ResetPassword = () => {
           return
       }
 
-
+      const url = "user-auth/reset-password";
         const data = {
             password: password.str,
+            confirmPassword: confirmPassword.str
         }
 
-        console.log(data);
+      // getting the users id from localstorage
+      const localStorage = window.localStorage.getItem("user_id");
+      if(!localStorage) return;
 
-        navigate("/login", { replace: true });
+      const userId = JSON.parse(localStorage);
+
+      const headers:HeadersInit = {
+        "Accept": "application/json",
+        id: userId
+      }
+
+      try{
+        await makeRequest(data, url, headers);
+      }
+      catch(err){
+        console.log((err as Error).message)
+      }
+
     }
+
+    useEffect(() =>{
+      if(success && success!==null){
+        navigate("/auth/login", { replace: true, state: {response:success} });
+      }
+    }, [success, navigate])
+
+    // useEffect hook to set error state from api request
+    useEffect(() =>{
+      if(fetchError){
+        setError({
+          msg: fetchError,
+          status: true
+        })
+      }
+    }, [fetchError]);
 
     useEffect(() =>{
         let errorRemoval: ReturnType<typeof setTimeout>;
@@ -94,6 +132,7 @@ const ResetPassword = () => {
   return (
     <>
         <FormContainer>
+            {(response && response !== "") && <Notification className="text-size-500 font-medium text-white first-letter:capitalize" message={response.message} type="success"/>}
             <div className="mx-auto mb-2 w-fit h-fit p-3 rounded-full flex items-center justify-center">
               <CircleUserRoundIcon size = {80} color="#121212"/>
             </div>
@@ -133,8 +172,8 @@ const ResetPassword = () => {
                     {reset.confirmPassword.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>
                 <div className="w-full">
-                    <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white ">
-                        verify email
+                    <button disabled = {loading} type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white ">
+                        {loading ? "Loading..." : "verify email"}
                     </button>
                 </div>
             </form>

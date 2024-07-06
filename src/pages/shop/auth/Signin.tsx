@@ -6,9 +6,10 @@ import Notification from "@/components/Notification";
 import useApiRequest from "@/hooks/useApiRequest";
 import Cookies from "js-cookie";
 import { useAuth } from "@/context/authContext";
-// import { UserProfile } from "@/types";
+import { useLocalStorage } from "@/useLocalStorage";
+import { User } from "@/types";
 
-interface User{
+interface UserType{
     email: {
         str: string,
         error: boolean
@@ -21,19 +22,20 @@ interface User{
 
 interface SigninType{
     accesstoken: {token: string};
+    user: User;
 }
 
 const Signin = () => {
 
     const navigate = useNavigate();
-
+    const { setItem } = useLocalStorage("user_id")
     const { loading, error, response, makeRequest } = useApiRequest<SigninType, {email:string, password: string}>({
         method:"POST",
     });
 
     const { setToken } = useAuth();
 
-    const [user, setUser] = useState<User>({
+    const [user, setUser] = useState<UserType>({
         email: {
             str: "",
             error: false,
@@ -49,6 +51,7 @@ const Signin = () => {
         status: false,
     });
 
+    // function for input change 
     const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
         const target = e.target as HTMLInputElement | HTMLTextAreaElement;
         const { name, value } = target;
@@ -61,7 +64,7 @@ const Signin = () => {
         setUser({ ...user, [name]: {str: value.toLocaleLowerCase(), error: false} });
     }
 
-    console.log(user)
+    // function for handling the formsubmit
     const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
@@ -109,22 +112,23 @@ const Signin = () => {
             });
 
             setToken(response?.accesstoken?.token);
+            setItem(String(response?.user?.id))
             navigate("/", { replace: true });
 
         }
-    }, [response, setToken, navigate]);
+    }, [response, setToken, navigate, setItem]);
 
     useEffect(() =>{
         let errorRemoval: ReturnType<typeof setTimeout>;
     
-        if(error){
+        if(validateError){
            errorRemoval =  setTimeout(() =>{
                 setValidateError({status: false, msg: ""});
             }, 2000)
         }
     
         return() => clearTimeout(errorRemoval)
-    }, [error]);
+    }, [validateError]);
 
   return (
     <>

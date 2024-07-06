@@ -158,7 +158,7 @@ export interface FavoriteProductType {
 }
 
 // user type for the user object in the order object
-interface User {
+export interface User {
   id: number;
   userID: string;
   email: string;
