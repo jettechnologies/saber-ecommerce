@@ -39,7 +39,7 @@ const Promo = ({formattedTime, currentCoupon}: Prop) => {
   return (
     <div className="w-full h-full md:h-[50rem] lg:h-[25rem]">
         <div className="flex flex-col lg:flex-row h-full">
-            <div className="flex-1 h-1/2 lg:h-full bg-[#A8A8A8] border-2">
+            <div className="flex-1 h-1/2 lg:h-full bg-[#A8A8A8]">
                 <img src={promoImage} alt="promo image" className="w-full h-full object-cover"/>
             </div>
             <div className="flex-1 bg-[#ffdd99]">
