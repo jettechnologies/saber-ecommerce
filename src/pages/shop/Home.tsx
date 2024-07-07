@@ -63,6 +63,8 @@ function Home() {
     return null;
   }, [coupons]);
 
+  // console.log(activeCoupon)
+
 
   const calculateRemainingTime = (expiresIn: string): number => {
     const now = new Date();
@@ -72,9 +74,8 @@ function Home() {
   
   const formatTime = (seconds: number): string => {
     const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
-    return formatDuration(duration, { format: ['days', 'hours', 'minutes', 'seconds'] });
+    return formatDuration(duration, { format: ['months','days', 'hours', 'minutes', 'seconds'] });
   };
-
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -105,6 +106,8 @@ function Home() {
   useEffect(() => {
     setFormattedTime(formatTime(remainingTime));
   }, [remainingTime]);
+
+  // console.log(formattedTime)
 
   return (
     <main className="w-full h-full">

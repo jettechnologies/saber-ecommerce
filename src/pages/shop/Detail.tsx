@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 // import Spinner from "@/components/Spinner";
 // import ImageCarousel from "@/components/ImageCarousell";
 import Icon from "@/components/Icon";
@@ -22,10 +22,12 @@ import { useAuth } from "@/context/authContext";
 import { useCallback } from "react";
 import Notification from "@/components/Notification";
 import Modal2 from "@/components/Modal2";
+import { useUserProfile } from "@/context/userProfileContext";
 
 function Detail() {
 
   const { id } = useParams();
+  const { user:userProfile, addToFavourite } = useUserProfile();
   const [data, setData] = useState<ProductType>()
   const [loading, setLoading] = useState(true);
   const { addVariantsToCart, productVariant } = useCartContext();
@@ -33,8 +35,15 @@ function Detail() {
   const [message, setMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  console.log(userProfile)
   // const [favorites, setFavorites] = useState<FavoriteProductType[]>([])
 
+  const isFavorite = useMemo(() => {
+    if (!userProfile || !userProfile.favourites || !id) return false;
+    
+    return userProfile.favourites.some(favorite => favorite.product?.id === parseInt(id, 10));
+  }, [userProfile, id]);  
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,7 +75,7 @@ function Detail() {
     };
 
     try {
-      setMessage("Adding to favorites...");
+      // setMessage("Adding to favorites...");
       const response = await fetch(`https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/add-product-to-favourite/${productId}`, {
         method: "POST",
         headers: headers,
@@ -79,16 +88,19 @@ function Detail() {
       const result: any = await response.json();
       console.log(result.message);
       setMessage(result.message);
+      // setting the new favorite to localstate
+      const favourite = {
+        createdAt: result?.like?.createdAt,
+        product: result?.like?.product,
+      } 
+      addToFavourite(favourite)
+      
     } catch (err) {
       console.log(err);
       setMessage("Failed to add to favorites.");
     }
-  }, [token]);
+  }, [token, addToFavourite]);
 
-
-  console.log(message); 
-
-  // console.log(response, error);
 
   if(loading){
     return <div className="w-full h-full">
@@ -153,17 +165,18 @@ function Detail() {
                   <div className="w-fit h-fit mt-6 mr-6">
                     {!isLogin ? (
                       <Link to = "/auth/login">
-                        <div className="w-10 h-10 rounded-full shadow-md bg-gray grid place-items-center">
+                        <div className={`w-10 h-10 rounded-full shadow-md bg-gray grid place-items-center`}>
                           <Heart size = {25}/>
                         </div>
                       </Link>
                     ) : (
-                      <div 
-                        className="w-10 h-10 rounded-full shadow-md bg-gray grid place-items-center cursor-pointer"
+                      <button 
+                        disabled = {isFavorite}
+                        className = {`w-10 h-10 rounded-full shadow-md bg-gray grid place-items-center cursor-pointer ${isFavorite && "text-yellow"}`}
                         onClick={() => addProductToFav(data.id)}
                       >
-                          <Heart size = {25}/>
-                      </div>
+                          {isFavorite ? <Heart size={25} fill="rgb(255 201 92)"/> :<Heart size = {25}/>}
+                      </button>
                     )}
                 </div>
               </div>

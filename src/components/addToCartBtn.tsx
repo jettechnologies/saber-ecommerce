@@ -9,7 +9,6 @@ function AddToCartBtn({
   productId: number;
 }) {
   const [isInCart, setIsInCart] = useState(false);
-  console.log(productId);
 
   const { addToCart, cartItems } = useCartContext();
 

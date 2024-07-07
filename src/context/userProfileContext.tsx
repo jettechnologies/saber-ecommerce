@@ -1,13 +1,19 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth } from './authContext';
-import { UserProfile } from '@/types';
+import { Product, UserProfile } from '@/types';
 
 type UserProfileType = {
   user: UserProfile | null;
   isLoading: boolean;
   error: string | null;
   updateUserProfile: (name: string, value: string) => void;
+  addToFavourite: (newFavourite: NewFavouriteType) => void; // Added addFavourite to the type
 };
+
+interface NewFavouriteType {
+  createdAt: string;
+  product: Product;
+}
 
 // Create the context with a default value
 const UserContext = createContext<UserProfileType | undefined>(undefined);
@@ -54,8 +60,30 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(prevUser => prevUser ? { ...prevUser, [name]: value } : null);
   }, []);
 
+  const addToFavourite = useCallback((newFavourite: NewFavouriteType) => {
+    setUser(prevProfile => {
+      if (!prevProfile) return null; // Handle case where user profile is not loaded
+
+      // Determine the next id
+      const nextId = prevProfile.favourites.length > 0 ? Math.max(...prevProfile.favourites.map(fav => fav.id)) + 1 : 1;
+
+      // Create the new favourite object
+      const favourite = {
+        id: nextId,
+        createdAt: newFavourite.createdAt,
+        product: newFavourite.product,
+      };
+
+      // Update the favourites array
+      return {
+        ...prevProfile,
+        favourites: [...prevProfile.favourites, favourite],
+      };
+    });
+  }, []);
+
   return (
-    <UserContext.Provider value={{ user, isLoading, error, updateUserProfile }}>
+    <UserContext.Provider value={{ user, isLoading, error, updateUserProfile, addToFavourite }}>
       {children}
     </UserContext.Provider>
   );
