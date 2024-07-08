@@ -15,6 +15,7 @@ interface ProfileType{
   email: string;
   mobile: string;
   gender: string;
+  // postal_code: string;
   home_address: string;
   cityOfResidence: string;
   Nationality: string;
@@ -223,6 +224,18 @@ console.log(response, feedback)
                             select={Nationalities}/>
                       </div>
                     </div>
+                    {/* <div className="sm:col-span-2">
+                        <label htmlFor="postal_code" className="block mb-2 text-sm font-medium text-text-black dark:text-white">Postal code</label>
+                        <input 
+                          type="text" 
+                          name="postal_code" 
+                          id="postal_code" 
+                          value={profile.postal_code}
+                          onChange={handleInputChange}
+                          className="bg-gray-50 border border-[#c0c0c0] text-text-black text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"  
+                          placeholder="Eg. 2109201" 
+                        />
+                    </div>  */}
                     <div className="sm:col-span-2">
                         <label htmlFor="home_address" className="block mb-2 text-sm font-medium text-text-black dark:text-white">Home address</label>
                         <input 

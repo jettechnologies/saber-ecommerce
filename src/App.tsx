@@ -18,6 +18,7 @@ import ResetOTP from "./pages/shop/auth/ResetOTP";
 import ResetPassword from "./pages/shop/auth/ResetPassword";
 import PaymentGateway from "./pages/shop/PaymentGateway";
 import TrackOrder from "./pages/shop/TrackOrder";
+import ContactUs from "./pages/shop/Contact";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         {/* <Route element={<Home />} /> */}
         <Route path={routes.ABOUT} element={<AboutUs />} />
         <Route path="/store/:category?" element={<Store />} />
+        <Route path = "/contact-us" element = {<ContactUs />} />
         <Route path="/auth/login" element = {<Signin />}/>
         <Route path="/auth/signup" element = {<Signup />} />
         <Route path="/auth/otp" element = {<OTP />} />

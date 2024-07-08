@@ -51,7 +51,6 @@ function Home() {
   const { data:coupons } = useGetRequest<PromoCode[] | []>("browse/get-coupons", {headers: headers});
 
   const { loading, products, categories } = useProductCatergories();
-  const [fetchActiveCoupon, setFetchActiveCoupon] = useState(false);
   const [remainingTime, setRemainingTime] = useState<number>(0);
   const [formattedTime, setFormattedTime] = useState<string>("");
 
@@ -81,7 +80,6 @@ function Home() {
     let intervalId: NodeJS.Timeout;
 
     if (activeCoupon && activeCoupon.expires_in) {
-      setFetchActiveCoupon(true);
       const seconds = calculateRemainingTime(activeCoupon.expires_in);
       setRemainingTime(seconds);
 
@@ -99,7 +97,6 @@ function Home() {
 
     return () => {
       clearInterval(intervalId)
-      setFetchActiveCoupon(false);
     };
   }, [activeCoupon]);
 
@@ -125,14 +122,14 @@ function Home() {
               <div className="flex-1 lg:w-[50%] h-full flex items-center justify-center lg:justify-start text-[#121212] order-1 lg:order-2">
                 <div className="w-[90%] h-fit flex flex-col gap-y-4 items-center lg:items-start text-center lg:text-left">
                   <h2 className="text-[40px] md:text-6xl xl:text-7xl font-semibold">
-                        Listen to the <span className="text-[#377dff]">amazing</span> music sound.
+                    Tech Essentials Delivered <span className="text-[#377dff]">Elevate</span> Your Gadget Game
                     </h2>
                     <p className="text-base font-meduim">
-                        Experience music like never before
+                      Discover Must-Have Accessories for Every Device
                     </p>
                     <Link to = "/store">
                       <Button size = "medium" className="capitalize text-white text-lg w-[15rem]">
-                          shopping now
+                          shop now
                       </Button>
                     </Link>
                 </div>
@@ -145,14 +142,14 @@ function Home() {
               <div className="flex-1 lg:w-[50%] h-full flex items-center justify-center lg:justify-start text-[#121212] order-1 lg:order-2">
                 <div className="w-[90%] h-fit flex flex-col gap-y-4 items-center lg:items-start text-center lg:text-left">
                   <h2 className="text-[40px] md:text-6xl xl:text-7xl font-semibold">
-                        Listen to the <span className="text-white">heavenly</span> music sound.
+                    Tech, Reimagined <span className="text-white">Explore</span> for Every Tech Enthusiast.
                     </h2>
                     <p className="text-base font-meduim">
-                        Experience music like never before with our headphones
+                      Upgrade Your Tech Experience with Cutting-Edge Accessories
                     </p>
                     <Link to = "/store">
                       <Button size = "medium" className="capitalize text-white text-lg w-[15rem]">
-                          shopping now
+                          shop now
                       </Button>
                     </Link>
                 </div>
@@ -165,14 +162,14 @@ function Home() {
               <div className="flex-1 lg:w-[50%] h-full flex items-center justify-center lg:justify-start text-white order-1 lg:order-2">
                 <div className="w-[90%] h-fit flex flex-col gap-y-4 items-center lg:items-start text-center lg:text-left">
                   <h2 className="text-[40px] md:text-6xl xl:text-7xl font-semibold">
-                      Listen to the <span className="text-yellow">amazing</span> music sound.
+                    Unleash the Power <span className="text-yellow">Top Gear</span> music sound.
                   </h2>
                   <p className="text-base font-meduim">
-                      Experience music like never before
+                    Discover Essential Tech Tools for Your Every Need
                   </p>
                   <Link to = "/store">
                       <Button size = "medium" className="capitalize text-white text-lg w-[15rem]">
-                          shopping now
+                          shop now
                       </Button>
                     </Link>
                 </div>
@@ -229,7 +226,7 @@ function Home() {
       {/* Content section */}
       <section className="mx-4 mt-10 lg:mx-14 min-h-screen">
         {/* Highlighted categories sort out by timespan */}
-        <Section title="new arrivals" link="/store">
+        {/* <Section title="new arrivals" link="/store">
           {!loading ? <ProductSlider 
             autoPlay = {false}
             contents={products.map((product:ProductType) =>(
@@ -245,8 +242,40 @@ function Home() {
               <Spinner />
             </div>
           }
-          {/* <></> */}
-        </Section>
+        </Section> */}
+
+<Section title="New Arrivals" link="/store">
+      {!loading ? (
+        <ProductSlider 
+          autoPlay={false} 
+          contents = {products
+            .sort((a, b) => {
+              // Assuming 'createdAt' is a Date object on your ProductType
+              const timeDiffA = new Date(a.createdAT).getTime();
+              const timeDiffB = new Date(b.createdAT).getTime();
+              return timeDiffA - timeDiffB; // Sort by ascending order of time differences
+            })
+            .map((product: ProductType) => (
+              <div
+                key={product.id}
+                className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem] mb-4 md:mb-0"
+              >
+                <ProductCard
+                  product={product}
+                  tag={{
+                    type: 'neutral',
+                    msg: product?.isOutOfStock ? 'Out of stock' : '',
+                  }}
+                />
+              </div>
+            ))}
+        />
+      ) : (
+        <div className="w-full h-[25rem]">
+          <Spinner />
+        </div>
+      )}
+    </Section>
 
         {/* Shop catergories */}
         {/* grid grid-rows-5 md:grid-rows-[30vh_30vh_30vh_30vh] md:grid-cols-2 */}
@@ -299,19 +328,19 @@ function Home() {
           <section className="mt-14">
             {/* remember to add a state in the global store that would enable the store owner to either turn a promo or a newletter on */}
             {activeCoupon ? <Promo formattedTime = {formattedTime} currentCoupon={activeCoupon}/> :
-              fetchActiveCoupon && (<div className="w-full h-full border-2">
+              (<div className="w-full h-[20rem] lg:h-[30rem]">
                 <Carrousel 
                 hasArrows = {true}
                 autoPlayInterval={3500}
                 content= {[
-                  <div className="">
-                    <img src={banner_one} alt="banner image" />
+                  <div className="h-full">
+                    <img src={banner_one} alt="banner image" className="w-full h-full"/>
                   </div>,
-                  <div className="">
-                    <img src={banner_two} alt="banner image" />
+                  <div className="h-full">
+                    <img src={banner_two} alt="banner image" className="w-full h-full"/>
                   </div>,
-                  <div className="">
-                    <img src={banner_three} alt="banner image" />
+                  <div className="h-full">
+                    <img src={banner_three} alt="banner image" className="w-full h-full"/>
                   </div>
                 ]}
               />
@@ -320,11 +349,32 @@ function Home() {
           </section>
 
           {/* Best sellers  sort out by rating*/}
-          <div className="mt-14">
+          {/* <div className="mt-14">
             <Section title="best sellers" link="store">
               {!loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-6 mt-8 z-10">
                 {
                   products.map((product:ProductType) =>(
+                    <div className="w-full md:w-[46.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
+                      <ProductCard product={product} tag={{
+                        type: "neutral",
+                        msg: product?.isOutOfStock ? "out of stock" : "",
+                      }} />
+                    </div>))
+                }
+                </div>
+                :
+                <div className="w-full h-[25rem]">
+                  <Spinner />
+                </div>
+              }
+            </Section>
+          </div> */}
+
+          <div className="mt-14">
+            <Section title="best sellers" link="store">
+              {!loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-6 mt-8 z-10">
+                {
+                  products.sort((a, b) => a.purchaseCount - b.purchaseCount).map((product:ProductType) =>(
                     <div className="w-full md:w-[46.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
                       <ProductCard product={product} tag={{
                         type: "neutral",

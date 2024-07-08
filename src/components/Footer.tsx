@@ -46,31 +46,10 @@ export default function Footer() {
             email: email.str,
         }
 
-        console.log(data);
-
-        // const url = "https://sagar-e-commerce-backend.onrender.com/api/v1/sagar_stores_api/browse/newsletter";
         const url = "browse/newsletter";
         console.log(url)
 
         try{
-        //     const response = await fetch(url, {
-        //         method: "POST",
-        //         headers:{
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify(data)
-        //     })
-
-        //     if (!response.ok) {
-        //         throw new Error("Network response was not ok");
-        //       }
-        
-        //       const resData = await response.json();
-        //       console.log(resData);
-        // }
-        // catch(e){
-        //     console.log((e as Error).message);
-        // }
             await makeRequest(data, url);
         }
         catch(e){
@@ -101,8 +80,11 @@ export default function Footer() {
                           <li className="mb-4">
                               <Link to="/store" className="hover:underline">Store</Link>
                           </li>
-                          <li>
+                          <li className="mb-4">
                               <Link to="/about" className="hover:underline">About us</Link>
+                          </li>
+                          <li>
+                              <Link to="/contact-us" className="hover:underline">Contact us</Link>
                           </li>
                       </ul>
                   </div>
@@ -121,7 +103,7 @@ export default function Footer() {
                       </ul>
                   </div>
               </div>
-              <div className="md:px-8 max-md:mx-auto flex-1">
+              <div className="md:px-8 max-md:mx-auto flex-1 xl: max-w-[25rem]">
                 <div className="flex flex-col">
                   <div className="max-sm:hidden">
                     <p className="mb-3 text-size-500 text-[#a0a0a0] text-center">

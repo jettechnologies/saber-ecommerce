@@ -1,19 +1,13 @@
-// import ProductList from "../components/ProductList";
-// import Filters from "../components/Filters";
 import Modal from "@/components/Modal";
 import { useParams } from "react-router";
-// import { useNavigate } from "react-router-dom";
-// import filterIcon from "../assets/icons/filter.svg";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { DropdownIcon } from "../../icons/svg";
 import Select from "@/components/Select";
-// import SideNavBar from "../components/SideNavBar";
 import { DollarSign, SlidersHorizontal } from "lucide-react";
 import ReactSlider from "react-slider";
 import ProductCard from "@/components/ProductCard";
 import { useNavigate } from "react-router-dom";
-// import { useProducts } from "@/hooks/useProducts";
 import Spinner from "@/components/Spinner";
 import Button from "@/components/Button";
 import useGetRequest from "@/hooks/useGetRequest";
@@ -150,12 +144,6 @@ const renderNoProductsMessage = () => (
     <>
       <section className="w-full h-full px-8 mt-2">
         {(categoryTerm !== "" && categoryWithProduct.data) ? <div 
-          // style = {{
-          //   background: `url(${categoryWithProduct?.data[0]?.banner}) rgb(243 245 247)`,
-          //   backgroundSize: "cover",
-          //   backgroundPosition: "center",
-          //   backgroundRepeat: "no-repeat",
-          // }}
           id = "page-banner" 
           className="w-full h-[365px] grid text-[#cccccc] relative"
         >

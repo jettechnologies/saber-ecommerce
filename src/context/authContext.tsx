@@ -84,8 +84,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
-  console.log(token);
-
   useEffect(() => {
     const auth_token = Cookies.get("auth_token");
     if (auth_token) {

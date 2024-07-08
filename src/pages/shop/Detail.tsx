@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 // import Spinner from "@/components/Spinner";
 // import ImageCarousel from "@/components/ImageCarousell";
 import Icon from "@/components/Icon";
@@ -19,7 +19,6 @@ import { useCartContext } from "@/context/cartContext";
 import { Heart } from "lucide-react";
 import { useAuth } from "@/context/authContext";
 // import useApiRequest from "@/hooks/useApiRequest";
-import { useCallback } from "react";
 import Notification from "@/components/Notification";
 import Modal2 from "@/components/Modal2";
 import { useUserProfile } from "@/context/userProfileContext";
@@ -32,7 +31,10 @@ function Detail() {
   const [loading, setLoading] = useState(true);
   const { addVariantsToCart, productVariant } = useCartContext();
   const { token, isLogin } = useAuth();
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<{msg:string, type: "success" | "danger" | "warning"}>({
+    msg:"",
+    type: "success",
+  });
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   console.log(userProfile)
@@ -86,20 +88,32 @@ function Detail() {
       }
 
       const result: any = await response.json();
-      console.log(result.message);
-      setMessage(result.message);
+      setMessage({msg:result.message, type: "success"});
       // setting the new favorite to localstate
       const favourite = {
         createdAt: result?.like?.createdAt,
         product: result?.like?.product,
       } 
       addToFavourite(favourite)
-      
+
     } catch (err) {
       console.log(err);
-      setMessage("Failed to add to favorites.");
+      setMessage({msg:"Failed to add to favorites.", type: "danger"});
     }
   }, [token, addToFavourite]);
+
+   {/* useeffect to clear the message */}
+   useEffect(() =>{
+    let messageRemoval: ReturnType<typeof setTimeout>;
+
+    if(message){
+      messageRemoval =  setTimeout(() =>{
+            setMessage({msg: "", type : "success"});
+        }, 2000)
+    }
+
+    return() => clearTimeout(messageRemoval)
+}, [message]);
 
 
   if(loading){
@@ -268,8 +282,8 @@ function Detail() {
         </div>
       </div>
 
-      {message !== "" && <div className="absolute top-[5rem] left-[4rem] w-[20rem] h-[4rem] first-letter:capitalize">
-          <Notification type = "success" className="text-white" message = {message}/>
+      {message.msg !== "" && <div className="absolute top-[5rem] left-[4rem] w-[20rem] h-[4rem] first-letter:capitalize">
+          <Notification type = {message.type} className="text-white" message = {message.msg}/>
       </div> }
 
       {/* For telling guest users to login */}

@@ -97,6 +97,14 @@ export default function Navbar() {
                   <h1>About</h1>
                 </Link>
                 </li>
+                <li className="p-2">
+                  <Link
+                      to={"/contact-us"}
+                      className={`flex gap-8 text-size-500 font-semibold`}
+                    >
+                      <h1>Contact</h1>
+                    </Link>
+                </li>
                 {(token && !loading) && <li className="p-2">
                   <Link
                       to={"/order/track"}
@@ -234,6 +242,16 @@ export default function Navbar() {
               </div>
             </Link>
           ))}
+            <Link
+              to="/contact-us"
+              className="grid grid-cols-[80%_20%] text-xl font-bold"
+              onClick={handleClick}
+            >
+              <h1>Contact</h1>
+              <div className="flex justify-end">
+                <img src={menuArrowRight} alt="Contact us" />
+              </div>
+            </Link>
          {(token && !loading) && <Link
             to={"/order/track"}
             className={`flex w-full justify-between text-xl font-bold items-center capitalize`}

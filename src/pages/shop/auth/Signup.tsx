@@ -1,6 +1,6 @@
 import FormContainer from "@/components/FormContainer";
 import { useNavigate } from "react-router-dom";
-import { User, Mail, Info, LockKeyhole, Phone } from "lucide-react";
+import { User, Mail, Info, LockKeyhole, Phone, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 import Notification from "@/components/Notification";
 // import Button from "../../components/Button";
@@ -17,8 +17,9 @@ interface User{
  name:StateObj;
  email: StateObj;
  mobile: StateObj,
+ postal_code: StateObj;
  password: StateObj;
- confirmPassword: {str:string, error: boolean};
+ confirmPassword: StateObj;
 }
 
 interface Error{
@@ -37,6 +38,7 @@ const Signup = () => {
         name: {str: "", error: false},
         email: {str: "", error: false},
         mobile: {str: "", error: false},
+        postal_code: {str: "", error: false},
         password: {str: "", error: false},
         confirmPassword: {str: "", error: false}
     });
@@ -175,6 +177,21 @@ console.log(response, error, user);
                     {user.mobile.error && <p className="text-red-500 text-size-400 font-normal m-2">Fullname should be alphabets only </p>}
                 </div>
                 <div>
+                    <div className={`flex items-center ${user.name.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
+                        <MapPin size = {20}/>
+                        <input 
+                            className="pl-2 w-full outline-none border-none" 
+                            type="text" 
+                            name="postal_code" 
+                            id="postal_code" 
+                            placeholder="Enter your current postal code" 
+                            onChange={handleInputChange}
+                        />
+                        {user.postal_code.error && <Info size={20} color=" rgb(239 68 68)" />}
+                    </div>
+                    {user.postal_code.error && <p className="text-red-500 text-size-400 font-normal m-2">Fullname should be alphabets only </p>}
+                </div>
+                <div>
                     <div className={`flex items-center ${user.password.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
                         <LockKeyhole size = {20}/>
                         <input 
@@ -196,7 +213,7 @@ console.log(response, error, user);
                             className="pl-2 w-full outline-none border-none" 
                             type="password" 
                             name="confirmPassword" 
-                            id="password" 
+                            id="confirm_password" 
                             placeholder="Confirm Password" 
                             onChange={handleInputChange}
                         />

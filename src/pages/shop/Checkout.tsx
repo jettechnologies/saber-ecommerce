@@ -7,12 +7,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Order } from "@/types";
 import Button from "@/components/Button";
 import { BadgeCheck, CircleAlert } from "lucide-react";
-import CopyToClipboard from "@/components/CopyToClipBoard";
+// import CopyToClipboard from "@/components/CopyToClipBoard";
 import Modal2 from "@/components/Modal2";
 import { useCartContext } from "@/context/cartContext";
 
 interface OrderType{
-    orderType : string,
+  paymentType : string,
     promoCode: string,
     name: string,
     mobile: string,
@@ -38,7 +38,7 @@ const Checkout = () => {
   const { token } = useAuth();
   const { deletingCart } = useCartContext();
   const [order, setOrder] = useState<OrderType>({
-    orderType : "",
+    paymentType : "",
     promoCode: "",
     name: "",
     mobile: "",
@@ -84,7 +84,7 @@ const Checkout = () => {
   
     const data = {
       name: order.name,
-      orderType: order.orderType,
+      paymentType: order.paymentType,
       email: order.email,
       mobile: order.mobile,
       billing_address: order.billing_address,
@@ -254,19 +254,19 @@ const Checkout = () => {
                       type="radio"
                       name="orderType"
                       value="door_delivery"
-                      checked={order.orderType === "door_delivery"}
+                      checked={order.paymentType === "cod"}
                       onChange={handleInputChange}
                       className="hidden"
                     />
                     <span
                       className={`radio-box py-6 px-5 w-fit h-10 border-2 border-gray gap-x-4 rounded-md flex items-center justify-center ${
-                        order.orderType === 'door_delivery'
+                        order.paymentType === 'cod'
                           ? 'bg-blue text-white'
                           : 'bg-white text-black'
                       }`}
                     >
                       <Truck size = {20}/>
-                      <p className="text-sm lg:text-size-500 capitalize">door service</p>
+                      <p className="text-sm lg:text-size-500 capitalize">Cash on delivery</p>
                     </span>
                   </label>
                   <label className="custom-radio ml-6">
@@ -274,26 +274,26 @@ const Checkout = () => {
                       type="radio"
                       name="orderType"
                       value="pick_up"
-                      checked={order.orderType === 'pick_up'}
+                      checked={order.paymentType === 'prepaid'}
                       onChange={handleInputChange}
                       className="hidden"
                     />
                     <span
                       className={`radio-box py-6 px-5 w-fit h-10 border-2 border-gray gap-x-4 rounded-md flex items-center justify-center ${
-                        order.orderType === 'pick_up'
+                        order.paymentType === 'prepaids'
                           ? 'bg-blue text-white'
                           : 'bg-white text-black'
                       }`}
                       >
                       <Warehouse size = {20}/>
-                      <p className="text-sm lg:text-size-500 capitalize">pickups</p>
+                      <p className="text-sm lg:text-size-500 capitalize">prepaid</p>
                     </span>
                   </label>
                 </div>
               </div>
               {/* postal code */}
                 <hr className="text-[#c0c0c0] my-4"/>
-              <div className="w-full">
+              {/* <div className="w-full">
                 <h3 className="text-size-500 text-text-black font-medium uppercase mb-6">3. Postal Code</h3>
                 <div>
                   {order.orderType === "door_delivery" ?<div className="flex flex-col lg:flex-row gap-4 ">
@@ -340,7 +340,7 @@ const Checkout = () => {
                     </div>
                 </div>}
                 </div>     
-              </div>
+              </div> */}
 
               </form>
             </div>
