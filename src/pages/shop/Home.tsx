@@ -11,7 +11,6 @@ import ProductCard from "@/components/ProductCard";
 import Promo from "@/components/Promo";
 import ProductSlider from "@/components/ProductSlider";
 import { useProductCatergories } from "@/context/productCatergoriesContext";
-// import useGetRequest from "@/hooks/useGetRequest";
 import { useEffect, useMemo, useState } from "react";
 import Spinner from "@/components/Spinner";
 import { ProductType } from "@/types";
@@ -20,9 +19,7 @@ import { useAuth } from "@/context/authContext";
 import banner_one from "@/assets/images/banners/banner1.webp";
 import banner_two from "@/assets/images/banners/banner2.webp";
 import banner_three from "@/assets/images/banners/banner3.webp";
-// import { timeToSeconds, formatTimeDays, formatTimeWeeks } from "@/utils/dateFormatting";
 import { differenceInSeconds, formatDuration, intervalToDuration } from 'date-fns';
-// import Newsletter from "@/components/Newsletter";
 
 interface PromoCode {
   id: number;
@@ -225,57 +222,39 @@ function Home() {
 
       {/* Content section */}
       <section className="mx-4 mt-10 lg:mx-14 min-h-screen">
-        {/* Highlighted categories sort out by timespan */}
-        {/* <Section title="new arrivals" link="/store">
-          {!loading ? <ProductSlider 
-            autoPlay = {false}
-            contents={products.map((product:ProductType) =>(
-              <div className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
-                <ProductCard product={product}  tag={{
-                  type: "neutral",
-                  msg: product?.isOutOfStock ? "out of stock" : "",
-                }} />
-              </div>
-            ))} 
-          /> :
+
+    <Section title="New Arrivals" link="/store">
+          {!loading ? (
+            <ProductSlider 
+              autoPlay={false} 
+              contents = {products
+                .sort((a, b) => {
+                  // Assuming 'createdAt' is a Date object on your ProductType
+                  const timeDiffA = new Date(a.createdAT).getTime();
+                  const timeDiffB = new Date(b.createdAT).getTime();
+                  return timeDiffA - timeDiffB; // Sort by ascending order of time differences
+                })
+                .map((product: ProductType) => (
+                  <div
+                    key={product.id}
+                    className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem] mb-4 md:mb-0"
+                  >
+                    <ProductCard
+                      product={product}
+                      tag={{
+                        type: 'neutral',
+                        msg: product?.isOutOfStock ? 'Out of stock' : '',
+                      }}
+                    />
+                  </div>
+                ))}
+            />
+          ) : (
             <div className="w-full h-[25rem]">
               <Spinner />
             </div>
-          }
-        </Section> */}
-
-<Section title="New Arrivals" link="/store">
-      {!loading ? (
-        <ProductSlider 
-          autoPlay={false} 
-          contents = {products
-            .sort((a, b) => {
-              // Assuming 'createdAt' is a Date object on your ProductType
-              const timeDiffA = new Date(a.createdAT).getTime();
-              const timeDiffB = new Date(b.createdAT).getTime();
-              return timeDiffA - timeDiffB; // Sort by ascending order of time differences
-            })
-            .map((product: ProductType) => (
-              <div
-                key={product.id}
-                className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem] mb-4 md:mb-0"
-              >
-                <ProductCard
-                  product={product}
-                  tag={{
-                    type: 'neutral',
-                    msg: product?.isOutOfStock ? 'Out of stock' : '',
-                  }}
-                />
-              </div>
-            ))}
-        />
-      ) : (
-        <div className="w-full h-[25rem]">
-          <Spinner />
-        </div>
-      )}
-    </Section>
+          )}
+        </Section>
 
         {/* Shop catergories */}
         {/* grid grid-rows-5 md:grid-rows-[30vh_30vh_30vh_30vh] md:grid-cols-2 */}
@@ -349,27 +328,6 @@ function Home() {
           </section>
 
           {/* Best sellers  sort out by rating*/}
-          {/* <div className="mt-14">
-            <Section title="best sellers" link="store">
-              {!loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-6 mt-8 z-10">
-                {
-                  products.map((product:ProductType) =>(
-                    <div className="w-full md:w-[46.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
-                      <ProductCard product={product} tag={{
-                        type: "neutral",
-                        msg: product?.isOutOfStock ? "out of stock" : "",
-                      }} />
-                    </div>))
-                }
-                </div>
-                :
-                <div className="w-full h-[25rem]">
-                  <Spinner />
-                </div>
-              }
-            </Section>
-          </div> */}
-
           <div className="mt-14">
             <Section title="best sellers" link="store">
               {!loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-6 mt-8 z-10">
@@ -390,10 +348,6 @@ function Home() {
               }
             </Section>
           </div>
-
-          {/* Newsletter signups */}
-          {/* <Newsletter /> */}
-
         </div>
       </section>
     </main>

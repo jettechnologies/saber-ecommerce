@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import Button from "@/components/Button";
-import { Info, BadgeCheck } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 import Notification from "@/components/Notification";
 import { useAuth } from "@/context/authContext";
 import Modal2 from "@/components/Modal2";
 import { useNavigate } from "react-router-dom";
+import PasswordInput from "@/components/Password";
 
 const ResetUserPassword = () => {
 
@@ -14,7 +15,7 @@ const ResetUserPassword = () => {
       str: "",
       error: false,
     },
-    password:{
+    newPassword:{
       str: "",
       error: false,
     },
@@ -34,39 +35,39 @@ const { token } = useAuth();
 
 console.log(reset)
 
-  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
-    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
-    const { name, value } = target;
+  // const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
+  //   const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+  //   const { name, value } = target;
 
-    setReset({ ...reset, [name]: {str: value, error: false} })
-  }
+  //   setReset({ ...reset, [name]: {str: value, error: false} })
+  // }
 
   const resetPassword = useCallback(async(e:React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault();
 
-    const { oldPassword, password, confirmPassword } = reset;
+    const { oldPassword, newPassword, confirmPassword } = reset;
     const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/i;
 
-    if(password.str === "" || confirmPassword.str === ""){
+    if(newPassword.str === "" || confirmPassword.str === ""){
         setError({ msg: "All field are required", status: true });
         return;
     }
 
-    if (!passwordRegex.test(password.str)) {
-      setReset({ ...reset, password: { ...password, error: true } });
+    if (!passwordRegex.test(newPassword.str)) {
+      setReset({ ...reset, newPassword: { ...newPassword, error: true } });
       return;
     } else if (!passwordRegex.test(confirmPassword.str)) {
         setReset({ ...reset, confirmPassword: { ...confirmPassword, error: true } });
         return;
     }
-    else if(password.str !== confirmPassword.str){
+    else if(newPassword.str !== confirmPassword.str){
       setError({ msg: "Confirm password and password should match", status: true });
       return;
     }
 
     const data = {
       oldPassword: oldPassword.str,
-      password: password.str,
+      password: newPassword.str,
       confirmPassword: confirmPassword.str,
     }
 
@@ -142,7 +143,7 @@ console.log(reset)
             <form onSubmit={resetPassword}>
               {error.status && <Notification message = {error.msg} type = "danger" className="text-white mb-4"/>}
                 <div className="flex flex-col gap-4 mb-8">
-                  <div className="sm:col-span-2">
+                  {/* <div className="sm:col-span-2">
                         <label htmlFor="old_password" className="block mb-2 text-sm font-medium text-text-black dark:text-white">Old Password</label>
                         <div className="flex flex-col gap-5">
                           <div className="flex border-2 border-[#c0c0c0] focus-within:border-blue focus:border-blue rounded-md items-center">
@@ -195,7 +196,10 @@ console.log(reset)
                           </div>
                           {reset.confirmPassword.error && <p className="text-red-500 text-size-400 font-normal m-2">confirm Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                         </div>
-                    </div>
+                    </div> */}
+                    <PasswordInput name = "oldPassword" placeholder = "Old Password" password = {reset.oldPassword} setPassword={(newValue) => setReset({...reset, oldPassword: newValue})}/>
+                    <PasswordInput name = "newPassword" placeholder = "New Password" password = {reset.newPassword} setPassword={(newValue) => setReset({...reset, newPassword: newValue})}/>
+                    <PasswordInput name = "confirmPassword" placeholder = "Confirm Password" password={reset.confirmPassword} setPassword={(newValue) => setReset({...reset, confirmPassword: newValue})}/>
                   </div>
                     <div className="w-full">
                       <Button size="medium" className="text-size-500 font-medium uppercase text-white w-full">

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import FormContainer from "@/components/FormContainer";
-import { Mail, LockKeyhole, Info } from "lucide-react";
+import { Mail, LockKeyhole, Info, EyeOff, Eye } from "lucide-react";
 import { useState, useEffect } from "react";
 import Notification from "@/components/Notification";
 import useApiRequest from "@/hooks/useApiRequest";
@@ -45,6 +45,8 @@ const Signin = () => {
             error: false,
         }
     });
+
+    const [showPassword, setShowPassword] = useState(false)
 
     const [validateError, setValidateError] = useState<{msg:string; status:boolean}>({
         msg: "",
@@ -158,16 +160,21 @@ const Signin = () => {
                         <LockKeyhole size = {20}/>
                         <input 
                             className="pl-2 w-full outline-none border-none" 
-                            type="password" 
+                            type={showPassword ? "text" : "password"} 
                             name="password" 
                             id="password" 
+                            value = {user.password.str}
                             placeholder="Password" 
                             onChange={handleInputChange}
                         />
+                        <button type = "button" onClick={() => setShowPassword(!showPassword)} className="w-4 h-4 rounded-full flex justify-center items-center">
+                            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </button>
                         {user.password.error && <Info size={20} color=" rgb(239 68 68)" />}
                     </div>
                     {user.password.error && <p className="text-red-500 text-size-400 font-normal m-2">Password contain aphlabets, digits and special characters and be within 8 to 15 characters</p>}
                 </div>
+                {/* <PasswordInput name="password" password={user.password} setPassword={(newValue) => setUser({...user, password: newValue})}/> */}
                 <div className="flex w-full h-fit p-2 mb-3">
                     {/* <div className="flex gap-2">
                         <input type="checkbox" name="remember" id="remember" className="w-5 h-5 border-gray"/>

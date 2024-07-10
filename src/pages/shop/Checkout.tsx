@@ -12,7 +12,8 @@ import Modal2 from "@/components/Modal2";
 import { useCartContext } from "@/context/cartContext";
 
 interface OrderType{
-  paymentType : string,
+  // paymentType : string,
+    orderType: string;
     promoCode: string,
     name: string,
     mobile: string,
@@ -38,7 +39,8 @@ const Checkout = () => {
   const { token } = useAuth();
   const { deletingCart } = useCartContext();
   const [order, setOrder] = useState<OrderType>({
-    paymentType : "",
+    // paymentType : "",
+    orderType: "",
     promoCode: "",
     name: "",
     mobile: "",
@@ -84,7 +86,8 @@ const Checkout = () => {
   
     const data = {
       name: order.name,
-      paymentType: order.paymentType,
+      // paymentType: order.paymentType,
+      ordertType: order.orderType,
       email: order.email,
       mobile: order.mobile,
       billing_address: order.billing_address,
@@ -249,7 +252,7 @@ const Checkout = () => {
               <div className="">
                 <h3 className="text-size-500 text-text-black font-medium uppercase mb-6">2. Order Type</h3>
                 <div className="flex">
-                  <label className="custom-radio">
+                  {/* <label className="custom-radio">
                     <input
                       type="radio"
                       name="orderType"
@@ -281,6 +284,46 @@ const Checkout = () => {
                     <span
                       className={`radio-box py-6 px-5 w-fit h-10 border-2 border-gray gap-x-4 rounded-md flex items-center justify-center ${
                         order.paymentType === 'prepaids'
+                          ? 'bg-blue text-white'
+                          : 'bg-white text-black'
+                      }`}
+                      >
+                      <Warehouse size = {20}/>
+                      <p className="text-sm lg:text-size-500 capitalize">prepaid</p>
+                    </span>
+                  </label> */}
+                  <label className="custom-radio">
+                    <input
+                      type="radio"
+                      name="orderType"
+                      value="door_delivery"
+                      checked={order.orderType === "door_delivery"}
+                      onChange={handleInputChange}
+                      className="hidden"
+                    />
+                    <span
+                      className={`radio-box py-6 px-5 w-fit h-10 border-2 border-gray gap-x-4 rounded-md flex items-center justify-center ${
+                        order.orderType === 'door_delivery'
+                          ? 'bg-blue text-white'
+                          : 'bg-white text-black'
+                      }`}
+                    >
+                      <Truck size = {20}/>
+                      <p className="text-sm lg:text-size-500 capitalize">Cash on delivery</p>
+                    </span>
+                  </label>
+                  <label className="custom-radio ml-6">
+                    <input
+                      type="radio"
+                      name="orderType"
+                      value="pick_up"
+                      checked={order.orderType === 'pick_up'}
+                      onChange={handleInputChange}
+                      className="hidden"
+                    />
+                    <span
+                      className={`radio-box py-6 px-5 w-fit h-10 border-2 border-gray gap-x-4 rounded-md flex items-center justify-center ${
+                        order.orderType === 'pick_up'
                           ? 'bg-blue text-white'
                           : 'bg-white text-black'
                       }`}

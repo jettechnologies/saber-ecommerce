@@ -17,6 +17,7 @@ import { useUserProfile } from "@/context/userProfileContext";
 import Cookies from "js-cookie";
 import Modal2 from "./Modal2";
 import Button from "./Button";
+// import Spinner from "./Spinner";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,7 +30,7 @@ export default function Navbar() {
 
   const { cartItems } = useCartContext();
   const { categories } = useProductCatergories();
-  const { user } = useUserProfile();
+  const { user, isLoading: userLoading } = useUserProfile();
   const [isLogout, setIsLogout] = useState(false);
 
   const handleClick = () => {
@@ -148,12 +149,12 @@ export default function Navbar() {
               {/* user subNav */}
               <div className={`shadow-md py-2 absolute top-[2.65rem] rounded-md right-0 z-[9999px] bg-gray ${isActive ? "block" : "hidden"} user-sub-nav`}>
                 <ul className="flex flex-col px-4 py-2">
-                  {(!user) && <Link to = "/auth/login" className="w-full py-3 border-b">
+                  {(!user && userLoading) && <Link to = "/auth/login" className="w-full py-3 border-b">
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
                       Sign in
                     </li>
                   </Link>}
-                  {user && 
+                  {(!userLoading && user) &&
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] border-b py-3">
                       {user.fullname}
                     </li>
