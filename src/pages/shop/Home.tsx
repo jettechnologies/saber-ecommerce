@@ -20,6 +20,7 @@ import banner_one from "@/assets/images/banners/banner1.webp";
 import banner_two from "@/assets/images/banners/banner2.webp";
 import banner_three from "@/assets/images/banners/banner3.webp";
 import { differenceInSeconds, formatDuration, intervalToDuration } from 'date-fns';
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 
 interface PromoCode {
   id: number;
@@ -223,7 +224,7 @@ function Home() {
       {/* Content section */}
       <section className="mx-4 mt-10 lg:mx-14 min-h-screen">
 
-    <Section title="New Arrivals" link="/store">
+    {/* <Section title="New Arrivals" link="/store">
           {!loading ? (
             <ProductSlider 
               autoPlay={false} 
@@ -254,55 +255,93 @@ function Home() {
               <Spinner />
             </div>
           )}
+        </Section> */}
+
+        {/* trying new stuff out with the skeleton content loader */}
+        <Section title="New Arrivals" link="/store">
+          {!loading ? (
+            <ProductSlider 
+              autoPlay={false} 
+              contents={products
+                .sort((a, b) => {
+                  const timeDiffA = new Date(a.createdAT).getTime();
+                  const timeDiffB = new Date(b.createdAT).getTime();
+                  return timeDiffA - timeDiffB;
+                })
+                .map((product: ProductType) => (
+                  <div
+                    key={product.id}
+                    className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem] mb-4 md:mb-0"
+                  >
+                    <ProductCard
+                      product={product}
+                      tag={{
+                        type: 'neutral',
+                        msg: product.isOutOfStock ? 'Out of stock' : '',
+                      }}
+                    />
+                  </div>
+                ))}
+            />
+          ) : (
+            <div className="w-full h-[25rem]">
+              <ProductSlider 
+                autoPlay={false} 
+                contents={Array(6).fill(0).map((_, index) => (
+                  <ProductCardSkeleton key={index} />
+                ))}
+              />
+            </div>
+          )}
         </Section>
 
         {/* Shop catergories */}
         {/* grid grid-rows-5 md:grid-rows-[30vh_30vh_30vh_30vh] md:grid-cols-2 */}
         <div className="mt-14">
-        <Section title="shop categories" link="store">
-          <div className="grid gap-4">
-            {!loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8 min-h-[42rem]">
-                {categories.length > 0 && categories.map((category) => (
-                  <Link key={category.id} to={`store/${category.id}`}>
-                    <div
-                      id="category-card"
-                      style={{
-                        backgroundImage: `url(${category.banner})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat"
-                      }}
-                      className="w-full py-4 px-6 h-[20rem] relative rounded-md overflow-clip"
-                    >
-                      <div className="w-full h-full flex flex-col justify-center">
-                        <div className="w-[70%] h-fit self-center">
-                          <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
-                            {category.name}
-                          </h4>
-                        </div>
-                      </div>
+          <Section title="shop categories" link="store">
+            <div className="grid gap-4">
+              {!loading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
+                  {categories.length > 0 && categories.map((category) => (
+                    <Link key={category.id} to={`store/${category.id}`}>
                       <div
-                        id="category-card-desc"
-                        className="absolute bg-black w-full h-full bottom-0 -right-[200%] p-4 z-10 flex items-center justify-center"
+                        id="category-card"
+                        style={{
+                          backgroundImage: `url(${category.banner})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          backgroundRepeat: "no-repeat"
+                        }}
+                        className="w-full py-4 px-6 h-[20rem] relative rounded-md overflow-clip"
                       >
-                        <div className="z-50 mx-auto">
-                          <p className="text-white text-size-400 font-normal first-letter:uppercase">
-                            {category.description}
-                          </p>
+                        <div className="w-full h-full flex flex-col justify-center">
+                          <div className="w-[70%] h-fit self-center">
+                            <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
+                              {category.name}
+                            </h4>
+                          </div>
+                        </div>
+                        <div
+                          id="category-card-desc"
+                          className="absolute bg-black w-full h-full bottom-0 -right-[200%] p-4 z-10 flex items-center justify-center"
+                        >
+                          <div className="z-50 mx-auto">
+                            <p className="text-white text-size-400 font-normal first-letter:uppercase">
+                              {category.description}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="w-full h-[25rem]">
-                <Spinner />
-              </div>
-            )}
-          </div>
-        </Section>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="w-full h-[25rem]">
+                  <Spinner />
+                </div>
+              )}
+            </div>
+          </Section>
           {/* Discont sales or Newletter */}
           <section className="mt-14">
             {/* remember to add a state in the global store that would enable the store owner to either turn a promo or a newletter on */}
@@ -329,7 +368,7 @@ function Home() {
 
           {/* Best sellers  sort out by rating*/}
           <div className="mt-14">
-            <Section title="best sellers" link="store">
+            {/* <Section title="best sellers" link="store">
               {!loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-6 mt-8 z-10">
                 {
                   products.sort((a, b) => a.purchaseCount - b.purchaseCount).map((product:ProductType) =>(
@@ -346,7 +385,44 @@ function Home() {
                   <Spinner />
                 </div>
               }
-            </Section>
+            </Section> */}
+            {/* trying new stuff out with the skeleton content loader */}
+        <Section title="New Arrivals" link="/store">
+          {!loading ? (
+            <ProductSlider 
+              autoPlay={false} 
+              contents={products
+                .sort((a, b) => {
+                  const timeDiffA = new Date(a.createdAT).getTime();
+                  const timeDiffB = new Date(b.createdAT).getTime();
+                  return timeDiffA - timeDiffB;
+                })
+                .map((product: ProductType) => (
+                  <div
+                    key={product.id}
+                    className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem] mb-4 md:mb-0"
+                  >
+                    <ProductCard
+                      product={product}
+                      tag={{
+                        type: 'neutral',
+                        msg: product.isOutOfStock ? 'Out of stock' : '',
+                      }}
+                    />
+                  </div>
+                ))}
+            />
+          ) : (
+            <div className="w-full h-[25rem]">
+              <ProductSlider 
+                autoPlay={false} 
+                contents={Array(6).fill(0).map((_, index) => (
+                  <ProductCardSkeleton key={index} />
+                ))}
+              />
+            </div>
+          )}
+        </Section>
           </div>
         </div>
       </section>

@@ -5,7 +5,7 @@ const ProtectedRoutes = () => {
 
     const { token, isLogin } = useAuth();
 
-  return (
+    return (
     (token && isLogin) ? <Outlet/> : <Navigate to = "/auth/login"/>
   )
 }

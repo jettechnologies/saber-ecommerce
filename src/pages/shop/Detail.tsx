@@ -37,7 +37,6 @@ function Detail() {
   });
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  console.log(userProfile)
   // const [favorites, setFavorites] = useState<FavoriteProductType[]>([])
 
   const isFavorite = useMemo(() => {
