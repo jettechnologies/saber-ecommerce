@@ -412,17 +412,34 @@ function Detail() {
 
   if (loading) {
     return (
-      <div className="w-full h-full mx-4 md:mx-24">
-        <div className="flex-row lg:flex gap-12">
-          <div className="w-full lg:w-1/2 py-4">
-            <Skeleton height={400} />
+      <div className="w-full h-full px-4 md:px-24 mt-10">
+        <div className="flex-row lg:flex gap-12 py-6">
+          <div className="w-full lg:w-1/2">
+            <Skeleton height={650} />
           </div>
           <div className="w-full lg:w-1/2">
-            <Skeleton width={200} height={30} />
-            <Skeleton height={50} />
-            <Skeleton height={30} width={100} />
-            <Skeleton height={30} width={200} />
-            <Skeleton height={100} />
+            <div className="flex flex-col gap-5 w-full border-b-2 border-gray pb-5">
+              <Skeleton width={200} height={30} />
+              <Skeleton height={40} />
+              <div className="flex w-full gap-5">
+                <Skeleton width={200} height={40} />
+                <Skeleton width = {150} height={40} />
+              </div>
+            </div>
+            <div className="w-full py-5 border-b-2 border-gray">
+              <Skeleton width={200} height={30} />
+              <Skeleton height={140} className="mt-3"/>
+            </div>
+            <div className="w-full py-5 border-b-2 border-gray">
+              <Skeleton width={200} height={40} />
+              <div className="flex gap-5 mt-3">
+                <Skeleton width = {150} height={40} />
+                <Skeleton width = {150} height={40} />
+              </div>
+            </div>
+            <div className="py-5">
+              <Skeleton height={100} />
+            </div>
           </div>
         </div>
       </div>
