@@ -1,6 +1,8 @@
 import { useUserProfile } from "@/context/userProfileContext";
 import ProductCard from "@/components/ProductCard";
 import Spinner from "@/components/Spinner";
+import notFoundIcon from "@/assets/icons/not_found_1.svg";
+import Image from "@/components/Image";
 
 const Wishlist = () => {
 
@@ -12,11 +14,11 @@ const Wishlist = () => {
     </div>
   }
 
-  if(error){
-    return <div className="w-full h-full">
-      <h2 className="text-size-600 text-text-black font-bold uppercase text-center">something when wrong while fetching the user....</h2>
-    </div>
-  }
+  // if(error){
+  //   return <div className="w-full h-full">
+  //     <h2 className="text-size-600 text-text-black font-bold uppercase text-center">something when wrong while fetching the user....</h2>
+  //   </div>
+  // }
 
   console.log(user?.favourites)
 
@@ -38,6 +40,17 @@ const Wishlist = () => {
               <h2 className="text-size-600 text-text-black font-bold uppercase text-center">No item in your wishlist....</h2>
             </div>
           }
+
+          {
+            error && <div className="w-full h-screen grid place-items-center">
+                <div className="w-full flex flex-col gap-y-6 items-center">
+                  <Image src={notFoundIcon} alt = "not found icon" className="w-[250px] h-[200px] lg:w-[500px] lg:h-[400px]" />
+                  <p className="text-text-black font-normal text-size-500 md:text-size-600 first-letter:uppercase text-center">
+                    {error}
+                  </p>
+                </div>
+              </div>
+          }     
         </div>
     </div>
   )

@@ -2,10 +2,12 @@ import useGetRequest from "@/hooks/useGetRequest"
 import { Order } from "@/types";
 import { useAuth } from "@/context/authContext";
 // import ProductCard from "@/components/ProductCard";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Spinner from "@/components/Spinner";
 import OrderCard from "@/components/OrderCard";
-import { useMemo } from "react"
+import { useMemo } from "react";
+import notFoundIcon from "@/assets/icons/not_found_1.svg";
+import Image from "@/components/Image";
 // import OrderCard from "@/components/OrderCard";
 
 const Orders = () => {
@@ -20,16 +22,16 @@ const Orders = () => {
 
   const { loading:orderLoading, data:orders, error:fetchError } = useGetRequest<Order[]>("order/get-all-my-orders", {headers});
 
-  if(fetchError){
-    return<div className="w-full h-screen grid place-items-center">
-      <p className="text-text-black font-normal text-size-500">
-        {fetchError}
-      </p>
-      <Link to = "/user" className = "bg-black text-white py-6 px-8 w-full lg:w-[70%] cursor-pointer">
-        Try again
-      </Link>
-    </div>
-  }
+  // if(fetchError){
+  //   return<div className="w-full h-screen grid place-items-center">
+  //     <p className="text-text-black font-normal text-size-500">
+  //       {fetchError}
+  //     </p>
+  //     {/* <Link to = "/user" className = "bg-black text-white py-6 px-8 w-full lg:w-[70%] cursor-pointer">
+  //       Try again
+  //     </Link> */}
+  //   </div>
+  // }
 
   if(orderLoading){
     <div className="w-full h-screen grid place-items-center">
@@ -55,6 +57,17 @@ const Orders = () => {
                 {/* <OrderCard order = {order}/> */}
               </div>
             )) 
+          }
+
+          {
+            fetchError && <div className="w-full h-screen grid place-items-center">
+                <div className="w-full flex flex-col gap-y-6 items-center">
+                  <Image src={notFoundIcon} alt = "not found icon" className="w-[250px] h-[200px] lg:w-[500px] lg:h-[400px]" />
+                  <p className="text-text-black font-normal text-size-500 md:text-size-600 first-letter:uppercase text-center">
+                    {fetchError}
+                  </p>
+                </div>
+              </div>
           }
 
           {/* {
