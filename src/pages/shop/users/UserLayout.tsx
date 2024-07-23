@@ -193,7 +193,9 @@ const UserLayout = () => {
                 }
             </div>
             <div className="flex gap-5 mt-5 border-t border-[#f0f0f0] pt-3">
-                {response !== "" ?<Button  
+                {response !== "" ?
+                <Button
+                    btnType="button"
                     size="medium"
                     handleClick={() => {
                     // navigate("/auth/login", {replace: true});
@@ -203,7 +205,9 @@ const UserLayout = () => {
                 >
                     Back to profile
                 </Button>
-                    : resError !== "" && <Button  
+                    : resError !== "" && 
+                    <Button
+                    btnType="button"  
                     size="medium"
                     handleClick={() => {
                     navigate("/user/profile", {replace: true});

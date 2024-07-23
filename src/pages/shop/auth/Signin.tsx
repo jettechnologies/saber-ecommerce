@@ -1,24 +1,27 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import FormContainer from "@/components/FormContainer";
 import { Mail, LockKeyhole, Info, EyeOff, Eye } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Notification from "@/components/Notification";
 import useApiRequest from "@/hooks/useApiRequest";
 import Cookies from "js-cookie";
 import { useAuth } from "@/context/authContext";
 import { useLocalStorage } from "@/useLocalStorage";
 import { User } from "@/types";
+import Toast from "@/components/Toast";
+import Button from "@/components/Button";
+import { validateObjectWithStr } from "@/utils/inputValidation";
 
-interface UserType{
-    email: {
-        str: string,
-        error: boolean
-    },
-    password: {
-        str: string,
-        error: boolean  
-    }
-}
+// interface UserType{
+//     email: {
+//         str: string,
+//         error: boolean
+//     },
+//     password: {
+//         str: string,
+//         error: boolean  
+//     }
+// }
 
 interface SigninType{
     accesstoken: {token: string};
@@ -28,6 +31,9 @@ interface SigninType{
 const Signin = () => {
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const success = location.state?.response ?? "";
+    
     const { setItem } = useLocalStorage("user_id")
     const { loading, error, response, makeRequest } = useApiRequest<SigninType, {email:string, password: string}>({
         method:"POST",
@@ -35,7 +41,7 @@ const Signin = () => {
 
     const { setToken } = useAuth();
 
-    const [user, setUser] = useState<UserType>({
+    const [user, setUser] = useState({
         email: {
             str: "",
             error: false,
@@ -46,7 +52,20 @@ const Signin = () => {
         }
     });
 
-    const [showPassword, setShowPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState(false);
+
+    // function to check if all the fields are been filled
+    const isFilled = useMemo(() => {
+        try {
+          return validateObjectWithStr(user);
+        } catch (err) {
+          return false;
+        }
+      }, [user]);
+
+    // setting the error response from the server
+    const errorMsg = useMemo(() => (error ? error : ""), [error])    
+
 
     const [validateError, setValidateError] = useState<{msg:string; status:boolean}>({
         msg: "",
@@ -183,9 +202,9 @@ const Signin = () => {
                     <Link to = "/reset-password/verify-email" className="w-fit text-sm text-blue cursor-pointer hover:-translate-y-1 duration-500 transition-all">Forgot Password ?</Link>
                 </div>
                 <div className="w-full">
-                    <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white ">
+                    <Button disabled = {loading || !isFilled} btnType = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white ">
                        {loading? "Loading..." : "login"}
-                    </button>
+                    </Button>
                 </div>
                 <div className="flex w-full justify-center gap-3 accent-blue mt-4">
                     <Link to = "/auth/signup" className="text-sm ml-2 text-blue cursor-pointer hover:-translate-y-1 duration-500 transition-all">Don't have an account yet? Signup</Link>
@@ -193,6 +212,9 @@ const Signin = () => {
                 
             </form>
         </FormContainer>
+
+        <Toast message={success.message} type="success" />
+        <Toast message={errorMsg} type="error"/>
     </>
   )
 }

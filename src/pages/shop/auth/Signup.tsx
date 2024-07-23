@@ -1,27 +1,30 @@
 import FormContainer from "@/components/FormContainer";
 import { useNavigate } from "react-router-dom";
 import { User, Mail, Info, Phone, MapPin } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Notification from "@/components/Notification";
 // import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 import { ArrowLeftIcon } from "@/icons/svg";
 import useApiRequest from "@/hooks/useApiRequest";
 import PasswordInput from "@/components/Password";
+import Button from "@/components/Button";
+import { validateObjectWithStr } from "@/utils/inputValidation";
+import Toast from "@/components/Toast";
 
-interface StateObj{
- str: string;
- error: boolean;
-}
+// interface StateObj{
+//  str: string;
+//  error: boolean;
+// }
   
-interface User{
- name:StateObj;
- email: StateObj;
- mobile: StateObj,
- postal_code: StateObj;
- password: StateObj;
- confirmPassword: StateObj;
-}
+// interface User{
+//  name:StateObj;
+//  email: StateObj;
+//  mobile: StateObj,
+//  postal_code: StateObj;
+//  password: StateObj;
+//  confirmPassword: StateObj;
+// }
 
 interface Error{
     status: boolean;
@@ -35,7 +38,7 @@ const Signup = () => {
         method: "POST",
     });
 
-    const [user, setUser] = useState<User>({
+    const [user, setUser] = useState({
         name: {str: "", error: false},
         email: {str: "", error: false},
         mobile: {str: "", error: false},
@@ -48,7 +51,19 @@ const Signup = () => {
         msg : ""
     });
 
-      // setting the values of the input fields
+    // function to check if all the fields are been filled
+    const isFilled = useMemo(() => {
+        try {
+          return validateObjectWithStr(user);
+        } catch (err) {
+          return false;
+        }
+      }, [user]);
+
+    // setting the error response from the server
+    const errorMsg = useMemo(() => (error ? error : ""), [error])
+
+    // setting the values of the input fields
   function handleInputChange(e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
     const { name, value } = target;
@@ -131,7 +146,6 @@ console.log(response, error, user);
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Sign up</h1>
                 <p className="text-md font-normal text-blue mb-8">Create a new account</p>
                 {validateError.status && <Notification message = {validateError.msg} type = "danger" className="text-white mb-4"/>}
-                {error && <Notification message = {error} type = "danger" className="text-white mb-4"/>}
                 <div>
                     <div className={`flex items-center ${user.name.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
                         <User size = {20}/>
@@ -225,9 +239,9 @@ console.log(response, error, user);
                 <PasswordInput name = "password" placeholder = "Password" password = {user.password} setPassword={(newValue) => setUser({...user, password: newValue})}/>
                 <PasswordInput name = "confirmPassword" placeholder = "Confirm Password" password={user.confirmPassword} setPassword={(newValue) => setUser({...user, confirmPassword: newValue})}/>
                 <div className="w-full h-fit flex flex-col gap-y-3">
-                    <button type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
+                    <Button disabled = {loading || !isFilled} btnType = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
                         {loading ? "Loading..." : "Create account"}
-                    </button>
+                    </Button>
                     <Link to = "/" className="p-3 w-full hover:-translate-y-1 duration-500 transition-all text-blue text-size-500 font-medium capitalize flex gap-3 justify-center items-center">
                         <ArrowLeftIcon className="w-5 h-5 text-blue" />
                         back home
@@ -236,6 +250,8 @@ console.log(response, error, user);
                 
             </form>
         </FormContainer>
+
+        <Toast message={errorMsg} type="error"/>
     </>
   )
 }

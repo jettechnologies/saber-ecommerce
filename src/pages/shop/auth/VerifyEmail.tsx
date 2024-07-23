@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { CircleUserRoundIcon } from "lucide-react";
 import useApiRequest from "@/hooks/useApiRequest";
 import FormContainer from "@/components/FormContainer";
 import { Mail, Info } from "lucide-react";
+import { validateObject } from "@/utils/inputValidation";
+import Button from "@/components/Button";
 
 
 interface Email{
@@ -28,6 +30,16 @@ const VerifyEmail = () => {
     // const { response, error, loading, makeRequest } = useApiRequest({
     //     method: "POST",
     // });
+
+    const isFilled = useMemo(() =>{
+        try {
+            return validateObject(email);
+          } catch (err) {
+            return false;
+          }
+    },[email]);
+
+    console.log(isFilled)
 
     const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
         const target = e.target as HTMLInputElement | HTMLTextAreaElement;
@@ -96,9 +108,9 @@ const VerifyEmail = () => {
                     {email.error && <p className="text-red-500 text-size-400 font-normal m-2">Enter a correct email format</p>}
                 </div>
                 <div className="w-full">
-                <button disabled = {loading} type = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
+                <Button disabled = {loading || !isFilled} btnType = "submit" className="px-10 py-4 w-full rounded-md font-roboto text-size-500 uppercase font-semibold bg-black text-white">
                       {loading ? "Loading..." : "Verify email"}
-                    </button>
+                </Button>
                 </div>
             </form>
         </FormContainer>

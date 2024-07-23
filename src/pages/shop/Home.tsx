@@ -107,20 +107,23 @@ function Home() {
   return (
     <main className="w-full h-full">
       {/* Hero section */}
-      <header className="h-screen lg:h-[--hero-height]">
+      <header className="h-[120vh] lg:h-[--hero-height]">
         <Carrousel
           hasDots = {true}
           hasArrows = {true}
           autoPlayInterval={3500}
           content={[
-            <Hero className=" bg-[#ffc95c] px-12 z-20">
+            <Hero className=" bg-[#ffc95c] px-12 z-20 h-full">
               <div className="flex-1 lg:w-[50%] h-[50%] lg:h-full order-2 lg:order-1">
                 <img src={heroImg} alt="Hero image" className="w-full h-full object-contain"/>
               </div>
               <div className="flex-1 lg:w-[50%] h-full flex items-center justify-center lg:justify-start text-[#121212] order-1 lg:order-2">
                 <div className="w-[90%] h-fit flex flex-col gap-y-4 items-center lg:items-start text-center lg:text-left">
-                  <h2 className="text-[40px] md:text-6xl xl:text-7xl font-semibold">
+                  {/* <h2 className="text-[40px] md:text-6xl xl:text-7xl font-semibold">
                     Tech Essentials Delivered <span className="text-[#377dff]">Elevate</span> Your Gadget Game
+                    </h2> */}
+                    <h2 className="text-[40px] md:text-6xl xl:text-7xl font-semibold">
+                      Tech Gear Delivered <span className="text-[#377dff]">Elevate</span> Your Experience
                     </h2>
                     <p className="text-base font-meduim">
                       Discover Must-Have Accessories for Every Device
@@ -133,14 +136,17 @@ function Home() {
                 </div>
               </div>
             </Hero>,
-            <Hero className=" bg-blue px-12">
+            <Hero className=" bg-blue px-12 h-full">
               <div className="flex-1 lg:w-[50%] h-1/2 lg:h-full order-2 lg:order-1">
                 <img src={headphoneImg} alt="Hero image" className="w-full h-full object-contain"/>
               </div>
               <div className="flex-1 lg:w-[50%] h-full flex items-center justify-center lg:justify-start text-[#121212] order-1 lg:order-2">
                 <div className="w-[90%] h-fit flex flex-col gap-y-4 items-center lg:items-start text-center lg:text-left">
-                  <h2 className="text-[40px] md:text-6xl xl:text-7xl font-semibold">
+                  {/* <h2 className="text-[40px] md:text-6xl xl:text-7xl font-semibold">
                     Tech, Reimagined <span className="text-white">Explore</span> for Every Tech Enthusiast.
+                    </h2> */}
+                    <h2 className="text-[40px] md:text-6xl xl:text-7xl font-semibold">
+                      Tech for You <span className="text-white">Discover</span> Explore, and Enjoy.
                     </h2>
                     <p className="text-base font-meduim">
                       Upgrade Your Tech Experience with Cutting-Edge Accessories
@@ -153,7 +159,7 @@ function Home() {
                 </div>
               </div>
             </Hero>,
-            <Hero className="bg-black px-12">
+            <Hero className="bg-black px-12 h-full">
               <div className="flex-1 lg:w-[50%] h-1/2 lg:h-full order-2 lg:order-1">
                 <img src={earpodImg} alt="Hero image" className="w-full h-full object-contain"/>
               </div>

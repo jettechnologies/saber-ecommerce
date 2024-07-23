@@ -1,6 +1,6 @@
 import Select from "@/components/Select";
 import Button from "@/components/Button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useUserProfile } from "@/context/userProfileContext";
 import { UserProfile } from '@/types';
 import { validateObject } from "@/utils/inputValidation";
@@ -69,16 +69,22 @@ const EditAccount = () => {
       Nationality: originalData?.Nationality || "",
     };
   };
-  // const reducedInfo:ProfileType = mapData(currentUser);
-  // console.log(currentUser, reducedInfo);
-  const [profile, setProfile] = useState<ProfileType>(() => mapData(currentUser));
 
-  console.log(profile)
+  const [profile, setProfile] = useState<ProfileType>(() => mapData(currentUser));
 
   // to update the profile incase the currentuser object changes
   useEffect(() => {
     setProfile(mapData(currentUser));
   }, [currentUser]);
+
+  // variable to make sure that the form can only be submitted when all fields are filled
+  const isFilled = useMemo(() => {
+    try {
+      return validateObject(profile);
+    } catch (err) {
+      return false;
+    }
+  }, [profile]);
 
   const handleInputChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>{
     const target = e.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
@@ -86,7 +92,6 @@ const EditAccount = () => {
 
     setProfile({ ...profile, [name]: value });
 }
-
 
 const updateProfile = async(e:React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
@@ -262,7 +267,7 @@ console.log(response, feedback)
                     </div>
                 </div>
                 <div className="">
-                    <Button size="medium" className="text-size-500 font-medium uppercase text-white w-full">
+                    <Button btnType="submit" disabled = {!isFilled} size="medium" className="text-size-500 font-medium uppercase text-white w-full">
                         {loading ? "Loading..." :  "Update profile"}
                     </Button>
                 </div>
@@ -272,7 +277,7 @@ console.log(response, feedback)
     </div>
 
     {/* modal 2 for success mesage or error message */}
-    <Modal2 isOpen = {feedback.status} handleModalClose = {()=> setFeedBack({...feedback, status: !feedback.status})}>
+    <Modal2 title="Update Profile" isOpen = {feedback.status} handleModalClose = {()=> setFeedBack({...feedback, status: !feedback.status})}>
         <div className="flex flex-col w-full ">
           <div className="flex items-center gap-3">
             {/* <MessageSquareWarning size = {35} color = "rgb(239 68 68)"/> */}
@@ -286,13 +291,17 @@ console.log(response, feedback)
             </p>
           </div>
           <div className="mt-5 border-t border-[#f0f0f0] pt-3">
-            {feedback.type === "success" ?<Button  
+            {feedback.type === "success" ?
+            <Button 
+              btnType="button"
               size="medium"
               handleClick={handleUpdateProfile}
               className="text-sm uppercase w-full"
             >
               Continue to profile
-            </Button> : feedback.type === "failed" && <Button  
+            </Button> : feedback.type === "failed" && 
+            <Button
+              btnType="button"
               size="medium"
               handleClick={() => {
                 navigate("/user/edit-account", {replace: true});
