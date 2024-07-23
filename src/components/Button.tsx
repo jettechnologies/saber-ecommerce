@@ -44,7 +44,7 @@ interface Props {
   children: React.ReactNode;
   size?: "small" | "medium" | "large";
   type?: "black" | "white";
-  btnType: "button" | "submit",
+  btnType?: "button" | "submit",
   disabled?: boolean;
   handleClick?: () => void;
   className?: string;
