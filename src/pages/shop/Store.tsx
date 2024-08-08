@@ -23,7 +23,6 @@ import IonProductCard from "@/components/ionic/IonProductCard";
 //   RefresherEventDetail,
 // } from '@ionic/react';
 
-
 interface SearchTermType{
   data: Product[];
   total: number;
