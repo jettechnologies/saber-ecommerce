@@ -8,10 +8,12 @@ import { useCallback, useState } from "react";
 import { useAuth } from "@/context/authContext";
 import Modal2 from "@/components/Modal2";
 import Button from "@/components/Button";
+import { isNativePlatform } from "@/utils/platform";
 
 
 const UserLayout = () => {
 
+    const isNative = isNativePlatform();
     const location = useLocation();
     const paths:string[] = location.pathname.split("/").filter(Boolean);
     const currentPath = paths.at(-1);
@@ -101,38 +103,40 @@ const UserLayout = () => {
   return (
     <>
         <section className="grid grid-rows-[auto_1fr] grid-cols-1 md:grid-cols-[auto_1fr] w-full min-h-screen md:gap-3">
-        <div className="w-full p-10 border-b border-[#c0c0c0] col-start-1 col-span-2 row-start-1 row-end-2 flex justify-between">
-            <ul className="w-fit flex gap-2 text-size-500 font-semibold text-text-black capitalize">
+        {(!isNative || (isNative && currentPath?.includes("profile"))) && (
+            <div className="w-full p-10 border-b border-[#c0c0c0] col-start-1 col-span-2 row-start-1 row-end-2 flex justify-between">
+                <ul className="w-fit flex gap-2 text-size-500 font-semibold text-text-black capitalize">
                 <li className="flex items-center gap-2">
-                <Link to = "/">
+                    <Link to="/">
                     home
-                </Link>
-                <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
-                </li>
-                <li className="flex items-center gap-2" >
-                    <Link to = {`/user/${currentPath}`}>
-                        my {currentPath}
                     </Link>
                     <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
                 </li>
-            </ul>
-            {user && <div id="edit_user_div" className="w-[3rem] h-[3rem] rounded-full relative">
-                {user?.profile_picture ? (
+                <li className="flex items-center gap-2">
+                    <Link to={`/user/${currentPath}`}>
+                    my {currentPath}
+                    </Link>
+                    <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
+                </li>
+                </ul>
+                {user && (
+                <div id="edit_user_div" className="w-[3rem] h-[3rem] rounded-full relative">
+                    {user?.profile_picture ? (
                     <Image 
                         src={user?.profile_picture} 
                         alt="profile image"
                         className="w-[3rem] h-[3rem] rounded-full"  
                     />
-                ) : (
+                    ) : (
                     <p className="text-size-600 uppercase text-white bg-black text-center flex items-center justify-center w-full h-full rounded-full border">
                         {user?.fullname.split(" ")[0].substring(0, 1)}
                     </p>
-                )}
-                <label 
+                    )}
+                    <label 
                     htmlFor="edit_user_img" 
                     id="edit_user_img"
                     className="hidden bg-black z-80 absolute top-[0.25rem] left-[0.25rem] items-center justify-center w-[2.5rem] h-[2.5rem] rounded-full cursor-pointer"
-                >
+                    >
                     <ImageUp size={20} color="#fff" />
                     <input 
                         type="file" 
@@ -140,9 +144,12 @@ const UserLayout = () => {
                         onChange={handleImgUpload}
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
-                </label>
-            </div>}
-        </div>
+                    </label>
+                </div>
+                )}
+            </div>
+            )}
+
         <div id = "side-nav" className="h-full w-[280px] lg:w-[360px] border-r border-[#c0c0c0] hidden md:flex row-start-2 row-span-2 col-start-1 col-span-1" >
             <nav className="w-full h-full px-6">
                 <ul className="flex flex-col py-4">

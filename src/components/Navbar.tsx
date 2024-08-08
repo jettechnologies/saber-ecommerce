@@ -14,7 +14,7 @@ import { useProductCatergories } from "@/context/productCatergoriesContext";
 import { useAuth } from "@/context/authContext";
 // import { UserProfile } from "@/types";
 import { useUserProfile } from "@/context/userProfileContext";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import Modal2 from "./Modal2";
 import Button from "./Button";
 // import Spinner from "./Spinner";
@@ -28,9 +28,9 @@ export default function Navbar() {
   const currentUrl = location.pathname;
   const navigate = useNavigate();
 
-  const { cartItems } = useCartContext();
+  const { cartItems, deletingCart } = useCartContext();
   const { categories } = useProductCatergories();
-  const { user, isLoading: userLoading } = useUserProfile();
+  const { user, logout } = useUserProfile();
   const [isLogout, setIsLogout] = useState(false);
 
   const handleClick = () => {
@@ -42,12 +42,21 @@ export default function Navbar() {
     { to: routes.ABOUT, text: "About Us" },
   ];
 
-  const handleLogout = () =>{
-    Cookies.remove("auth_token");
-    
+  const handleLogout = () =>{    
+    logout();
+    deletingCart();
+    setIsLogout(prevState => !prevState);
     navigate("/", {replace: true});
-    window.location.reload();
   }
+
+  // function to close menu when clicked on any of the links
+  // would come back to it
+  const handleLinkClick = (event: React.MouseEvent<HTMLUListElement>) => {
+    const { tagName } = event.target as HTMLElement;
+    if (tagName === 'LI' || tagName === 'A') {
+      setIsActive(false);
+    }
+  };
 
   return (
     <>
@@ -71,10 +80,10 @@ export default function Navbar() {
                 >
                   <h1>Shop</h1>
                 </Link>
-                <ul className="hidden absolute top-[2.65rem] bg-white w-full items-center justify-evenly left-0 z-[999] shadow-md border border-gray gap-4 pt-6 category-nav">
+                <ul className="hidden px-4 absolute top-[2.65rem] bg-white w-full items-center justify-evenly left-0 z-[999] shadow-md rounded-md border border-gray gap-4 pt-6 category-nav">
                   {
                     categories.length > 0 && categories.slice(0,5).map((category) => (
-                      <li key = {category.name} className="px-4 pb-4 text-text-black text-md capitalize h-fit">
+                      <li key = {category.name} className=" pb-4 text-text-black text-md capitalize h-fit">
                         <Link
                           to={`/store/${category.id}`}
                           className={`flex gap-8 text-size-500 font-semibold`}
@@ -141,48 +150,51 @@ export default function Navbar() {
               className={` ${
                 currentUrl.includes("/auth/login")
                   && "bg-gray"
-              } p-2 rounded-lg cursor-pointer user-icon `}
+              } p-2 rounded-lg cursor-pointer`}
               onClick={() =>setIsActive(prevState => !prevState)}
             >
               <UserIcon className="w-5 h-5 "/>
 
               {/* user subNav */}
-              <div className={`shadow-md py-2 absolute top-[2.65rem] rounded-md right-0 z-[9999px] bg-gray ${isActive ? "block" : "hidden"} user-sub-nav`}>
-                <ul className="flex flex-col px-4 py-2">
-                  {(!user && userLoading) && <Link to = "/auth/login" className="w-full py-3 border-b">
-                    <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
-                      Sign in
-                    </li>
-                  </Link>}
-                  {(!userLoading && user) &&
+              <div className={`shadow-md py-2 absolute top-[2.65rem] rounded-md right-0 z-[9999px] bg-gray ${isActive ? "inline-block" : "hidden"}`}>
+                <ul onClick={handleLinkClick} className="flex flex-col px-4 py-2">
+                  {user === null && (
+                    <Link to="/auth/login" className="w-full py-3 border-b">
+                      <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
+                        Sign in
+                      </li>
+                    </Link>
+                  )}
+                  {user && (
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] border-b py-3">
                       {user.fullname}
                     </li>
-                  }
-                  <Link to = "/user" className="w-full py-3">
+                  )}
+                  <Link to="/user/profile" className="w-full py-3">
                     <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
                       my account
                     </li>
                   </Link>
-                  
-                  {user && <>
-                    <Link to = "/user/orders" className="w-full py-3 md:hidden">
-                      <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
-                        my orders
+                  {user && (
+                    <>
+                      <Link to="/user/orders" className="w-full py-3 md:hidden">
+                        <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
+                          my orders
+                        </li>
+                      </Link>
+                      <Link to="/user/wishlist" className="w-full py-3 md:hidden">
+                        <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
+                          my wishlist
+                        </li>
+                      </Link>
+                      <li
+                        className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] py-3 border-t"
+                        onClick={() => setIsLogout(prevState => !prevState)}
+                      >
+                        Logout
                       </li>
-                    </Link>
-                    <Link to = "/user/orders" className="w-full py-3 md:hidden">
-                      <li className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem]">
-                        my 
-                      </li>
-                    </Link>
-                    <li 
-                      className="text-text-black hover:text-blue font-normal text-size-500 capitalize w-[10rem] py-3 border-t"
-                      onClick={() => setIsLogout(prevState => !prevState)}
-                    >
-                      Logout
-                    </li>
-                  </>}
+                    </>
+                  )}
                 </ul>
               </div>
 

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">thegearmates</string>
+    <string name="title_activity_main">thegearmates</string>
+    <string name="package_name">com.thegearmates.app</string>
+    <string name="custom_url_scheme">com.thegearmates.app</string>
+</resources>

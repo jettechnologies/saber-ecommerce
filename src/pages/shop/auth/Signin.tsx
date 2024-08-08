@@ -153,12 +153,12 @@ const Signin = () => {
 
   return (
     <>
-        <FormContainer>
+        <FormContainer className="h-[80vh] lg:min-h-screen">
             <form className="bg-white rounded-md shadow-2xl p-5" onSubmit={handleFormSubmit}>
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Hello Again!</h1>
                 <p className="text-md font-normal text-blue mb-8">Welcome Back</p>
                 {validateError.status && <Notification message = {validateError.msg} type = "danger" className="text-white mb-4"/>}
-                {error && <Notification message = {error} type = "danger" className="text-white mb-4"/>}
+                {/* {error && <Notification message = {error} type = "danger" className="text-white mb-4"/>} */}
                 <div>
                     <div className={`flex items-center ${user.email.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
                         <Mail size = {20}/>

@@ -21,6 +21,7 @@ import banner_two from "@/assets/images/banners/banner2.webp";
 import banner_three from "@/assets/images/banners/banner3.webp";
 import { differenceInSeconds, formatDuration, intervalToDuration } from 'date-fns';
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
+import { isNativePlatform } from "@/utils/platform";
 
 interface PromoCode {
   id: number;
@@ -37,6 +38,7 @@ interface PromoCode {
 function Home() {
 
   const { token } = useAuth();
+  const isNative = isNativePlatform();
 
   const headers = useMemo(() => {
     if(token){
@@ -304,6 +306,7 @@ function Home() {
         {/* Shop catergories */}
         {/* grid grid-rows-5 md:grid-rows-[30vh_30vh_30vh_30vh] md:grid-cols-2 */}
         <div className="mt-14">
+        {!isNative && 
           <Section title="shop categories" link="store">
             <div className="grid gap-4">
               {!loading ? (
@@ -347,7 +350,7 @@ function Home() {
                 </div>
               )}
             </div>
-          </Section>
+          </Section>}
           {/* Discont sales or Newletter */}
           <section className="mt-14">
             {/* remember to add a state in the global store that would enable the store owner to either turn a promo or a newletter on */}

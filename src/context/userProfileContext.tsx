@@ -7,7 +7,8 @@ type UserProfileType = {
   isLoading: boolean;
   error: string | null;
   updateUserProfile: (name: string, value: string) => void;
-  addToFavourite: (newFavourite: NewFavouriteType) => void; // Added addFavourite to the type
+  addToFavourite: (newFavourite: NewFavouriteType) => void; 
+  logout: () => void;
 };
 
 interface NewFavouriteType {
@@ -19,10 +20,11 @@ interface NewFavouriteType {
 const UserContext = createContext<UserProfileType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { token, loading } = useAuth();
+  const { token, loading, deleteToken } = useAuth();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,8 +84,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   }, []);
 
+  const logout = useCallback(() =>{
+    deleteToken();
+    setUser(null);
+  }, [deleteToken]);
+
   return (
-    <UserContext.Provider value={{ user, isLoading, error, updateUserProfile, addToFavourite }}>
+    <UserContext.Provider value={{ user, isLoading, error, updateUserProfile, addToFavourite, logout }}>
       {children}
     </UserContext.Provider>
   );

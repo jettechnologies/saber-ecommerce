@@ -16,7 +16,7 @@ const Cart = () => {
 
   const navigate = useNavigate();
   const { token } = useAuth();
-  if (cartItems.length === 0 && !isLoading) {return (<div className=" flex flex-col items-center justify-center text-center w-auto h-[--hero-height]">
+  if (cartItems.length === 0 && !isLoading) {return (<div className=" flex flex-col items-center justify-center text-center w-auto min-h-screen">
     <h1 className="text-3xl font-semibold">It seems like your cart it's empty, let's change that!</h1>
     <Link
       to="/store"
@@ -74,37 +74,37 @@ const Cart = () => {
         }
         return null;
       })}
-      <div className="bg-secondary px-8 lg:px-24 mt-auto ">
-        <div className="my-6 mx-4 lg:mx-24 font-semibold">
-          <div className="flex gap-4 justify-between">
-            <h1>Subtotal</h1>
+        <div className="bg-secondary px-8 lg:px-24 mt-auto ">
+          <div className="my-6 mx-4 lg:mx-24 font-semibold">
+            <div className="flex gap-4 justify-between">
+              <h1>Subtotal</h1>
+              <div className="flex gap-x-2">
+                <IndianRupee size = {20}/>
+                <h1>{totalPrice}</h1>
+              </div>
+            </div>
+            {/* <div className="flex gap-4 justify-between mt-4">
+              <h1>Shipping</h1>
+              <h1>FREE</h1>
+            </div> */}
+          </div>
+
+          <div className="flex gap-4 justify-between mx-4 lg:mx-24 mb-6 font-bold">
+            <h1>Grand Total</h1>
             <div className="flex gap-x-2">
               <IndianRupee size = {20}/>
               <h1>{totalPrice}</h1>
             </div>
           </div>
-          {/* <div className="flex gap-4 justify-between mt-4">
-            <h1>Shipping</h1>
-            <h1>FREE</h1>
-          </div> */}
+          <hr className="h-2" />
+          <Button
+            size = "medium"
+            handleClick={checkoutProduct}
+            className="w-full mt-6 bg-text-black flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
+          >
+            {loading ? "Loading...": "Checkout"}
+          </Button>
         </div>
-
-        <div className="flex gap-4 justify-between mx-4 lg:mx-24 mb-6 font-bold">
-          <h1>Grand Total</h1>
-          <div className="flex gap-x-2">
-            <IndianRupee size = {20}/>
-            <h1>{totalPrice}</h1>
-          </div>
-        </div>
-        <hr className="h-2" />
-        <Button
-          size = "medium"
-          handleClick={checkoutProduct}
-          className="w-full mt-6 bg-text-black flex items-center justify-center text-lg text-white px-10 py-3 gap-3 font-semibold rounded-lg hover:scale-105 transition-transform"
-        >
-          {loading ? "Loading...": "Checkout"}
-        </Button>
-      </div>
     </div>
   );
 };

@@ -19,6 +19,14 @@ import ResetPassword from "./pages/shop/auth/ResetPassword";
 import PaymentGateway from "./pages/shop/PaymentGateway";
 import TrackOrder from "./pages/shop/TrackOrder";
 import ContactUs from "./pages/shop/Contact";
+import '@ionic/react/css/core.css';
+import "@/theme/variable.css";
+import { setupIonicReact } from '@ionic/react';
+import Categories from "./pages/ion_pages/Categories";
+import Settings from "./pages/ion_pages/Settings";
+import Accounts from "./pages/ion_pages/Accounts";
+
+setupIonicReact();
 
 
 function App() {
@@ -31,6 +39,9 @@ function App() {
         {/* <Route element={<Home />} /> */}
         <Route path={routes.ABOUT} element={<AboutUs />} />
         <Route path="/store/:category?" element={<Store />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path = "/account" element = {<Accounts />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path = "/contact-us" element = {<ContactUs />} />
         <Route path="/auth/login" element = {<Signin />}/>
         <Route path="/auth/signup" element = {<Signup />} />

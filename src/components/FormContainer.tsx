@@ -2,12 +2,14 @@ import Carrousel from "./Carrousel";
 import heroImg from "@/assets/images/hero.png";
 import headphoneImg from "@/assets/images/headsets.png";
 import earpodImg from "@/assets/images/earpods.webp";
+import { twMerge } from "tailwind-merge";
 
 interface Props{
     children:React.ReactNode;
+    className?:string;
 }
 
-const FormContainer:React.FC<Props> = ({children}) => {
+const FormContainer:React.FC<Props> = ({children, className}) => {
   return (
     <div className="flex">
         <div className="hidden lg:block w-full lg:w-1/2 h-screen">
@@ -25,7 +27,7 @@ const FormContainer:React.FC<Props> = ({children}) => {
                 ]}
             />
           </div>
-          <div className="flex w-full lg:w-1/2 justify-center items-center bg-white space-y-8">
+          <div className={twMerge("flex w-full lg:w-1/2 justify-center items-center bg-white space-y-8", className)}>
             <div className="w-full px-8 md:px-16">
                 {children}
             </div>

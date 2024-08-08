@@ -47,7 +47,6 @@ export default function Footer() {
         }
 
         const url = "browse/newsletter";
-        console.log(url)
 
         try{
             await makeRequest(data, url);
@@ -60,8 +59,6 @@ export default function Footer() {
     useEffect(() =>{
         if(response){setIsSubscribe({message: response?.message, status: true})}
     }, [response]);
-
-    console.log(response, isSubscribe)
 
   return (
     <>

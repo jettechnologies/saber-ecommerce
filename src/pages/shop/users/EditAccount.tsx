@@ -217,7 +217,7 @@ console.log(response, feedback)
                       </div>
                     </div>
                     <div>
-                        <label htmlFor="nationality" className="block mb-2 text-sm font-medium text-text-black dark:text-white">Gender</label>
+                        <label htmlFor="nationality" className="block mb-2 text-sm font-medium text-text-black dark:text-white">Nationality</label>
                         <div className="w-full h-full">
                           <Select 
                             id = "nationality" 

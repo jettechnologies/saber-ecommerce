@@ -50,14 +50,14 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       const res = await fetch(endpoint, { headers });
 
       if (!res.ok) {
-        console.error(`Error fetching cart: ${res.status} - ${res.statusText}`);
+        // console.error(`Error fetching cart: ${res.status} - ${res.statusText}`);
         return;
       }
 
       const data: CartType = await res.json();
       return data;
     } catch (e) {
-      console.error(`Error: ${(e as Error).message}`);
+      // console.error(`Error: ${(e as Error).message}`);
       setIsLoading(false);
     } finally {
       setIsLoading(false);
@@ -68,15 +68,14 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     const fetchCart = async () => {
       try {
         const cart = await getCartInfo(token);
-        console.log("Fetched cart:", cart);
         if (cart) setCartItems(cart.items);
       } catch (error) {
         console.error("Failed to fetch cart:", error);
       }
     };
 
-    if (!loading) fetchCart();
-  }, [token, loading, getCartInfo]);
+    if (!loading && isLogin) fetchCart();
+  }, [token, isLogin, loading, getCartInfo]);
 
   const addVariantsToCart = useCallback((name: keyof Variant, value: string) => {
     setProductVariant((prevState) => ({
@@ -120,7 +119,6 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
 
       setCartItems(resData.items);
-      console.log("Product added to cart successfully");
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
@@ -155,7 +153,6 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         throw new Error("Network response was not ok");
       }
 
-      console.log("Deleted from cart successfully");
     } catch (error) {
       console.error("Error removing from cart:", error);
     }
@@ -186,7 +183,6 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         // setCartId(resData.id);
         setItem(resData.id);
         setCartItems(resData.items);
-        console.log("Quantity incremented successfully");
       } catch (error) {
         console.error("Error incrementing quantity:", error);
       }
@@ -218,7 +214,6 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         // setCartId(resData.id);
         setItem(resData.id);
         setCartItems(resData.items);
-        console.log("Quantity decremented successfully");
       } catch (error) {
         console.error("Error decrementing quantity:", error);
       }

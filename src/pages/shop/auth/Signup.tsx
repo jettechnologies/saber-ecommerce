@@ -137,11 +137,10 @@ useEffect(() =>{
 
     return() => clearTimeout(errorRemoval)
 }, [validateError]);
-console.log(response, error, user);
 
   return (
     <>
-        <FormContainer>
+        <FormContainer className="min-h-screen">
             <form className="bg-white rounded-md shadow-2xl p-5" onSubmit={formSubmit}>
                 <h1 className="text-gray-800 font-bold text-2xl md:text-3xl mb-3 uppercase">Sign up</h1>
                 <p className="text-md font-normal text-blue mb-8">Create a new account</p>
