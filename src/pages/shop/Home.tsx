@@ -48,6 +48,7 @@ function Home() {
     }
   }, [token]);
 
+
   const { data:coupons } = useGetRequest<PromoCode[] | []>("browse/get-coupons", {headers: headers});
 
   const { loading, products, categories } = useProductCatergories();
@@ -271,7 +272,7 @@ function Home() {
             <ProductSlider 
               autoPlay={false} 
               contents={products
-                .sort((a, b) => {
+                ?.sort((a, b) => {
                   const timeDiffA = new Date(a.createdAT).getTime();
                   const timeDiffB = new Date(b.createdAT).getTime();
                   return timeDiffA - timeDiffB;
@@ -311,12 +312,12 @@ function Home() {
             <div className="grid gap-4">
               {!loading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
-                  {categories.length > 0 && categories.map((category) => (
-                    <Link key={category.id} to={`store/${category.id}`}>
+                  {categories?.length > 0 && categories?.map((category) => (
+                    <Link key={category.id} to={`store/${category?.id}`}>
                       <div
                         id="category-card"
                         style={{
-                          backgroundImage: `url(${category.banner})`,
+                          backgroundImage: `url(${category?.banner})`,
                           backgroundSize: "cover",
                           backgroundPosition: "center",
                           backgroundRepeat: "no-repeat"
@@ -326,7 +327,7 @@ function Home() {
                         <div className="w-full h-full flex flex-col justify-center">
                           <div className="w-[70%] h-fit self-center">
                             <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
-                              {category.name}
+                              {category?.name}
                             </h4>
                           </div>
                         </div>
@@ -336,7 +337,7 @@ function Home() {
                         >
                           <div className="z-50 mx-auto">
                             <p className="text-white text-size-400 font-normal first-letter:uppercase">
-                              {category.description}
+                              {category?.description}
                             </p>
                           </div>
                         </div>
@@ -401,21 +402,21 @@ function Home() {
             <ProductSlider 
               autoPlay={false} 
               contents={products
-                .sort((a, b) => {
+                ?.sort((a, b) => {
                   const timeDiffA = new Date(a.createdAT).getTime();
                   const timeDiffB = new Date(b.createdAT).getTime();
                   return timeDiffA - timeDiffB;
                 })
                 .map((product: ProductType) => (
                   <div
-                    key={product.id}
+                    key={product?.id}
                     className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem] mb-4 md:mb-0"
                   >
                     <ProductCard
                       product={product}
                       tag={{
                         type: 'neutral',
-                        msg: product.isOutOfStock ? 'Out of stock' : '',
+                        msg: product?.isOutOfStock ? 'Out of stock' : '',
                       }}
                     />
                   </div>

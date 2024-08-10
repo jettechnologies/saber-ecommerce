@@ -25,6 +25,7 @@ import { setupIonicReact } from '@ionic/react';
 import Categories from "./pages/ion_pages/Categories";
 import Settings from "./pages/ion_pages/Settings";
 import Accounts from "./pages/ion_pages/Accounts";
+import CourierService from "./pages/shop/CourierService";
 
 setupIonicReact();
 
@@ -65,6 +66,7 @@ function App() {
           <Route path="/user/edit-account" element = {<EditAccount />} />
           <Route path="/user/reset-password" element = {<ResetUserPassword />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path = "/courier-service" element = {<CourierService />}/>
           <Route path = "/payment-gateway" element = {<PaymentGateway />} />
           <Route path="/success" element={<Success />} />
         </Route>

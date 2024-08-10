@@ -26,7 +26,7 @@ const Toast: React.FC<ToastProps> = ({ message, type = 'info', duration = 3000 }
             toastOptions={{
                 unstyled: true,
                 classNames: {
-                    default: 'px-8 py-4 flex gap-3 rounded-md bg-gray-800 text-white first-letter:uppercase'
+                    default: 'px-8 py-4 flex gap-3 rounded-md bg-gray-800 text-white first-letter:uppercase  text-sm'
                 }
             }}
         />

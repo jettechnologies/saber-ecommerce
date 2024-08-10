@@ -6,21 +6,22 @@ import { useAuth } from "@/context/authContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Order } from "@/types";
 import Button from "@/components/Button";
-import { BadgeCheck, CircleAlert } from "lucide-react";
-// import CopyToClipboard from "@/components/CopyToClipBoard";
+import { BadgeCheck } from "lucide-react";
 import Modal2 from "@/components/Modal2";
 import { useCartContext } from "@/context/cartContext";
+import { validateObject } from "@/utils/inputValidation";
+import Toast from "@/components/Toast";
+
 
 interface OrderType{
-  // paymentType : string,
     orderType: string;
-    promoCode: string,
     name: string,
     mobile: string,
     billing_address: string,
+    billing_city: string,
+    billing_state: string,
     email: string,
     dropOffPinCode: string,
-    pickUppinCode: string,
 }
 
 
@@ -31,24 +32,28 @@ const Checkout = () => {
   const location = useLocation();
   const orderData:Order = location.state.order;
 
-  console.log(orderData);
-
   const navigate = useNavigate();
 
   const { user } = useUserProfile();
   const { token } = useAuth();
   const { deletingCart } = useCartContext();
   const [order, setOrder] = useState<OrderType>({
-    // paymentType : "",
     orderType: "",
-    promoCode: "",
     name: "",
     mobile: "",
     billing_address: "",
+    billing_city: "",
+    billing_state: "",
     email: "",
     dropOffPinCode: "",
-    pickUppinCode: `${import.meta.env.VITE_POSTAL_CODE}`,
   });
+  const [promoCode, setPromoCode] = useState("");
+  const [secondAddress, setSecondAddress] = useState({
+    isActive: false,
+    billing_address_2: "",
+  })
+
+  console.log(order);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +76,7 @@ const Checkout = () => {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
     const { name, value } = target;
 
-    if(name === "billing_address"){
+    if(name === "billing_address" || name === "billing_city" || name === "billing_state"){
       setOrder({ ...order, [name]: value});
 
       return;
@@ -85,19 +90,19 @@ const Checkout = () => {
     e.preventDefault();
   
     const data = {
-      name: order.name,
       // paymentType: order.paymentType,
       ordertType: order.orderType,
+      name: order.name,
       email: order.email,
       mobile: order.mobile,
       billing_address: order.billing_address,
-      dropOffpincode: order.dropOffPinCode,
-      pickUppincode: order.pickUppinCode,
-      promoCode: order.promoCode,
+      billing_address_2: secondAddress?.billing_address_2 || "",
+      billing_city: order.billing_city,
+      billing_state: order.billing_state,
+      billing_pincode: order.dropOffPinCode,
+      promoCode: promoCode,
     };
 
-    console.log(data);
-    
     const orderId = orderData.id;
   
     if (!orderId) {
@@ -105,7 +110,7 @@ const Checkout = () => {
       return;
     }
 
-    console.log(orderId)
+    console.log(data)
   
     const url = `${import.meta.env.VITE_PRODUCT_LIST_API}order/confirm-order/${orderId}`;
   
@@ -121,36 +126,43 @@ const Checkout = () => {
         },
         body: JSON.stringify(data),
       });
-  
-      // if (!res.ok) {
-      //   console.log(res.body)
-      //   throw new Error("Request not sent, status code: " + res.status)
-      // }
 
       if (!res.ok) {
         if (res.status === 404) {
           const errorResponse = await res.json();
           console.error("Error 404:", errorResponse);
-          throw new Error(`${errorResponse.message || "Resource not found"}`);
+          throw new Error(`${errorResponse.message || "Forbidden resource"}`);
         }
-        console.log(res.body);
-        throw new Error("Request not sent, status code: " + res.status);
+        else if (res.status === 403) {
+          // const errorResponse = await res.json();
+          throw new Error("Invalid promo code. Please check the code and try again");
+        }
+        // console.log(res.body);
+        // throw new Error("Request not sent, status code: " + res.status);
       }
   
-      const response = await res.json();
-      console.log(response);
-      setResponse(response);
-      setModalOpen(prevState => !prevState);
-    } catch (err) {
-      console.log((err as Error).message);
-      setError((err as Error).message); 
-      console.log("it reachecs here");
-      setModalOpen(prevState => !prevState);
+      if(res.ok){
+        const response = await res.json();
+        setResponse(response);
+        setModalOpen(prevState => !prevState);
+      }
 
+    } catch (err) {
+      setError((err as Error).message); 
     } finally {
       setLoading(false);
     }
   };
+
+  // function to check if all the fields are been filled
+  const isFilled = useMemo(() => {
+    try {
+      return validateObject(order);
+    } catch (err) {
+      console.log((err as Error).message)
+      return false;
+    }
+  }, [order]);
 
   const newTotal = useMemo(() => {
     if (response && response?.order.discount) {
@@ -164,6 +176,7 @@ const Checkout = () => {
     return orderData.total; // Return original total if no discount is applied
   }, [response, orderData]);
   
+  console.log(isFilled)
   
 
   return (
@@ -177,8 +190,8 @@ const Checkout = () => {
               <form
                 id="order_checkout_form"
                 onSubmit={orderCheckout}
-              className="w-full flex flex-col gap-y-4"
-            >
+                className="w-full flex flex-col gap-y-4"
+              >
               <div className="w-full">
                 <label
                   htmlFor="fullname"
@@ -230,6 +243,42 @@ const Checkout = () => {
                   className="mt-3 border border-[#c0c0c0] w-full p-3 font-roboto text-size-400 font-normal first-letter:uppercase"
                 />
               </div>
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="w-full">
+                  <label
+                    htmlFor="billing_city"
+                    className="text-size-400 lg:text-size-500 text-text-black font-medium mb-3"
+                  >
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Eg Manchester city"
+                    id="billing_city"
+                    name="billing_city"
+                    value = {order.billing_city}
+                    onChange={handleInputChange}
+                    className="mt-3 border border-[#c0c0c0] w-full p-3 font-roboto text-size-400 font-normal first-letter:uppercase"
+                  />
+                </div>
+                  <div className="w-full">
+                  <label
+                    htmlFor="billing_state"
+                    className="text-size-400 lg:text-size-500 text-text-black font-medium mb-3"
+                  >
+                    State
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Eg England"
+                    id="billing_state"
+                    name="billing_state"
+                    value = {order.billing_state}
+                    onChange={handleInputChange}
+                    className="mt-3 border border-[#c0c0c0] w-full p-3 font-roboto text-size-400 font-normal first-letter:uppercase"
+                  />
+                </div>
+              </div>
               <div className="w-full">
                 <label
                   htmlFor="billing_address"
@@ -246,6 +295,38 @@ const Checkout = () => {
                   onChange={handleInputChange}
                   className="mt-3 border border-[#c0c0c0] w-full p-3 font-roboto text-size-400 font-normal first-letter:uppercase"
                 />
+              </div>
+              <div className="w-full flex flex-col gap-4 mt-4">
+                <div className="w-fit flex gap-4 items-center">
+                  <input 
+                    type="checkbox" 
+                    className="w-4 h-4"
+                    name = "isActive" 
+                    id = "isActive"
+                    checked = {secondAddress.isActive}
+                    onChange={() => setSecondAddress({...secondAddress, isActive: !secondAddress.isActive})}
+                  />
+                  <label htmlFor="isActive">
+                    Select to input a second billing address
+                  </label>
+                </div>
+                {secondAddress.isActive && <div className="w-full">
+                  <label
+                    htmlFor="billing_address_2"
+                    className="text-size-400 lg:text-size-500 text-text-black font-medium mb-3"
+                  >
+                    Billing address
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Eg 12 luton street, manchester city, london"
+                    id="billing_address_2"
+                    name="billing_address_2"
+                    value = {secondAddress.billing_address_2}
+                    onChange={(e) => setSecondAddress({...secondAddress, billing_address_2: e.target.value})}
+                    className="mt-3 border border-[#c0c0c0] w-full p-3 font-roboto text-size-400 font-normal first-letter:uppercase"
+                  />
+                </div>}
               </div>
                 <hr className="text-[#c0c0c0] my-4"/>
                 {/* Delivery method */}
@@ -336,10 +417,10 @@ const Checkout = () => {
               </div>
               {/* postal code */}
                 <hr className="text-[#c0c0c0] my-4"/>
-              {/* <div className="w-full">
+              <div className="w-full">
                 <h3 className="text-size-500 text-text-black font-medium uppercase mb-6">3. Postal Code</h3>
                 <div>
-                  {order.orderType === "door_delivery" ?<div className="flex flex-col lg:flex-row gap-4 ">
+                  {(order.orderType === "door_delivery" || order.orderType === "pick_up" ) && <div className="flex flex-col lg:flex-row gap-4 ">
                     <div className="w-full">
                       <label
                         htmlFor="dropOffCode"
@@ -357,33 +438,9 @@ const Checkout = () => {
                         className="mt-3 border border-[#c0c0c0] w-full p-4 rounded-md font-roboto text-size-400 font-normal first-letter:uppercase"
                       />
                     </div>
-                    <div className="w-full">
-                        <label
-                          htmlFor="dropOffCode"
-                          className="text-size-400 lg:text-size-500 text-text-black font-medium capitalize"
-                        >
-                          pick up postal code
-                        </label>
-                        <div className="w-fit mt-3">
-                          <CopyToClipboard inputValue={order.pickUppinCode} />
-                        </div>
-                    </div>
-                  </div>
-
-                : order.orderType === "pick_up" 
-                && <div className="w-full">
-                    <label
-                      htmlFor="dropOffCode"
-                      className="text-size-400 lg:text-size-500 text-text-black font-medium capitalize"
-                    >
-                      pick up postal code
-                    </label>
-                    <div className="w-fit mt-3">
-                      <CopyToClipboard inputValue={order.pickUppinCode} />
-                    </div>
-                </div>}
+                  </div>}
                 </div>     
-              </div> */}
+              </div>
 
               </form>
             </div>
@@ -451,8 +508,8 @@ const Checkout = () => {
                   placeholder="Eg SMART_30"
                   id="promo_code"
                   name="promoCode"
-                  value = {order.promoCode}
-                  onChange={handleInputChange}
+                  value = {promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.trim())}
                   className="mt-3 border border-[#c0c0c0] w-full p-3 font-roboto text-size-400 font-normal first-letter:uppercase rounded-md"
                 />
               </div>
@@ -498,12 +555,12 @@ const Checkout = () => {
                 </div>
                 <button 
                   type="submit"
-                  className="uppercase font-medium text-size-500 w-full mt-4 px-6 py-3 bg-[#141718] text-white font-roboto rounded-md cursor-pointer"
+                  disabled = {loading || !isFilled}
+                  className={`${loading || !isFilled && "opacity-80 cursor-not-allowed"} uppercase font-medium text-size-500 w-full mt-4 px-6 py-3 bg-[#141718] text-white font-roboto rounded-md cursor-pointer`}
                   form="order_checkout_form"
                 >
                   <p className="text-white">{loading ? "Loading..." : "place order"}</p>
 
-                  {/* <p className="text-white">place order</p> */}
                 </button>
               </div>
             </div>
@@ -523,7 +580,8 @@ const Checkout = () => {
               placeholder="Eg SMART_30"
               id="promo_code"
               name="promoCode"
-              onChange={handleInputChange}
+              value = {promoCode}
+              onChange={(e) => setPromoCode(e.target.value.trim())}
               className="mt-3 border border-[#c0c0c0] w-full p-3 font-roboto text-size-400 font-normal first-letter:uppercase rounded-md"
             />
           </div>
@@ -546,15 +604,6 @@ const Checkout = () => {
                     </p>
                   </div>
               </div>
-              {/* <div className="flex w-full justify-between items-center">
-                <p className="text-text-black capitalize font-normal text-sm">discount:</p>
-                  <div className="flex gap-x-3 mt-2">
-                    <IndianRupee size = {20} />
-                    <p className="text-size-400 font-semibold text-red-500">
-                      {orderData.discount ? orderData.discount : "0.00"}
-                    </p>
-                  </div>
-              </div> */}
           </div>
           <hr className="my-4 bg-[#c0c0c0]" />
           <div>
@@ -569,31 +618,28 @@ const Checkout = () => {
             </div>
             <button 
               type="submit"
-              className="uppercase font-medium text-size-500 w-full mt-4 px-6 py-3 bg-[#141718] text-white font-roboto rounded-md cursor-pointer"
+              disabled = {loading || !isFilled}
+              className={`${loading || !isFilled && "opacity-80 cursor-not-allowed"} uppercase font-medium text-size-500 w-full mt-4 px-6 py-3 bg-[#141718] text-white font-roboto rounded-md cursor-pointer`}
               form="order_checkout_form"
             >
               <p className="text-white">{loading ? "Loading..." : "place order"}</p>
-              {/* <p className="text-white">place order</p> */}
             </button>
           </div>
         </div>
       </div>
       {/* modal 2 for success mesage or error message */}
-      <Modal2 title="Order confirmation" isOpen = {modalOpen} handleModalClose = {()=> setModalOpen(prevState => !prevState)}>
+      {/* <Modal2 title="Order confirmation" isOpen = {modalOpen} handleModalClose = {()=> setModalOpen(prevState => !prevState)}>
         <div className="flex flex-col w-full ">
           <div className="flex items-center gap-3">
-            {/* icons */}
               {error !== null ? <CircleAlert size = {35} color = "rgb(239 68 68)" /> 
                 : 
                 response && <BadgeCheck size = {35} color = "rgb(34 197 94 )"/>}
-              {/* message */}
-            {error !== null ? <p className="text-base font-normal first-letter:uppercase">{error}</p> : response &&<p className="font-normal text-base">
+              {error !== null ? <p className="text-base font-normal first-letter:uppercase">{error}</p> : response &&<p className="font-normal text-base">
               Your order has been placed successfully 
                {response?.order.discount ? <span className = "font-semibold ml-1">{`with ${response?.order.discount}% discount applied`}</span> : ""}
               , Please Proceed to make Payment
             </p>}
           </div>
-          {/* button */}
           <div className="mt-5 border-t border-[#f0f0f0] pt-3">
             {error !== null ? <Button  
                 size="medium"
@@ -609,7 +655,7 @@ const Checkout = () => {
               response && <Button  
               size="medium"
               handleClick={() => {
-                navigate("/payment-gateway", {replace:true, state:{order: orderData}});
+                navigate("/courier-service", {replace:true, state:{order: response.order}});
                 deletingCart();
               }}
               className="text-sm text-white uppercase w-full flex gap-x-2 justify-center"
@@ -617,11 +663,45 @@ const Checkout = () => {
               <p>pay now</p>
               <IndianRupee size = {20} />
               <p>{newTotal ? newTotal : response?.order.total}</p>
-              {/* <p>{response?.order.total}</p> */}
             </Button>}
           </div>
         </div>
-      </Modal2> 
+      </Modal2>  */}
+
+      <Modal2 title="Order confirmation" isOpen={modalOpen} handleModalClose={() => setModalOpen(prevState => !prevState)}>
+        <div className="flex flex-col w-full">
+          <div className="flex items-center gap-3">
+            <BadgeCheck size={35} color="rgb(34 197 94)" />
+            <p className="font-normal text-base">
+              Your order has been placed successfully 
+              {response?.order.discount && (
+                <span className="font-semibold ml-1">
+                  {`with ${response?.order.discount}% discount applied`}
+                </span>
+              )}
+              , Please Proceed to make Payment
+            </p>
+          </div>
+          <div className="mt-5 border-t border-[#f0f0f0] pt-3">
+            <Button
+              size="medium"
+              handleClick={() => {
+                response && navigate("/courier-service", {replace: true, state: {order: response.order}});
+                deletingCart();
+              }}
+              className="text-sm text-white uppercase w-full flex gap-x-2 justify-center"
+            >
+              <p>pay now</p>
+              <IndianRupee size={20} />
+              <p>{newTotal || response?.order.total}</p>
+            </Button>
+          </div>
+        </div>
+      </Modal2>
+
+
+      {/* toast to show only the error message */}
+      {error && <Toast message={error} type="error"/>}
 
     </>
   )

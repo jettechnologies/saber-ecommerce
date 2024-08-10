@@ -89,13 +89,20 @@ const PaymentGateway = () => {
     }
 
     try{
+      let response;
       const res = await fetch(url, {
         method: "POST",
         headers,
         body: JSON.stringify(data)
       });
 
-      const response = await res.json();
+      if(!selectedGateway?.includes("payumoney")){
+        response = await res.json();
+      }
+      else{
+        response = await res.text();
+      }
+
       if(!res.ok){
         throw new Error(response.message);
       }
@@ -127,6 +134,9 @@ const PaymentGateway = () => {
         const rzp = new (window as any).Razorpay(options);
         rzp.open();
       }
+      // else if (e){
+
+      // }
       // window.location.href = response.redirectUrl;
     }
     catch(err){

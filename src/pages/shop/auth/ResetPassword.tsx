@@ -51,7 +51,7 @@ const ResetPassword = () => {
     const handleFormSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
 
-        const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/i;
+        const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i;
         const { password, confirmPassword } = reset;
 
         if(password.str === "" || confirmPassword.str === "" ){

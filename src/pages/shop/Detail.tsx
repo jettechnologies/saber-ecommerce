@@ -17,9 +17,9 @@ import { IndianRupee, ShoppingBag, CircleAlert, Heart } from "lucide-react";
 import Button from "@/components/Button";
 import { useCartContext } from "@/context/cartContext";
 import { useAuth } from "@/context/authContext";
-import Notification from "@/components/Notification";
 import Modal2 from "@/components/Modal2";
 import { useUserProfile } from "@/context/userProfileContext";
+import Toast from "@/components/Toast";
 
 function Detail() {
   const { id } = useParams();
@@ -269,9 +269,9 @@ function Detail() {
           </Section>
         </div>
       </div>
-      {message.msg !== "" && <div className="absolute top-[5rem] left-[4rem] w-[20rem] h-[4rem] first-letter:capitalize">
+      {/* {message.msg !== "" && <div className="absolute top-[5rem] left-[4rem] w-[20rem] h-[4rem] first-letter:capitalize">
         <Notification type={message.type} className="text-white" message={message.msg} />
-      </div>}
+      </div>} */}
       <Modal2 isOpen={isOpen} handleModalClose={() => setIsOpen(prevState => !prevState)}>
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-3">
@@ -293,6 +293,10 @@ function Detail() {
           </div>
         </div>
       </Modal2>
+
+      {/* toast component */}
+      <Toast message={message.msg} type="success" />
+
     </>
   );
 }

@@ -1,6 +1,6 @@
 import FormContainer from "@/components/FormContainer";
 import { useNavigate } from "react-router-dom";
-import { User, Mail, Info, Phone, MapPin } from "lucide-react";
+import { User, Mail, Info, Phone } from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
 import Notification from "@/components/Notification";
 // import Button from "../../components/Button";
@@ -42,7 +42,6 @@ const Signup = () => {
         name: {str: "", error: false},
         email: {str: "", error: false},
         mobile: {str: "", error: false},
-        postal_code: {str: "", error: false},
         password: {str: "", error: false},
         confirmPassword: {str: "", error: false}
     });
@@ -80,7 +79,7 @@ const formSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const nameRegex = /^[a-zA-Z\s]*$/;
     // const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i;
-    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$/i;
+    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     const {name, password, confirmPassword, email, mobile} = user;
@@ -189,21 +188,6 @@ useEffect(() =>{
                         {user.mobile.error && <Info size={20} color=" rgb(239 68 68)" />}
                     </div>
                     {user.mobile.error && <p className="text-red-500 text-size-400 font-normal m-2">Fullname should be alphabets only </p>}
-                </div>
-                <div>
-                    <div className={`flex items-center ${user.name.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
-                        <MapPin size = {20}/>
-                        <input 
-                            className="pl-2 w-full outline-none border-none" 
-                            type="text" 
-                            name="postal_code" 
-                            id="postal_code" 
-                            placeholder="Enter your current postal code" 
-                            onChange={handleInputChange}
-                        />
-                        {user.postal_code.error && <Info size={20} color=" rgb(239 68 68)" />}
-                    </div>
-                    {user.postal_code.error && <p className="text-red-500 text-size-400 font-normal m-2">Fullname should be alphabets only </p>}
                 </div>
                 {/* <div>
                     <div className={`flex items-center ${user.password.error ? "border-2 border-red-500": "border-2 border-gray focus-within:border-blue"} mb-3 py-3 px-3 rounded-md`}>
