@@ -11,9 +11,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  build: {
-    rollupOptions: {
-      external: ['@babel/runtime'], // Corrected the array items
-    },
-  },
+  // build: {
+  //   rollupOptions: {
+  //     external: ['@babel/runtime'], // Corrected the array items
+  //   },
+  // },
 });
