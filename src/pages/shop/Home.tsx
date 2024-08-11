@@ -314,7 +314,7 @@ function Home() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
                   {categories?.length > 0 && categories?.map((category) => (
                     <Link key={category.id} to={`store/${category?.id}`}>
-                      <div
+                      {/* <div
                         id="category-card"
                         style={{
                           backgroundImage: `url(${category?.banner})`,
@@ -336,6 +336,40 @@ function Home() {
                           className="absolute bg-black w-full h-full bottom-0 -right-[200%] p-4 z-10 flex items-center justify-center"
                         >
                           <div className="z-50 mx-auto">
+                            <p className="text-white text-size-400 font-normal first-letter:uppercase">
+                              {category?.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div> */}
+                      <div
+                        id="category-card"
+                        style={{
+                          backgroundImage: `url(${category?.banner})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          backgroundRepeat: "no-repeat",
+                        }}
+                        className="w-full py-4 px-6 h-[20rem] relative rounded-md overflow-hidden group"
+                      >
+                        {/* Overlay */}
+                        <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
+
+                        {/* Title */}
+                        <div className="absolute inset-0 z-20 flex flex-col justify-center items-center transition-transform duration-300 ease-in-out">
+                          <div className="w-[70%] text-center">
+                            <h4 className="text-size-600 md:text-3xl font-semibold text-white mb-3 capitalize">
+                              {category?.name}
+                            </h4>
+                          </div>
+                        </div>
+
+                        {/* Description (Initially Hidden, Shows on Hover/Focus) */}
+                        <div
+                          id="category-card-desc"
+                          className="absolute hidden md:flex bg-black w-full h-full top-full group-hover:top-0 group-focus:top-0 transition-all duration-300 ease-in-out z-20 items-center justify-center"
+                        >
+                          <div className="mx-auto">
                             <p className="text-white text-size-400 font-normal first-letter:uppercase">
                               {category?.description}
                             </p>
