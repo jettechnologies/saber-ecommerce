@@ -1,6 +1,6 @@
 import Image from '@/components/Image';
 import { useNavigate } from "react-router-dom";
-import successIcon from "../assets/icons/success.svg";
+import successIcon from "@/assets/icons/success.svg";
 import Button from '@/components/Button';
 
 const PaymentSuccess = () => {
