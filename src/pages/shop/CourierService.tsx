@@ -107,10 +107,10 @@ const CourierService = () => {
 
   return (
     <>
-          <section className="w-full min-screen mt-14">
+      <section className="w-full min-screen mt-14">
         <div className="px-12 flex justify-center md:justify-normal gap-8 flex-wrap">
             {(courierServices && courierServices.length > 0) && courierServices.map((courier) => (
-                <div key = {courier?.courier_company_id} className="w-[18rem] md:w-[41vw] lg:w-[18rem] min-h-[12rem] rounded-lg shadow-md flex flex-col gap-2 border-2 border-black p-5"> 
+                <div key = {courier?.courier_company_id} className="w-[18rem] md:w-[41vw] lg:w-[18rem] min-h-[12rem] rounded-lg shadow-md shadow-gray flex flex-col gap-2 border-2 border-gray p-5"> 
                     <p className="text-text-black text-size-500">
                         <span className="font-bold uppercase mr-3">Courier name:</span>
                         {courier?.courier_name}

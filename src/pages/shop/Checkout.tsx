@@ -380,7 +380,7 @@ const Checkout = () => {
                       value="door_delivery"
                       checked={order.orderType === "door_delivery"}
                       onChange={handleInputChange}
-                      className="hidden"
+                      className="hidden cursor-pointer"
                     />
                     <span
                       className={`radio-box py-6 px-5 w-fit h-10 border-2 border-gray gap-x-4 rounded-md flex items-center justify-center ${

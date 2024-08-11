@@ -7,6 +7,9 @@ import { Order } from "@/types";
 import { useAuth } from '@/context/authContext';
 // import useGetRequest from '@/hooks/useGetRequest';
 import Spinner from '@/components/Spinner';
+import DOMPurify from 'dompurify';
+import Modal2 from '@/components/Modal2';
+import Toast from '@/components/Toast';
 // import useApiRequest from '@/hooks/useApiRequest';
 
 
@@ -24,12 +27,16 @@ const PaymentGateway = () => {
   const orderData:Order = location.state.order;
   const { token, loading:authLoading } = useAuth();
 
-  console.log(orderData, authLoading);
+  console.log(authLoading);
 
   const [selectedGateway, setSelectedGateway] = useState<PaymentGatewayType>();
   const [selectedGateways, setselectedGateways] = useState<GatewayResponse[]>([]);
   const [loadingSelectedGateways, setLoadingSelectedGateways] = useState<boolean>(false);
   const [selectedGatewayError, setSelectedGatewayError] = useState<string | null>(null);
+  // const [htmlContent, setHtmlContent] = useState('');
+  const [paymentFormHtml, setPaymentFormHtml] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [cashfreePaymentUrl, setCashfreePaymentUrl] = useState<string | null>(null);
 
   // const shouldFetch = useMemo(() => {
   //   return !!token && !authLoading;
@@ -39,6 +46,22 @@ const PaymentGateway = () => {
   //   {},
   //   shouldFetch
   // )
+
+  // const executeScripts = useCallback((html:string) => {
+  //   const scriptElements = getScripts(html);
+  //   scriptElements.forEach(script => {
+  //     const scriptText = script.text || script.textContent || script.innerHTML || '';
+  //     const newScript = document.createElement('script');
+  //     newScript.text = scriptText;
+  //     document.body.appendChild(newScript);
+  //   });
+  // }, []);
+
+  // const getScripts = (html:string) => {
+  //   const parser = new DOMParser();
+  //   const doc = parser.parseFromString(html, 'text/html');
+  //   return Array.from(doc.querySelectorAll('script'));
+  // };
 
   useEffect(() =>{
     const fetchSelectedGateways = async() =>{
@@ -63,7 +86,7 @@ const PaymentGateway = () => {
   }
   fetchSelectedGateways();}, []);
 
-  console.log(selectedGateways, selectedGatewayError);
+  // Function to know which 
   const activeGateway = useMemo(() =>{
     const arrangedGteways =  selectedGateways.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
     const currentGateway = arrangedGteways[0];
@@ -76,7 +99,32 @@ const PaymentGateway = () => {
     setSelectedGateway(value);
   }
 
+  // useEffect hook to handle cashfree payment completion
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin === 'https://sandbox.cashfree.com') {
+        // Handle the payment result here
+        console.log('Payment result:', event.data);
+        setIsModalOpen(false);
+        setCashfreePaymentUrl(null);
+        // You may want to update the order status or redirect the user
+      }
+    };
+  
+    window.addEventListener('message', handleMessage);
+  
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
+  
+
   const makePayment = useCallback(async() =>{
+
+    //Making the error state to be empty
+    setSelectedGatewayError(null);
+
     const url = `${import.meta.env.VITE_PRODUCT_LIST_API}order/process-payment/${orderData.id}`;
     const headers:HeadersInit = {
       'Accept': 'application/json',
@@ -89,19 +137,20 @@ const PaymentGateway = () => {
     }
 
     try{
-      let response;
       const res = await fetch(url, {
         method: "POST",
         headers,
         body: JSON.stringify(data)
       });
 
-      if(!selectedGateway?.includes("payumoney")){
-        response = await res.json();
-      }
-      else{
-        response = await res.text();
-      }
+      const response = await res.json();
+
+      // if(!selectedGateway?.includes("payumoney")){
+      //   response = await res.json();
+      // }
+      // else{
+      //   response = await res.text();
+      // }
 
       if(!res.ok){
         throw new Error(response.message);
@@ -109,6 +158,7 @@ const PaymentGateway = () => {
 
       console.log(response);
 
+      // Razorpay paymnet implementation
       if (response.gateway === "razorpay") {
         const options = {
           amount: response.amount,
@@ -134,13 +184,36 @@ const PaymentGateway = () => {
         const rzp = new (window as any).Razorpay(options);
         rzp.open();
       }
-      // else if (e){
-
+      // else if (selectedGateway === "payumoney") {
+      //   const cleanHtml = DOMPurify.sanitize(response?.data);
+      //   setHtmlContent(cleanHtml);
+      //    // Extract and execute scripts separately after setting the HTML content
+      //    setTimeout(() => {
+      //     executeScripts(cleanHtml);
+      //   }, 0);
+      //   setIsModalOpen(true);
       // }
-      // window.location.href = response.redirectUrl;
+      else if (selectedGateway === "payumoney") {
+        if (response) {
+          const cleanHtml = DOMPurify.sanitize(response.data);
+          setPaymentFormHtml(cleanHtml);
+          setIsModalOpen(true);
+        } else {
+          throw new Error("Invalid PayUMoney response");
+        }
+      } 
+      else if (selectedGateway === "cashfree") {
+        if (response.success && response.paymentUrl) {
+          setCashfreePaymentUrl(response.paymentUrl);
+          setIsModalOpen(true);
+        } else {
+          throw new Error("Invalid Cashfree response");
+        }
+      }
     }
     catch(err){
       console.log((err as Error).message);
+      setSelectedGatewayError((err as Error).message);
     }
 
   },[token, selectedGateway, orderData])
@@ -222,8 +295,63 @@ const PaymentGateway = () => {
               </div>
             </div>
         </div>
+
+        {/* Modal for payUmoney payment processing */}
+        {/* <Modal2 title='payUmoney payment' handleModalClose={() => setIsModalOpen(false)} isOpen={isModalOpen}>
+        <div 
+          className="payment-page-container w-full h-full" 
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
+        />
+        </Modal2> */}
+        <Modal2 
+          title={'Cashfree Payment'} 
+          handleModalClose={() => {
+            setIsModalOpen(false);
+            setCashfreePaymentUrl(null);
+          }} 
+          isOpen={isModalOpen}
+        >
+          {cashfreePaymentUrl && <CashfreePaymentFrame paymentUrl={cashfreePaymentUrl} />}
+        </Modal2>
+        <PayUMoneyForm formHtml={paymentFormHtml} />
+
+
+        {/* toast for displaying the error state */}
+        {selectedGatewayError && <Toast message={selectedGatewayError} type = "error" />}
+
+        {/* trying something new */}
+        {/* {token && <PaymentPage token={token} orderID={orderData?.id}/>} */}
     </div>
   )
 }
 
 export default PaymentGateway
+
+
+//cashfree Iframe component
+const CashfreePaymentFrame = ({ paymentUrl }: { paymentUrl: string }) => {
+  return (
+    <iframe
+      src={paymentUrl}
+      width="100%"
+      height="600px"
+      allow="payment"
+    />
+  );
+};
+
+// New component to handle PayUMoney form rendering and submission
+const PayUMoneyForm = ({ formHtml }: { formHtml: string }) => {
+  useEffect(() => {
+    const formContainer = document.getElementById('payUMoneyFormContainer');
+    if (formContainer) {
+      formContainer.innerHTML = formHtml;
+      const form = formContainer.querySelector('form');
+      if (form) {
+        form.submit();
+      }
+    }
+  }, [formHtml]);
+
+  return <div id="payUMoneyFormContainer" />;
+};
