@@ -1,6 +1,6 @@
 import Image from '@/components/Image';
 import { useNavigate } from "react-router-dom";
-import failIcon from "../assets/icons/fail.svg";
+import failIcon from "@/assets/icons/failed.svg";
 import Button from '@/components/Button';
 
 const PaymentFailure = () => {
