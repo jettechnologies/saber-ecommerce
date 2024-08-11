@@ -17,14 +17,14 @@ const PaymentSuccess = () => {
             <Button 
                 type='white'
                 size="medium" 
-                className="w-full text-size-500 text-white" 
+                className="w-[25rem] text-size-500" 
                 // handleClick={() => navigate('/')}
             >
                 Proceed to feedback
             </Button>
             <Button 
                 size="medium" 
-                className="w-full text-size-500 text-white" 
+                className="w-[25rem] text-size-500 text-white" 
                 handleClick={() => navigate('/')}
             >
                 Continue shopping
