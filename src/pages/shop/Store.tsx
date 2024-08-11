@@ -82,7 +82,7 @@ function Store() {
   const [values, setValues] = useState([MIN, MAX]);
 
   if (loading || searchLoading) {
-    return <div className="w-full min-h-screen border-2 border-black">
+    return <div className="w-full min-h-screen">
       <Spinner />
     </div>;
   }
@@ -153,40 +153,41 @@ const renderNoProductsMessage = () => (
       <section className="w-full h-full px-8 mt-2">
         {(categoryTerm !== "" && categoryWithProduct.data) ? <div 
           id = "page-banner" 
-          className="w-full py-4 grid text-[#cccccc] relative"
+          className="w-full py-4 grid text-gray relative"
         >
-          {/* for tablets and mobile phones */}
-          <div className="w-full absolute inset-0 lg:hidden">
-            <img 
-              src={categoryWithProduct?.data[0]?.banner} 
-              alt={`image of ${categoryWithProduct?.data[0]?.banner}`} 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="z-30 text-center flex flex-col justify-center items-center gap-y-4 px-4 py-6 lg:hidden">
+        <div className="w-full absolute inset-0">
+          <img
+            src={categoryWithProduct?.data[0]?.banner}
+            alt={`image of ${categoryWithProduct?.data[0]?.banner}`}
+            className="w-full h-full object-cover"
+          />
+          {/* Black Overlay */}
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+
+          {/* Content Above the Overlay */}
+          <div className="z-30 text-center flex flex-col justify-center items-center gap-y-4 px-4 py-6 relative">
             <ul className="w-fit flex gap-2 text-size-400 font-semibold capitalize">
               <li className="flex items-center gap-2">
-                <Link to = "/">
+                <Link to="/">
                   home
                 </Link>
                 <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
               </li>
               <li className="flex items-center gap-2">
-                <Link to = "/store">
+                <Link to="/store">
                   Shop
                 </Link>
                 <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
               </li>
-              {
-                paths.slice(1).map((path, index) =>(
-                  <li className="flex items-center gap-2" key = {index}>
-                    <Link to = {`/store/${path}`}>
-                      {path}
-                    </Link>
-                    <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
-                  </li>
-                ))
-              }
+              {paths.slice(1).map((path, index) => (
+                <li className="flex items-center gap-2" key={index}>
+                  <Link to={`/store/${path}`}>
+                    {path}
+                  </Link>
+                  <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
+                </li>
+              ))}
             </ul>
             <h2 className="text-4xl lg:text-6xl font-bold capitalize">
               {categoryWithProduct.data[0]?.name}
@@ -196,50 +197,6 @@ const renderNoProductsMessage = () => (
             </p>
           </div>
 
-          {/* for laptop view */}
-          <div className="w-full min-h-[300px] bg-gray p-6 hidden lg:block text-text-black">
-            <ul className="w-full flex gap-2 text-size-400 font-semibold text-text-black capitalize justify-center">
-                <li className="flex items-center gap-2">
-                  <Link to = "/">
-                    home
-                  </Link>
-                  <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
-                </li>
-                <li className="flex items-center gap-2">
-                  <Link to = "/store">
-                    Shop
-                  </Link>
-                  <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
-                </li>
-                {
-                  paths.slice(1).map((path, index) =>(
-                    <li className="flex items-center gap-2" key = {index}>
-                      <Link to = {`/store/${path}`}>
-                        {path}
-                      </Link>
-                      <DropdownIcon stroke="#6C7275" className="h-3 w-3 -rotate-90" />
-                    </li>
-                  ))
-                }
-              </ul>
-              <div className="w-full mt-8 h-fit flex rounded-md gap-x-6 overflow-clip">
-                <div className="flex flex-col justify-center flex-1 gap-y-8">
-                  <h2 className="text-4xl lg:text-6xl text-center font-bold capitalize">
-                    {categoryWithProduct.data[0]?.name}
-                  </h2>
-                  <p className="text-size-500 font-medium text-left first-letter:uppercase">
-                    {categoryWithProduct.data[0]?.description}
-                  </p>
-                </div>
-                <div className="flex-1 h-full">
-                  <img 
-                    src={categoryWithProduct?.data[0]?.banner} 
-                    alt={`image of ${categoryWithProduct?.data[0]?.banner}`} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-          </div>
         </div>
           :
           <div id = "page-banner" className="w-full h-[300px] bg-gray flex flex-col justify-center items-center gap-y-4 px-4">
