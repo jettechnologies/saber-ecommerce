@@ -127,7 +127,7 @@ const PaymentGateway = () => {
       console.log(response);
 
       // Razorpay paymnet implementation
-      if (response.gateway === "razorpay" && selectedGateway === "payumoney") {
+      if (response.gateway === "razorpay" && selectedGateway === "razorpay") {
         const options = {
           amount: response.amount,
           currency: response.currency,
