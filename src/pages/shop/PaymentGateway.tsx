@@ -197,7 +197,6 @@ const PaymentGateway = () => {
         if (response) {
           const cleanHtml = DOMPurify.sanitize(response.data);
           setPaymentFormHtml(cleanHtml);
-          setIsModalOpen(true);
         } else {
           throw new Error("Invalid PayUMoney response");
         }
