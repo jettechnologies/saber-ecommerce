@@ -38,6 +38,7 @@ const CourierService = () => {
   const [currentCourierId, setCurrentCourierId] = useState<number | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [disclaimer, setDisclaimer] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
 
@@ -110,7 +111,7 @@ const CourierService = () => {
       <section className="w-full min-screen mt-14">
         <div className="px-12 flex justify-center md:justify-normal gap-8 flex-wrap">
             {(courierServices && courierServices.length > 0) && courierServices.map((courier) => (
-                <div key = {courier?.courier_company_id} className="w-[18rem] md:w-[41vw] lg:w-[18rem] min-h-[12rem] rounded-lg shadow-md shadow-gray flex flex-col gap-2 border-2 border-gray p-5"> 
+                <div key = {courier?.courier_company_id} className="w-[18rem] md:w-[41vw] lg:w-[18rem] min-h-[12rem] rounded-lg shadow-md shadow-gray flex flex-col gap-3 border-2 border-gray p-5"> 
                     <p className="text-text-black text-size-500">
                         <span className="font-bold uppercase mr-3">Courier name:</span>
                         {courier?.courier_name}
@@ -121,15 +122,18 @@ const CourierService = () => {
                     </p>
                     <p className="text-text-black text-size-500">
                         <span className="font-bold uppercase mr-3">Delivery days:</span>
-                        {courier?.estimated_delivery_days}
+                        {`${courier?.estimated_delivery_days} days`}
                     </p>
                     <p className="text-text-black text-size-500">
                         <span className="font-bold uppercase mr-3">Delivery date:</span>
-                        {courier?.etd}
+                        {courier?.etd} 
                     </p>
-                    <p className="text-text-black text-size-500">
+                    <p className="text-text-black text-size-500 flex items-center">
                         <span className="font-bold uppercase mr-3">Charge:</span>
-                        {courier?.freight_charge}
+                        <span className="flex items-center gap-1">
+                          <IndianRupee size={20} /> 
+                          {courier?.freight_charge}
+                        </span>
                     </p>
                     <p className="text-text-black text-size-500">
                         <span className="font-bold uppercase mr-3">Rating:</span>
@@ -137,7 +141,7 @@ const CourierService = () => {
                     </p>
                     <p className="text-text-black text-size-500">
                         <span className="font-bold uppercase mr-3">Min weight:</span>
-                        {courier?.min_weight}
+                        {`${courier?.min_weight} kgs`} 
                     </p>
                     <Button 
                         disabled = {(fetchLoading && currentCourierId === courier?.id)}
@@ -151,7 +155,7 @@ const CourierService = () => {
             ))}
         </div>
     </section>
-     <Modal2 title="Order confirmation" isOpen={modalOpen} handleModalClose={() => setModalOpen(prevState => !prevState)}>
+     <Modal2 title="Courier confirmation" isOpen={modalOpen} handleModalClose={() => setModalOpen(prevState => !prevState)}>
         <div className="flex flex-col w-full">
           <div className="flex items-start gap-3">
             {/* <BadgeCheck size={35} color="rgb(34 197 94)" /> */}
@@ -169,9 +173,22 @@ const CourierService = () => {
               If you have any questions or need further assistance, please don't hesitate to contact our support team.
             </p>
           </div>
+          <div className="flex w-full gap-3 mt-3 items-center justify-center">
+            <input 
+              className = "w-5 h-5"
+              type="checkbox" 
+              id="disclaimer" 
+              checked = {disclaimer}
+              onChange = {() => setDisclaimer(prevState => !prevState)}
+            />
+            <p className="text-text-black text-sm font-bold">
+              I understand and agree to the disclaimer above.
+            </p>
+          </div>
           <div className="mt-5 border-t border-[#f0f0f0] pt-3">
             <Button
               size="medium"
+              disabled={!disclaimer}
               handleClick={() => {
                 navigate("/payment-gateway", {replace: true, state: {order: orderData}});
               }}

@@ -15,7 +15,6 @@ const PaymentSuccess = () => {
                 Your order has been successfully placed
             </p>
             <Button 
-                type='white'
                 size="medium" 
                 className="w-[25rem] text-size-500" 
                 // handleClick={() => navigate('/')}
@@ -23,6 +22,7 @@ const PaymentSuccess = () => {
                 Proceed to feedback
             </Button>
             <Button 
+                type='white'
                 size="medium" 
                 className="w-[25rem] text-size-500 text-white" 
                 handleClick={() => navigate('/')}
