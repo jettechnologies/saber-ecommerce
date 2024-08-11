@@ -2,6 +2,7 @@ import Image from '@/components/Image';
 import { useNavigate } from "react-router-dom";
 import successIcon from "@/assets/icons/success.svg";
 import Button from '@/components/Button';
+import { CartIcon } from "@/icons/svg";
 
 const PaymentSuccess = () => {
 
@@ -16,7 +17,7 @@ const PaymentSuccess = () => {
             </p>
             <Button 
                 size="medium" 
-                className="w-[25rem] text-size-500" 
+                className="w-[25rem] text-size-500 text-white" 
                 // handleClick={() => navigate('/')}
             >
                 Proceed to feedback
@@ -24,10 +25,11 @@ const PaymentSuccess = () => {
             <Button 
                 type='white'
                 size="medium" 
-                className="w-[25rem] text-size-500 text-white" 
-                handleClick={() => navigate('/')}
+                className="w-[25rem] text-size-500 text-text-black flex items-center justify-center gap-4" 
+                handleClick={() => navigate('/store')}
             >
-                Continue shopping
+                <CartIcon className="w-5 h-5 text-white"/>
+                <p>Continue shopping</p>
             </Button>
         </div>
     </div>
