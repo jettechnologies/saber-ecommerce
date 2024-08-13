@@ -1,6 +1,6 @@
 import { IndianRupee, Truck, Warehouse } from "lucide-react";
 import Carrousel from "@/components/Carrousel";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo , useRef } from "react";
 import { useUserProfile } from "@/context/userProfileContext";
 import { useAuth } from "@/context/authContext";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,6 +11,18 @@ import Modal2 from "@/components/Modal2";
 import { useCartContext } from "@/context/cartContext";
 import { validateObject } from "@/utils/inputValidation";
 import Toast from "@/components/Toast";
+import {
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonFab, 
+  IonFabButton,
+} from '@ionic/react';
+import { closeOutline, bagCheckOutline } from 'ionicons/icons'; // Import the closeOutline icon
+import { IonIcon } from '@ionic/react';
+import { isNativePlatform } from "@/utils/platform";
 
 
 interface OrderType{
@@ -27,7 +39,7 @@ interface OrderType{
 
 const Checkout = () => {
 
-
+  const isNative = isNativePlatform();
   // getting the order state from the url
   const location = useLocation();
   const orderData:Order = location.state.order;
@@ -51,14 +63,14 @@ const Checkout = () => {
   const [secondAddress, setSecondAddress] = useState({
     isActive: false,
     billing_address_2: "",
-  })
+  });
+  const [modalOpen, setModalOpen] = useState(false);
+  const modal = useRef<HTMLIonModalElement>(null);
 
-  console.log(order);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [response, setResponse] = useState<{message:string; order:Order} | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() =>{
     if(user !== null){
@@ -144,6 +156,7 @@ const Checkout = () => {
       if(res.ok){
         const response = await res.json();
         setResponse(response);
+        modal.current?.setCurrentBreakpoint(0);
         setModalOpen(prevState => !prevState);
       }
 
@@ -159,10 +172,12 @@ const Checkout = () => {
     try {
       return validateObject(order);
     } catch (err) {
-      console.log((err as Error).message)
       return false;
     }
   }, [order]);
+
+  //conditional to open up the modal
+  // const shouldOpen = isOpen || isFilled;
 
   const newTotal = useMemo(() => {
     if (response && response?.order.discount) {
@@ -175,9 +190,7 @@ const Checkout = () => {
   
     return orderData.total; // Return original total if no discount is applied
   }, [response, orderData]);
-  
-  console.log(isFilled)
-  
+    
 
   return (
     <>
@@ -466,7 +479,7 @@ const Checkout = () => {
               {
                 orderData.items.length > 0 && 
                 orderData.items.map(order =>(
-                  <li className="flex gap-x-3 py-3 border-b border-[#c0c0c0]">
+                  <li className="flex gap-x-3 py-3 border-b border-[#c0c0c0]" key = {order.id}>
                     <img src={order.product.productImage} alt="image icon" className="w-16 h-16 rounded-md object-cover"/>
                     <div className="w-">
                       <p className="text-size-400 lg:text-size-500 font-normal text-text-black first-letter:uppercase">
@@ -567,7 +580,7 @@ const Checkout = () => {
           </div>  
         </div>
         {/* mobile checkout block */}
-        <div className="hidden w-full max-[780px]:h-[14rem] shadow-md fixed bottom-0 left-0 z-10 bg-white max-[780px]:block p-4 overflow-y-scroll">
+        {!isNative ? <div className="hidden w-full max-[780px]:h-[14rem] shadow-md fixed bottom-0 left-0 z-10 bg-white max-[780px]:block p-4 overflow-y-scroll">
           <div className="w-full overflow-auto mb-4">
             <label
               htmlFor="promo_code"
@@ -626,47 +639,84 @@ const Checkout = () => {
             </button>
           </div>
         </div>
+          :
+        <IonModal ref={modal} trigger="open-modal"  className="ion-modal-custom" initialBreakpoint={0.5} breakpoints={[0, 0.5, 0.75]}>
+          <IonHeader className="px-4">
+            <IonToolbar>
+              <IonTitle>Order Summary</IonTitle>
+              {/* <IonButtons slot="end">
+                <IonButton onClick={() => setIsOpen(false)} className = "border-2 border-black cursor-pointer">
+                  <IonIcon icon={closeOutline} size="large" />
+                </IonButton>
+              </IonButtons> */}
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding h-[50vh]"> {/* Set modal height */}
+            <div className="w-full h-full overflow-y-scroll p-4">
+              <div className="w-full mb-4">
+                <label
+                  htmlFor="promo_code"
+                  className="text-size-400 text-text-black font-medium mb-3"
+                >
+                  Enter promo code
+                </label>
+                <input
+                  type="text"
+                  placeholder="Eg SMART_30"
+                  id="promo_code"
+                  name="promoCode"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.trim())}
+                  className="mt-3 border border-[#c0c0c0] w-full p-3 font-roboto text-size-400 font-normal first-letter:uppercase rounded-md"
+                />
+              </div>
+              <div className="flex flex-col gap-y-2">
+                <div className="flex w-full justify-between items-center">
+                  <p className="text-text-black capitalize font-normal text-sm">Cart subtotal:</p>
+                  <div className="flex gap-x-3 mt-2">
+                    <IonIcon icon={closeOutline} className="text-2xl text-black" />
+                    <p className="text-size-400 font-semibold text-text-black">
+                      {orderData.subTotal}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex w-full justify-between items-center">
+                  <p className="text-text-black capitalize font-normal text-sm">Shipping fee:</p>
+                  <div className="flex gap-x-3 mt-2">
+                    <p className="text-size-400 font-semibold text-text-black">
+                      {orderData.shippinFee}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <hr className="my-4 bg-[#c0c0c0]" />
+              <div>
+                <div className="flex w-full justify-between">
+                  <p className="text-text-black text-sm font-semibold">Total</p>
+                  <div className="flex gap-x-3 mt-2">
+                    <p className="text-size-400 font-semibold text-text-black">
+                      {orderData.total ? orderData.total : '0.00'}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading || !isFilled}
+                  className={`${
+                    loading || !isFilled
+                      ? 'opacity-80 cursor-not-allowed'
+                      : ''
+                  } uppercase font-medium text-size-500 w-full mt-4 px-6 py-3 bg-[#141718] text-white font-roboto rounded-md cursor-pointer`}
+                  form="order_checkout_form"
+                >
+                  <p className="text-white">{loading ? 'Loading...' : 'Place order'}</p>
+                </button>
+              </div>
+            </div>
+          </IonContent>
+        </IonModal>
+        }
       </div>
-      {/* modal 2 for success mesage or error message */}
-      {/* <Modal2 title="Order confirmation" isOpen = {modalOpen} handleModalClose = {()=> setModalOpen(prevState => !prevState)}>
-        <div className="flex flex-col w-full ">
-          <div className="flex items-center gap-3">
-              {error !== null ? <CircleAlert size = {35} color = "rgb(239 68 68)" /> 
-                : 
-                response && <BadgeCheck size = {35} color = "rgb(34 197 94 )"/>}
-              {error !== null ? <p className="text-base font-normal first-letter:uppercase">{error}</p> : response &&<p className="font-normal text-base">
-              Your order has been placed successfully 
-               {response?.order.discount ? <span className = "font-semibold ml-1">{`with ${response?.order.discount}% discount applied`}</span> : ""}
-              , Please Proceed to make Payment
-            </p>}
-          </div>
-          <div className="mt-5 border-t border-[#f0f0f0] pt-3">
-            {error !== null ? <Button  
-                size="medium"
-                handleClick={() => {
-                  setModalOpen(prevState => !prevState);
-                  setError(null);
-                }}
-                className="text-sm uppercase w-full"
-              >
-                Place order again
-              </Button>
-              : 
-              response && <Button  
-              size="medium"
-              handleClick={() => {
-                navigate("/courier-service", {replace:true, state:{order: response.order}});
-                deletingCart();
-              }}
-              className="text-sm text-white uppercase w-full flex gap-x-2 justify-center"
-            > 
-              <p>pay now</p>
-              <IndianRupee size = {20} />
-              <p>{newTotal ? newTotal : response?.order.total}</p>
-            </Button>}
-          </div>
-        </div>
-      </Modal2>  */}
 
       <Modal2 title="Order confirmation" isOpen={modalOpen} handleModalClose={() => setModalOpen(prevState => !prevState)}>
         <div className="flex flex-col w-full">
@@ -702,6 +752,15 @@ const Checkout = () => {
 
       {/* toast to show only the error message */}
       {error && <Toast message={error} type="error"/>}
+
+      {/* floating button for only native devices */}
+      {isNative && (
+        <IonFab vertical="bottom" horizontal="end" slot="fixed" className = "fixed right-4 z-50">
+          <IonFabButton id="open-modal" size = "small" style={{ '--background': '#000', '--color': 'white' }}>
+            <IonIcon icon={bagCheckOutline} size = "small"/>
+          </IonFabButton>
+        </IonFab>
+      )}
 
     </>
   )

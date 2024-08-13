@@ -149,7 +149,7 @@ const CourierService = () => {
                         className = "mt-2 text-white text-sm uppercase font-semibold"
                         handleClick={() => setCurrentCourierId(courier?.id)}
                     >
-                        {(fetchLoading && currentCourierId === courier?.id) ? "Loading" : "Select courier service"}
+                        {(fetchLoading && currentCourierId === courier?.id) ? "Loading..." : "Select courier service"}
                     </Button>
                 </div>
             ))}

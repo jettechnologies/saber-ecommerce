@@ -431,15 +431,13 @@ function Home() {
               }
             </Section> */}
             {/* trying new stuff out with the skeleton content loader */}
-        <Section title="New Arrivals" link="/store">
+        <Section title="Best sellers" link="/store">
           {!loading ? (
             <ProductSlider 
               autoPlay={false} 
               contents={products
                 ?.sort((a, b) => {
-                  const timeDiffA = new Date(a.createdAT).getTime();
-                  const timeDiffB = new Date(b.createdAT).getTime();
-                  return timeDiffA - timeDiffB;
+                  return a.purchaseCount - b.purchaseCount
                 })
                 .map((product: ProductType) => (
                   <div
