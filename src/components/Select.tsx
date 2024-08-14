@@ -79,6 +79,7 @@ const Select: React.FC<Props> = ({
       id={id}
       multiple={isMultiple}
       value={value}
+      defaultValue="default"
       className={twMerge(
         "py-2 px-4 rounded-md text-size-400 font-normal font-roboto text-text-black capitalize cursor-pointer",
         className
@@ -86,7 +87,7 @@ const Select: React.FC<Props> = ({
       onChange={handleInputChange}
     >
       {!isMultiple && (
-        <option disabled hidden value="">
+        <option disabled hidden value="default">
           {defaultText}
         </option>
       )}

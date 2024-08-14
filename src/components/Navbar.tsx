@@ -27,8 +27,6 @@ export default function Navbar() {
   const currentUrl = location.pathname;
   const navigate = useNavigate();
 
-  console.log(token);
-
   const { cartItems, deletingCart } = useCartContext();
   const { categories } = useProductCatergories();
   const { user, logout } = useUserProfile();

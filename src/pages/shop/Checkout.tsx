@@ -121,8 +121,6 @@ const Checkout = () => {
       console.error("Order ID is missing");
       return;
     }
-
-    console.log(data)
   
     const url = `${import.meta.env.VITE_PRODUCT_LIST_API}order/confirm-order/${orderId}`;
   

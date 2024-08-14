@@ -45,8 +45,7 @@ const Cart = () => {
       });
       if(!res.ok) throw new Error("Request not sent" + res.status);
       const response:{message:string; order:Order} = await res.json();
-      console.log(response);
-
+      
       navigate("/checkout", {replace:true, state:{order: response.order }});
     }
     catch(err){

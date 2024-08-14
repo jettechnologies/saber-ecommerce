@@ -189,9 +189,9 @@ function Home() {
       </header>
 
       {/* Store Benefits */}
-      <section className="mt-6 px-8">
+      {/* <section className="mt-6 px-8">
             <div className="w-full h-full flex gap-4 flex-wrap">
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 flex-[1_1_18vw]">
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 md:flex-[1_1_18vw] max-sm:w-[40vw]">
                 <Truck size = {30}/>
                 <div>
                   <h5 className="text-size-500 font-semibold text-[#121212] capitalize">handles logistics</h5>
@@ -200,7 +200,7 @@ function Home() {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 flex-[1_1_18vw]">
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 md:flex-[1_1_18vw] max-sm:w-[40vw]">
                 <Banknote size = {30}/>
                 <div>
                   <h5 className="text-size-500 font-semibold text-[#121212] capitalize">money-back</h5>
@@ -209,7 +209,7 @@ function Home() {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 flex-[1_1_18vw]">
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 md:flex-[1_1_18vw] max-sm:w-[40vw]">
                 <LockKeyhole size = {30}/>
                 <div>
                   <h5 className="text-size-500 font-semibold text-[#121212] capitalize">secure payments</h5>
@@ -218,7 +218,7 @@ function Home() {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 flex-[1_1_18vw]">
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 md:flex-[1_1_18vw] max-sm:w-[40vw]">
                 <Phone size = {30}/>
                 <div>
                   <h5 className="text-size-500 font-semibold text-[#121212] capitalize">24/7 support</h5>
@@ -228,7 +228,40 @@ function Home() {
                 </div>
               </div>
             </div>
+          </section> */}
+          <section className="mt-6 px-8">
+            <div className="w-full h-full grid gap-4 grid-cols-2 md:grid-cols-4">
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5">
+                <Truck size={30} />
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">handles logistics</h5>
+                  <p className="text-size-400 text-[#121212] font-medium">powered by Shiprocket</p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5">
+                <Banknote size={30} />
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">money-back</h5>
+                  <p className="text-size-400 text-[#121212] font-medium">30 days guarantee</p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5">
+                <LockKeyhole size={30} />
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">secure payments</h5>
+                  <p className="text-size-400 text-[#121212] font-medium">Secured by Razorpay, PayUMoney, and Cashfree</p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5">
+                <Phone size={30} />
+                <div>
+                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">24/7 support</h5>
+                  <p className="text-size-400 text-[#121212] font-medium">Phone and Email support</p>
+                </div>
+              </div>
+            </div>
           </section>
+
 
       {/* Content section */}
       <section className="mx-4 mt-10 lg:mx-14 min-h-screen">

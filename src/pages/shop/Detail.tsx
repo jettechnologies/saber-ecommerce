@@ -50,7 +50,7 @@ function Detail() {
         const result: ProductType = await response.json();
         setData(result);
       } catch (err) {
-        console.log(err);
+        console.log((err as Error).message);
       } finally {
         setLoading(false);
       }
@@ -79,7 +79,6 @@ function Detail() {
       }
       addToFavourite(favourite);
     } catch (err) {
-      console.log(err);
       setMessage({ msg: "Failed to add to favorites.", type: "danger" });
     }
   }, [token, addToFavourite]);

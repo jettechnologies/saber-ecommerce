@@ -71,6 +71,7 @@ const CourierService = () => {
       await makeRequest(data, `order/select-courier/${orderId}`, headers);
     } catch (e) {
       console.log((e as Error).message);
+      setError((e as Error).message);
     }
   }, [headers, makeRequest]);
 
@@ -81,6 +82,19 @@ const CourierService = () => {
       previousCourierId.current = currentCourierId;
     }
   }, [orderData.id, currentCourierId, handleCourierService]);
+
+  // for remove the error state value
+  useEffect(() =>{
+    let errorRemoval: ReturnType<typeof setTimeout>;
+
+    if(error){
+       errorRemoval =  setTimeout(() =>{
+            setError(null);
+        }, 2000)
+    }
+
+    return() => clearTimeout(errorRemoval)
+}, [error]);
 
 
   const total = useMemo(() => {
@@ -93,8 +107,6 @@ const CourierService = () => {
       return total.toFixed(2);
     }
   }, [response]);
-
-  console.log(total)
 
   if(loading){
     return<div className = "w-full h-full grid place-items-center"><Spinner /></div>
@@ -204,6 +216,7 @@ const CourierService = () => {
 
       {/* toast */}
       {fetchError && <Toast message={fetchError} type="error" />}
+      {error && <Toast message={error} type="error" />}
     </>
   )
 }
