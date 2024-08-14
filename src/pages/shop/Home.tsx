@@ -188,47 +188,6 @@ function Home() {
 
       </header>
 
-      {/* Store Benefits */}
-      {/* <section className="mt-6 px-8">
-            <div className="w-full h-full flex gap-4 flex-wrap">
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 md:flex-[1_1_18vw] max-sm:w-[40vw]">
-                <Truck size = {30}/>
-                <div>
-                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">handles logistics</h5>
-                  <p className = "text-size-400 text-[#121212] font-medium">
-                    powered by Shiprocket
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 md:flex-[1_1_18vw] max-sm:w-[40vw]">
-                <Banknote size = {30}/>
-                <div>
-                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">money-back</h5>
-                  <p className = "text-size-400 text-[#121212] font-medium">
-                    30 days guarantee
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 md:flex-[1_1_18vw] max-sm:w-[40vw]">
-                <LockKeyhole size = {30}/>
-                <div>
-                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">secure payments</h5>
-                  <p className = "text-size-400 text-[#121212] font-medium">
-                    Secured by razorpay, payUmoney and cashfree
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5 md:flex-[1_1_18vw] max-sm:w-[40vw]">
-                <Phone size = {30}/>
-                <div>
-                  <h5 className="text-size-500 font-semibold text-[#121212] capitalize">24/7 support</h5>
-                  <p className = "text-size-400 text-[#121212] font-medium">
-                    Phone and Email support
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section> */}
           <section className="mt-6 px-8">
             <div className="w-full h-full grid gap-4 grid-cols-2 md:grid-cols-4">
               <div className="flex flex-col justify-center gap-y-5 bg-gray rounded-md p-5">
@@ -265,39 +224,6 @@ function Home() {
 
       {/* Content section */}
       <section className="mx-4 mt-10 lg:mx-14 min-h-screen">
-
-    {/* <Section title="New Arrivals" link="/store">
-          {!loading ? (
-            <ProductSlider 
-              autoPlay={false} 
-              contents = {products
-                .sort((a, b) => {
-                  // Assuming 'createdAt' is a Date object on your ProductType
-                  const timeDiffA = new Date(a.createdAT).getTime();
-                  const timeDiffB = new Date(b.createdAT).getTime();
-                  return timeDiffA - timeDiffB; // Sort by ascending order of time differences
-                })
-                .map((product: ProductType) => (
-                  <div
-                    key={product.id}
-                    className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem] mb-4 md:mb-0"
-                  >
-                    <ProductCard
-                      product={product}
-                      tag={{
-                        type: 'neutral',
-                        msg: product?.isOutOfStock ? 'Out of stock' : '',
-                      }}
-                    />
-                  </div>
-                ))}
-            />
-          ) : (
-            <div className="w-full h-[25rem]">
-              <Spinner />
-            </div>
-          )}
-        </Section> */}
 
         {/* trying new stuff out with the skeleton content loader */}
         <Section title="New Arrivals" link="/store">
@@ -347,34 +273,6 @@ function Home() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
                   {categories?.length > 0 && categories?.map((category) => (
                     <Link key={category.id} to={`store/${category?.id}`}>
-                      {/* <div
-                        id="category-card"
-                        style={{
-                          backgroundImage: `url(${category?.banner})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                          backgroundRepeat: "no-repeat"
-                        }}
-                        className="w-full py-4 px-6 h-[20rem] relative rounded-md overflow-clip"
-                      >
-                        <div className="w-full h-full flex flex-col justify-center">
-                          <div className="w-[70%] h-fit self-center">
-                            <h4 className="text-size-600 md:text-3xl font-semibold text-gray mb-3 capitalize">
-                              {category?.name}
-                            </h4>
-                          </div>
-                        </div>
-                        <div
-                          id="category-card-desc"
-                          className="absolute bg-black w-full h-full bottom-0 -right-[200%] p-4 z-10 flex items-center justify-center"
-                        >
-                          <div className="z-50 mx-auto">
-                            <p className="text-white text-size-400 font-normal first-letter:uppercase">
-                              {category?.description}
-                            </p>
-                          </div>
-                        </div>
-                      </div> */}
                       <div
                         id="category-card"
                         style={{
@@ -445,59 +343,41 @@ function Home() {
 
           {/* Best sellers  sort out by rating*/}
           <div className="mt-14">
-            {/* <Section title="best sellers" link="store">
-              {!loading ? <div className="w-full h-full flex flex-wrap justify-between gap-y-6 mt-8 z-10">
-                {
-                  products.sort((a, b) => a.purchaseCount - b.purchaseCount).map((product:ProductType) =>(
-                    <div className="w-full md:w-[46.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem]" key = {product.id}>
-                      <ProductCard product={product} tag={{
-                        type: "neutral",
-                        msg: product?.isOutOfStock ? "out of stock" : "",
-                      }} />
-                    </div>))
-                }
-                </div>
-                :
-                <div className="w-full h-[25rem]">
-                  <Spinner />
-                </div>
-              }
-            </Section> */}
             {/* trying new stuff out with the skeleton content loader */}
-        <Section title="Best sellers" link="/store">
-          {!loading ? (
-            <ProductSlider 
-              autoPlay={false} 
-              contents={products
-                ?.sort((a, b) => {
-                  return a.purchaseCount - b.purchaseCount
-                })
-                .map((product: ProductType) => (
-                  <div
-                    key={product?.id}
-                    className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem] mb-4 md:mb-0"
-                  >
-                    <ProductCard
-                      product={product}
-                      tag={{
-                        type: 'neutral',
-                        msg: product?.isOutOfStock ? 'Out of stock' : '',
-                      }}
-                    />
-                  </div>
-                ))}
-            />
-          ) : (
-            <div className="w-full h-[25rem]">
-              <ProductSlider 
-                autoPlay={false} 
-                contents={Array(6).fill(0).map((_, index) => (
-                  <ProductCardSkeleton key={index} />
-                ))}
-              />
-            </div>
-          )}
-        </Section>
+            <Section title="Best sellers" link="/store">
+              {!loading ? (
+                <ProductSlider 
+                  autoPlay={false} 
+                  contents={products
+                    ?.sort((a, b) => {
+                      return a.purchaseCount - b.purchaseCount
+                    })
+                    .map((product: ProductType) => (
+                      <div
+                        key={product?.id}
+                        className="w-full md:w-[30.5vw] lg:w-[20.8vw] xl:w-[22vw] h-[23rem] mb-4 md:mb-0"
+                      >
+                        <ProductCard
+                          product={product}
+                          tag={{
+                            type: 'neutral',
+                            msg: product?.isOutOfStock ? 'Out of stock' : '',
+                          }}
+                        />
+                      </div>
+                    ))}
+                />
+              ) : (
+                <div className="w-full h-[25rem]">
+                  <ProductSlider 
+                    autoPlay={false} 
+                    contents={Array(6).fill(0).map((_, index) => (
+                      <ProductCardSkeleton key={index} />
+                    ))}
+                  />
+                </div>
+              )}
+            </Section>
           </div>
         </div>
       </section>

@@ -4,8 +4,9 @@ import Logo from "./Logo";
 import { useEffect, useState } from "react";
 import useApiRequest from "@/hooks/useApiRequest";
 import Spinner from "./Spinner";
-// import Button from "./Button";
+import Button from "./Button";
 import Modal2 from "./Modal2";
+import Toast from "./Toast";
 
 interface Email {
     str: string;
@@ -14,7 +15,7 @@ interface Email {
 
 export default function Footer() {
 
-    const { response, loading, makeRequest } = useApiRequest<{message: string}, {email: string}>({
+    const { response, loading, error:subscribeError, makeRequest } = useApiRequest<{message: string}, {email: string}>({
         method: "POST",
     })
     const [email, setEmail] = useState<Email>({
@@ -108,7 +109,7 @@ export default function Footer() {
                     </p>
                   </div>
                   <form onSubmit={handleFormSubmit}> 
-                      <div className = {`w-full flex p-1 border ${email.error ? "border-red-500" : "border-gray"} focus-within:border-blue focus-within:border-2 rounded-md`}>
+                      <div className = {`w-full h-fit flex p-1 border ${email.error ? "border-red-500" : "border-gray"} focus-within:border-blue focus-within:border-2 rounded-md`}>
                           <input type="text" 
                               placeholder="Enter email address"
                               className="w-full h-10 border-none outline-none text-white font-roboto font-normal bg-transparent pl-2 "
@@ -177,8 +178,7 @@ export default function Footer() {
             </p>
           </div>
           <div className="flex gap-5 mt-5 border-t border-[#f0f0f0] pt-3">
-            {/* <Button 
-              type="white" 
+            <Button  
               size="medium" 
               className="text-sm uppercase flex-1"
               handleClick = {() => setIsSubscribe(prevState => ({
@@ -186,18 +186,13 @@ export default function Footer() {
                     status: false
                 }))}
             >
-              
-            </Button> */}
-            {/* <Button  
-              size="medium"
-              handleClick={() => handleLogout()}
-              className="text-sm uppercase flex-1"
-            >
-              logout
-            </Button> */}
+              Continue to shop
+            </Button>
           </div>
         </div>
       </Modal2>
+
+      {subscribeError && <Toast message={subscribeError} type = "error"/>}
     </>
   );
 }

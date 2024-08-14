@@ -16,7 +16,7 @@ const PaymentFailure = () => {
             </p>
             <Button 
                 size="medium" 
-                className="w-[25rem] text-size-500 text-white" 
+                className="w-[18rem] md:w-[25rem] text-size-500 text-white" 
                 handleClick={() => navigate('/payment-gateway')}
             >
                 Back to payment

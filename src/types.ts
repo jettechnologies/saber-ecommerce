@@ -321,3 +321,78 @@ export interface CourierResponse {
     name: string;
   };
 }
+
+type ShoppingExperience =
+  | 'Excellent'
+  | 'Good'
+  | 'Average'
+  | 'Poor'
+  | '';
+
+type ProductBrowsingExperience =
+  | 'Very Easy'
+  | 'Easy'
+  | 'Neutral'
+  | 'Difficult'
+  | '';
+
+type ProductAndImageDescription =
+  | 'Yes'
+  | 'No'
+  | '';
+
+type CategoryProductAvailabilitySatisfaction =
+  | 'Satisfactory'
+  | 'Neutral'
+  | 'Dissatisfactory'
+  | '';
+
+type LikelihoodOfWebsiteRecommendation =
+  | 'Very Likely'
+  | 'Neutral'
+  | 'Not Likely'
+  | '';
+
+export interface FeedbackDto {
+  email: string;
+  shoppingExperience: ShoppingExperience;
+  productBrowsingExperience: ProductBrowsingExperience;
+  productImageDescription: ProductAndImageDescription;
+  categoryProductAvailability: CategoryProductAvailabilitySatisfaction;
+  likelihoodOfWebsiteRecommendation: LikelihoodOfWebsiteRecommendation;
+  additionalSatisfactionOrFeedback?: string;
+}
+
+// enum values
+// types.ts
+export enum ShoppingExperienceEnum {
+  Excellent = "Excellent",
+  Good = "Good",
+  Average = "Average",
+  Poor = "Poor",
+}
+
+export enum ProductBrowsingExperienceEnum {
+  VeryEasy = "Very Easy",
+  Easy = "Easy",
+  Average = "Average",
+  Difficult = "Difficult",
+}
+
+export enum ProductAndImageDescriptionEnum {
+  Yes = "Yes",
+  No = "No",
+}
+
+export enum CategoryProductAvailabilitySatisfactionEnum {
+  Satisfactory = "Satisfactory",
+  Unsatisfactory = "Unsatisfactory",
+}
+
+export enum LikelihoodOfWebsiteRecommendationEnum {
+  VeryLikely = "Very Likely",
+  Likely = "Likely",
+  Neutral = "Neutral",
+  Unlikely = "Unlikely",
+  VeryUnlikely = "Very Unlikely",
+}

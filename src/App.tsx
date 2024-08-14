@@ -28,6 +28,7 @@ import Accounts from "./pages/ion_pages/Accounts";
 import CourierService from "./pages/shop/CourierService";
 import PaymentSuccess from "./pages/shop/PaymentSuccess";
 import PaymentFailure from "./pages/shop/PaymentFailure";
+import ProductFeedback from "./pages/shop/ProductFeedback";
 
 setupIonicReact();
 
@@ -72,6 +73,7 @@ function App() {
           <Route path = "/payment-gateway" element = {<PaymentGateway />} />
           <Route path = "/payment-success" element = {<PaymentSuccess />} />
           <Route path = "/payment-failure" element = {<PaymentFailure />} />
+          <Route path = "/product-feedback" element = {<ProductFeedback />} />
           <Route path="/success" element={<Success />} />
         </Route>
         <Route path = "/terms-and-condition" element = {<Terms />} />
