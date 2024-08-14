@@ -143,7 +143,7 @@
 // export default FeedbackForm;
 
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
     FeedbackDto,
     ShoppingExperienceEnum,
@@ -156,6 +156,7 @@ import Button from "./Button";
 import useApiRequest from '@/hooks/useApiRequest';
 import Select from './Select'; // Adjust the path as necessary
 import Toast from './Toast';
+import { validateObject } from '@/utils/inputValidation';
 
 const FeedbackForm: React.FC = () => {
     const [formData, setFormData] = useState<FeedbackDto>({
@@ -171,6 +172,15 @@ const FeedbackForm: React.FC = () => {
     console.log(formData)
 
     const { response, error, loading, makeRequest } = useApiRequest<{message:string}, FeedbackDto>({ method: 'POST' });
+
+    // function to check if all the fields are been filled
+    const isFilled = useMemo(() => {
+        try {
+          return validateObject(formData);
+        } catch (err) {
+          return false;
+        }
+      }, [formData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -301,8 +311,8 @@ const FeedbackForm: React.FC = () => {
                 <div className="text-right">
                     <Button
                         btnType="submit"
-                        disabled={loading}
-                        className="inline-flex justify-center p-2 px-4 border border-transparent text-sm font-medium rounded-md text-white "
+                        disabled={loading || !isFilled}
+                        className="inline-flex justify-center p-3 w-full border border-transparent text-sm font-medium rounded-md text-white "
                     >
                         {loading ? 'Submitting...' : 'Submit Feedback'}
                     </Button>
