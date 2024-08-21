@@ -298,7 +298,7 @@ function Home() {
                         {/* Description (Initially Hidden, Shows on Hover/Focus) */}
                         <div
                           id="category-card-desc"
-                          className="absolute hidden md:flex bg-black w-full h-full top-full group-hover:top-0 group-focus:top-0 transition-all duration-300 ease-in-out z-20 items-center justify-center"
+                          className="absolute p-2 hidden md:flex bg-black w-full h-full top-full group-hover:top-0 group-focus:top-0 transition-all duration-300 ease-in-out z-20 items-center justify-center"
                         >
                           <div className="mx-auto">
                             <p className="text-white text-size-400 font-normal first-letter:uppercase">
